@@ -1,0 +1,26 @@
+<configuration>
+    <appender name="BASIC" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>
+        </encoder>
+    </appender>
+    <appender name="MODIFIED" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyMMdd HH:mm:ss} %red(%-5level) :: %highlight(%cyan(%msg %n))</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="jdbc" level="TRACE"/>
+
+    <logger name="jdbc.sqlonly" level="DEBUG"/>
+    <logger name="jdbc.sqltiming" level="OFF"/>
+    <logger name="jdbc.audit" level="OFF"/>
+    <logger name="jdbc.resultset" level="OFF"/>
+    <logger name="jdbc.resultsettable" level="OFF"/>
+    <logger name="jdbc.connection" level="OFF"/>
+
+    <root level="INFO">
+        <appender-ref ref="MODIFIED" />
+    </root>
+
+</configuration>
