@@ -8,9 +8,7 @@ import {Channel} from "../channel/Channel";
 export const Header = () => {
 
     const Header = Layout.Header;
-
     const Title = Typography;
-
     const mainContent = document.getElementById("main-content");
 
     const goMain = () => {
