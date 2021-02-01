@@ -1,34 +1,60 @@
-import React, {useEffect, useState} from 'react';
-import {Form, Input, Modal} from 'antd';
+import React, {useEffect} from 'react';
+import {Divider, Form, Input, Modal} from 'antd';
 
 type SignUpTypes = {
-    visible : boolean
+    visible : boolean;
+    setIsSignUpVisible : any;
 }
 
-export const SignUp = ({visible} : SignUpTypes) => {
-
-    const [isVisible, setIsVisible] = useState(false);
+export const SignUp = ({visible, setIsSignUpVisible} : SignUpTypes) => {
 
     const handleVisible = () => {
-        setIsVisible(!isVisible);
+        let username = document.getElementById("signUpUsername") as any;
+        let password = document.getElementById("signUpPassword") as any;
+        if(username.value) username.value = "";
+        if(password.value) password.value = "";
+        setIsSignUpVisible(!visible);
     }
 
     useEffect(() => {
-        setIsVisible(visible);
     }, []);
 
+    function confirmSignUp() {
+        alert("Signed - Up !!!");
+        setIsSignUpVisible(!visible);
+        window.location.reload();
+    }
+
     return (
-        <Modal visible={isVisible} onCancel={handleVisible}>
+        <Modal
+            visible={visible}
+            onCancel={handleVisible}
+            okText={"Sign-Up"}
+            onOk={confirmSignUp}
+        >
             <Form
                 style={{
                 }}
             >
+                <h2>Sign-Up</h2>
+                <Divider/>
                 <Form.Item
                     label={"Username"}
                     name={"username"}
                     rules={[{required : true, message : "Enter your username(ID)"}]}
                 >
-                    <Input/>
+                    <Input
+                        id={"signUpUsername"}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label={"Password"}
+                    name={"password"}
+                    rules={[{required : true, message : "Enter your username(ID)"}]}
+                >
+                    <Input
+                        id={"signUpPassword"}
+                    />
                 </Form.Item>
             </Form>
         </Modal>

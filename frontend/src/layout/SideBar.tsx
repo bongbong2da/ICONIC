@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Badge, Layout, Menu} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
-import {CheckCircleTwoTone, DesktopOutlined, HeartTwoTone} from "@ant-design/icons";
+import {CheckCircleTwoTone, HeartTwoTone} from "@ant-design/icons";
 import {SmileTwoTone} from "@ant-design/icons/";
 
 export const SideBar = () => {
@@ -31,7 +31,15 @@ export const SideBar = () => {
 
             {/*DB정보를 받아와 채널 목록을 Iterate하여 출력함.*/}
 
-            <Menu defaultSelectedKeys={['1']}>
+            <Menu defaultSelectedKeys={['0']}>
+                <MenuItem key={0} icon={<SmileTwoTone/>}>
+                    <Badge
+                        className="badge-example"
+                        count={0}
+                        style={{backgroundColor: "red"}}
+                    />
+                    Public Channel
+                </MenuItem>
                 <MenuItem key={1} icon={<SmileTwoTone/>}>
                     <Badge
                         className="badge-example"

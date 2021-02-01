@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input, Row} from 'antd';
+import {Input, Row} from 'antd';
 import {Posting} from "./Posting";
 
 export const PostPage = () => {

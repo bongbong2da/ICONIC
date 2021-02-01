@@ -1,14 +1,13 @@
 package io.iconic.backend.repository;
 
-import io.iconic.backend.model.Posting;
+import io.iconic.backend.model.CreatedChannel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository<Posting, Integer> {
+public interface ChannelRepository extends JpaRepository<CreatedChannel, Integer> {
 
-    List<Posting> getAllByPostingChanIdxIs(int posting_chan_idx);
 
 }

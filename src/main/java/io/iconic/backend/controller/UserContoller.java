@@ -91,7 +91,7 @@ public class UserContoller {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity signIn(LoginRequest loginRequest) {
+    public ResponseEntity signIn(@RequestBody LoginRequest loginRequest) {
         System.out.println(loginRequest);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 

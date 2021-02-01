@@ -10,7 +10,7 @@ type PostingTypes = {
 export const Posting = ({idx} : PostingTypes) => {
 
     let emojiCount = 0;
-
+    
     const [isVisible, setVisible] = useState(false);
 
     const showPosting = () => {
@@ -59,7 +59,7 @@ export const Posting = ({idx} : PostingTypes) => {
     }
 
     useEffect( () => {
-        printTestEmoji(80).then(res => console.log(res));
+        printTestEmoji(80);
     },[]);
 
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import {Layout} from "antd";
-import {PostPage} from "../posting/PostPage";
 import {Channel} from "../channel/Channel";
 
 export const Content = () => {

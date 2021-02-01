@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Header} from "./Header";
 import {SideBar} from "./SideBar";
 import {Content} from "./Content";
@@ -7,7 +7,17 @@ import {Footer} from "./Footer";
 
 type MainProps = {}
 
+// const [login, setLogin] = useState(false);
+const login = false;
+const setLogin = (input : boolean) => input;
 export const Main = ({}: MainProps) => {
+
+    useEffect(() => {
+        console.log("Login Status : " + login);
+        if(localStorage.getItem("token")){
+            setLogin(true);
+        }
+    })
 
     return (
         <Layout>

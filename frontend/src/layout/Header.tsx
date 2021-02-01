@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Layout, Menu, Typography} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import {SignUp} from "../user/SignUp";
 import ReactDOM from 'react-dom';
 import {Channel} from "../channel/Channel";
+import SignIn from "../user/SignIn";
 
 export const Header = () => {
 
@@ -15,8 +16,16 @@ export const Header = () => {
         ReactDOM.render(<Channel/>,mainContent);
     }
 
+    const [isSignUpVisible, setIsSignUpVisible] = useState(false);
     const goSignUp = () => {
-        SignUp.bind({visible : true});
+        if (isSignUpVisible) return;
+        setIsSignUpVisible(!isSignUpVisible);
+    }
+
+    const [isSignInVisible, setIsSignInVisible] = useState(false);
+    const goSignIn = () => {
+        if (isSignInVisible) return;
+        setIsSignInVisible(!isSignInVisible);
     }
 
     return (
@@ -35,10 +44,11 @@ export const Header = () => {
 
                 <MenuItem style={{float : "right"}} key="5" onClick={goSignUp}>
                     Sign-Up
-                    <SignUp visible={false}/>
+                    <SignUp visible={isSignUpVisible} setIsSignUpVisible={setIsSignUpVisible}/>
                 </MenuItem>
-                <MenuItem style={{float : "right"}} key="4">
+                <MenuItem style={{float : "right"}} key="4" onClick={goSignIn}>
                     Sign-In
+                    <SignIn visible={isSignInVisible} setIsSignInVisible={setIsSignInVisible} state={null}/>
                 </MenuItem>
             </Menu>
 

@@ -19,7 +19,13 @@ export const PostingModal = ({idx, isVisible, setVisible}: PostingModalTypes) =>
     }
 
     return (
-        <Modal width={1000} title={"Hi! This is my first posting :)"} visible={isVisible} onOk={handleVisible}>
+        <Modal
+            width={1000}
+            title={"Hi! This is my first posting :)"}
+            visible={isVisible}
+            onOk={handleVisible}
+            cancelButtonProps={{disabled : true}}
+        >
             <Row
                 style={{
                     width : "100%",
