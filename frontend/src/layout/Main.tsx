@@ -4,6 +4,7 @@ import {SideBar} from "./SideBar";
 import {Content} from "./Content";
 import {Layout} from "antd";
 import {Footer} from "./Footer";
+import {Counter} from "../reduxDemo/Counter";
 
 type MainProps = {}
 
@@ -21,14 +22,15 @@ export const Main = ({}: MainProps) => {
 
     return (
         <Layout>
-            <Header/>
-            <Layout style={{minHeight : "100vh"}}>
-                <SideBar/>
-                <Layout>
-                    <Content/>
-                    <Footer/>
-                </Layout>
-            </Layout>
+            <Counter/>
+            {/*<Header/>*/}
+            {/*<Layout style={{minHeight : "100vh"}}>*/}
+            {/*    <SideBar/>*/}
+            {/*    <Layout>*/}
+            {/*        <Content/>*/}
+            {/*        <Footer/>*/}
+            {/*    </Layout>*/}
+            {/*</Layout>*/}
         </Layout>
     )
 
