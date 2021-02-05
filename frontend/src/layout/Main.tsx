@@ -1,36 +1,32 @@
 import React, {useEffect} from 'react';
-import {Header} from "./Header";
-import {SideBar} from "./SideBar";
-import {Content} from "./Content";
 import {Layout} from "antd";
+import rootReducer from "../redux/rootReducer";
+import {createStore} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
+import {Provider} from "react-redux";
+import {SideBar} from "./SideBar";
+import {Header} from "./Header";
+import {Content} from "./Content";
 import {Footer} from "./Footer";
-import {Counter} from "../reduxDemo/Counter";
+import AuthChecker from "../user/AuthChecker";
 
-type MainProps = {}
+export const Main = () => {
 
-// const [login, setLogin] = useState(false);
-const login = false;
-const setLogin = (input : boolean) => input;
-export const Main = ({}: MainProps) => {
+    AuthChecker();
 
     useEffect(() => {
-        console.log("Login Status : " + login);
-        if(localStorage.getItem("token")){
-            setLogin(true);
-        }
-    })
+    });
 
     return (
         <Layout>
-            <Counter/>
-            {/*<Header/>*/}
-            {/*<Layout style={{minHeight : "100vh"}}>*/}
-            {/*    <SideBar/>*/}
-            {/*    <Layout>*/}
-            {/*        <Content/>*/}
-            {/*        <Footer/>*/}
-            {/*    </Layout>*/}
-            {/*</Layout>*/}
+            <Header/>
+            <Layout style={{minHeight : "100vh"}}>
+                <SideBar/>
+                <Layout>
+                    <Content/>
+                    <Footer/>
+                </Layout>
+            </Layout>
         </Layout>
     )
 

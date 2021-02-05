@@ -8,7 +8,7 @@ import java.util.List;
 public class JwtResponse {
 
     private String token;
-    private String type = "Iconic ";
+    private String type = "Bearer ";
     private Integer id;
     private String username;
     private String email;

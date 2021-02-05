@@ -1,16 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Layout, Menu, Typography} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import {SignUp} from "../user/SignUp";
 import ReactDOM from 'react-dom';
 import {Channel} from "../channel/Channel";
 import SignIn from "../user/SignIn";
+import AuthChecker from "../user/AuthChecker";
+import {useSelector} from "react-redux";
+import {RootState} from "../redux/rootReducer";
 
 export const Header = () => {
 
     const Header = Layout.Header;
     const Title = Typography;
     const mainContent = document.getElementById("main-content");
+    const isLoggedIn : boolean = useSelector((state : RootState) => state.loginsStatus.isLoggedIn);
+    const uid = localStorage.getItem("uid");
+
+    useEffect(() => {
+    });
 
     const goMain = () => {
         ReactDOM.render(<Channel/>,mainContent);
@@ -42,14 +50,25 @@ export const Header = () => {
                 <MenuItem key="2">Public Channels</MenuItem>
                 <MenuItem key="3">HELP!</MenuItem>
 
-                <MenuItem style={{float : "right"}} key="5" onClick={goSignUp}>
-                    Sign-Up
-                    <SignUp visible={isSignUpVisible} setIsSignUpVisible={setIsSignUpVisible}/>
-                </MenuItem>
-                <MenuItem style={{float : "right"}} key="4" onClick={goSignIn}>
-                    Sign-In
-                    <SignIn visible={isSignInVisible} setIsSignInVisible={setIsSignInVisible} state={null}/>
-                </MenuItem>
+                {!isLoggedIn?
+                    <>
+                        <MenuItem style={{float : "right"}} key="5" onClick={goSignUp}>
+                            Sign-Up
+                            <SignUp visible={isSignUpVisible} setIsSignUpVisible={setIsSignUpVisible}/>
+                        </MenuItem>
+                        <MenuItem style={{float : "right"}} key="4" onClick={goSignIn}>
+                            Sign-In
+                            <SignIn visible={isSignInVisible} setIsSignInVisible={setIsSignInVisible} state={null}/>
+                        </MenuItem>
+                    </>
+                    :
+                    <>
+                        <MenuItem style={{float : "right"}}>
+                            Welcome {uid} !
+                        </MenuItem>
+                    </>
+                }
+
             </Menu>
 
             <Menu

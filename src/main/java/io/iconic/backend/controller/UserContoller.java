@@ -1,6 +1,7 @@
 package io.iconic.backend.controller;
 
 import io.iconic.backend.payload.request.LoginRequest;
+import io.iconic.backend.security.AuthTokenFilter;
 import io.iconic.backend.security.JwtUtils;
 import io.iconic.backend.security.account.ERole;
 import io.iconic.backend.security.account.Role;
@@ -10,6 +11,8 @@ import io.iconic.backend.security.payload.response.JwtResponse;
 import io.iconic.backend.security.repository.RoleRepository;
 import io.iconic.backend.security.repository.UserRepository;
 import io.iconic.backend.security.service.UserDetailsImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +34,8 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/user/**")
 public class UserContoller {
+
+    private final Logger log = LoggerFactory.getLogger(UserContoller.class);
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -109,5 +115,21 @@ public class UserContoller {
         System.out.println("불러온 권한들 : " + roles);
 
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
+    }
+
+    @PostMapping("/isAuth")
+    public ResponseEntity isAuth(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7, request.getHeader("Authorization").length());
+
+        log.info("Checking token is authorized : " + token);
+
+        try {
+            jwtUtils.validateJwtToken(token);
+            log.info("validating success");
+            return ResponseEntity.ok().body("Authorized");
+        } catch (Exception e) {
+            log.info("validating failed");
+            return ResponseEntity.badRequest().body("Bad Request");
+        }
     }
 }

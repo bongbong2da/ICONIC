@@ -1,6 +1,9 @@
 import React, {useEffect} from 'react';
 import {Divider, Form, Input, Modal} from 'antd';
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from '../redux/rootReducer';
+import {saveUID} from "./userActions";
 
 type SignInTypes = {
     visible : boolean;
@@ -9,6 +12,13 @@ type SignInTypes = {
 }
 
 const SignIn = ({visible, setIsSignInVisible, state} : SignInTypes) => {
+
+    const uid = useSelector((state : RootState) => state.UID.username);
+    console.log(`SELECT : ${uid}`);
+    const dispatcher = useDispatch();
+    dispatcher(saveUID('saved id'));
+    console.log(uid);
+
 
     const handleVisible = () => {
         let username = document.getElementById("signInUsername") as any;

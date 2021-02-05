@@ -15,7 +15,7 @@ public class JwtUtils {
 
     private Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${iconic.jwt.secretKey")
+    @Value("${iconic.jwt.secretKey}")
     private String jwtSecret;
 
     @Value("${iconic.jwt.expiration}")
@@ -37,7 +37,7 @@ public class JwtUtils {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public boolean validateJwtToken(String token) {
+    public boolean validateJwtToken(String token) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException {
 
         log.info("Validating Token : " + token);
         log.info("Validating With : " + jwtSecret);
@@ -45,19 +45,11 @@ public class JwtUtils {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+            log.info("JwtUtils : Validating JWT Failed");
             e.printStackTrace();
-        } catch (UnsupportedJwtException e) {
-            e.printStackTrace();
-        } catch (MalformedJwtException e) {
-            e.printStackTrace();
-        } catch (SignatureException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            throw e;
         }
-
-        return false;
     }
 
 }
