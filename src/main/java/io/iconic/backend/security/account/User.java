@@ -27,15 +27,18 @@ public class User {
     @NotBlank
     private String password;
 
+    private String profile_img;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String username, String password) {
+    public User(String username, String password, String profile_img) {
         this.username = username;
         this.password = password;
+        this.profile_img = profile_img;
     }
 
     public User() {
@@ -64,6 +67,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProfile_img() {
+        return profile_img;
+    }
+
+    public void setProfile_img(String profile_img) {
+        this.profile_img = profile_img;
     }
 
     public Set<Role> getRoles() {

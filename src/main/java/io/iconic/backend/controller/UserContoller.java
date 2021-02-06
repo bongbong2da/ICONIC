@@ -22,6 +22,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -53,12 +54,14 @@ public class UserContoller {
     JwtUtils jwtUtils;
 
     @PutMapping("/signup")
-    public ResponseEntity signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity signUp(@Valid @RequestBody SignUpRequest signUpRequest, @RequestPart MultipartFile multipartFile) {
 
         if(userRepository.existsByUsername(signUpRequest.getUsername()))
             return ResponseEntity.badRequest().body("USERNAME EXISTS");
 
-        User user = new User(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()));
+        log.info(multipartFile.getName());
+
+        User user = new User(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getProfile_img());
 
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();

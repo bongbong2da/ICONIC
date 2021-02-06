@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "iconic.jwt.secretKey",
+      "type": "java.lang.String",
+      "description": "Description for iconic.jwt.secretKey."
+  }
+] }

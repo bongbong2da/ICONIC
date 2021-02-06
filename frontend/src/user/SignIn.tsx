@@ -13,13 +13,6 @@ type SignInTypes = {
 
 const SignIn = ({visible, setIsSignInVisible, state} : SignInTypes) => {
 
-    const uid = useSelector((state : RootState) => state.UID.username);
-    console.log(`SELECT : ${uid}`);
-    const dispatcher = useDispatch();
-    dispatcher(saveUID('saved id'));
-    console.log(uid);
-
-
     const handleVisible = () => {
         let username = document.getElementById("signInUsername") as any;
         let password = document.getElementById("signInPassword") as any;
@@ -47,6 +40,8 @@ const SignIn = ({visible, setIsSignInVisible, state} : SignInTypes) => {
                 window.location.reload();
             });
     }
+
+    /* Upload Configuration */
 
     return (
         <Modal

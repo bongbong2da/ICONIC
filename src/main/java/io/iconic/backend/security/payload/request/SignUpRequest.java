@@ -11,6 +11,8 @@ public class SignUpRequest {
     @NotBlank
     private String password;
 
+    private String profile_img;
+
     private Set<String> roles;
 
     public String getUsername() {
@@ -27,6 +29,14 @@ public class SignUpRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProfile_img() {
+        return profile_img;
+    }
+
+    public void setProfile_img(String profile_img) {
+        this.profile_img = profile_img;
     }
 
     public Set<String> getRoles() {

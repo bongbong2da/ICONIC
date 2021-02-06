@@ -9,6 +9,7 @@ import {Header} from "./Header";
 import {Content} from "./Content";
 import {Footer} from "./Footer";
 import AuthChecker from "../user/AuthChecker";
+import {UploadDemo} from "../demo/UploadDemo";
 
 export const Main = () => {
 
@@ -25,6 +26,7 @@ export const Main = () => {
                 <Layout>
                     <Content/>
                     <Footer/>
+                    <UploadDemo/>
                 </Layout>
             </Layout>
         </Layout>
