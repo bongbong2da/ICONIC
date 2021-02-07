@@ -1,7 +1,6 @@
 package io.iconic.backend.controller;
 
 import io.iconic.backend.payload.request.LoginRequest;
-import io.iconic.backend.security.AuthTokenFilter;
 import io.iconic.backend.security.JwtUtils;
 import io.iconic.backend.security.account.ERole;
 import io.iconic.backend.security.account.Role;
@@ -22,21 +21,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/user/**")
-public class UserContoller {
+public class UserController {
 
-    private final Logger log = LoggerFactory.getLogger(UserContoller.class);
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -54,14 +50,12 @@ public class UserContoller {
     JwtUtils jwtUtils;
 
     @PutMapping("/signup")
-    public ResponseEntity signUp(@Valid @RequestBody SignUpRequest signUpRequest, @RequestPart MultipartFile multipartFile) {
+    public ResponseEntity signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
 
         if(userRepository.existsByUsername(signUpRequest.getUsername()))
             return ResponseEntity.badRequest().body("USERNAME EXISTS");
 
-        log.info(multipartFile.getName());
-
-        User user = new User(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getProfile_img());
+        User user = new User(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getProfile_img(), new Date(), null);
 
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -114,6 +108,12 @@ public class UserContoller {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
+
+        Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
+        user.ifPresent(data-> {
+            data.setLogindate(new Date());
+            User newData = userRepository.save(data);
+        });
 
         System.out.println("불러온 권한들 : " + roles);
 

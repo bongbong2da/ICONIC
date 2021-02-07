@@ -3,10 +3,7 @@ package io.iconic.backend.model;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -20,30 +17,37 @@ allocationSize = 1)
 public class PublicChannel {
 
     @Id
-    private int pChan_idx;
+    @Column(name = "pchan_idx")
+    private int pChanIdx;
 
-    private String pChan_name;
+    @Column(name = "pchan_name")
+    private String pChanName;
 
-    private int pChan_pop_max;
+    @Column(name = "pchan_pop_max")
+    private int pChanPopMax;
 
-    private String pChan_announce;
+    @Column(name = "pchan_announce")
+    private String pChanAnnounce;
 
-    private String pChan_manager;
+    @Column(name = "pchan_manager")
+    private String pChanManager;
 
-    private char pChan_isPublic;
+    @Column(name = "pchan_ispublic")
+    private char pChanIsPublic;
 
-    private Date pChan_reg;
+    @Column(name = "pchan_reg")
+    private Date pChanReg;
 
     public PublicChannel() {
     }
 
-    public PublicChannel(int pChan_idx, String pChan_name, int pChan_pop_max, String pChan_announce, String pChan_manager, char pChan_isPublic, Date pChan_reg) {
-        this.pChan_idx = pChan_idx;
-        this.pChan_name = pChan_name;
-        this.pChan_pop_max = pChan_pop_max;
-        this.pChan_announce = pChan_announce;
-        this.pChan_manager = pChan_manager;
-        this.pChan_isPublic = pChan_isPublic;
-        this.pChan_reg = pChan_reg;
+    public PublicChannel(int pChanIdx, String pChanName, int pChanPopMax, String pChanAnnounce, String pChanManager, char pChanIsPublic, Date pChanReg) {
+        this.pChanIdx = pChanIdx;
+        this.pChanName = pChanName;
+        this.pChanPopMax = pChanPopMax;
+        this.pChanAnnounce = pChanAnnounce;
+        this.pChanManager = pChanManager;
+        this.pChanIsPublic = pChanIsPublic;
+        this.pChanReg = pChanReg;
     }
 }

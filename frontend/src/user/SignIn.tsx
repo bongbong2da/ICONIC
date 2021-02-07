@@ -70,7 +70,7 @@ const SignIn = ({visible, setIsSignInVisible, state} : SignInTypes) => {
                     name={"password"}
                     rules={[{required : true, message : "Enter your username(ID)"}]}
                 >
-                    <Input
+                    <Input.Password
                         id={"signInPassword"}
                     />
                 </Form.Item>

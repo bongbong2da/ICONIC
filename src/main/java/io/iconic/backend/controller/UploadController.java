@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -19,14 +20,12 @@ public class UploadController {
     public ResponseEntity preUpload(@RequestPart MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         System.out.println("Request file name : " + multipartFile.getOriginalFilename());
 
-//        String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
-//        String basePath = rootPath + "/" + "upload";
-//
-//        String filePath = basePath + "/" + multipartFile.getOriginalFilename();
+//        String rootPath = request.getSession().getServletContext().getRealPath("/resources/upload/");
+        String rootPath = "D:\\dev\\iconic-upload\\";
 
-        String rootPath = request.getSession().getServletContext().getRealPath("/resources/upload/");
-//        String basePath = rootPath + "/resources/upload/";
-        String filePath = rootPath + multipartFile.getOriginalFilename();
+        UUID uuid = UUID.randomUUID();
+
+        String filePath = rootPath + uuid.toString() + multipartFile.getOriginalFilename();
 
         System.out.println("Saving path : " + filePath);
 
@@ -36,6 +35,6 @@ public class UploadController {
 
         System.out.println("Uploaded Successfully : " + filePath);
 
-        return ResponseEntity.ok().body("Uploaded");
+        return ResponseEntity.ok().body(filePath);
     }
 }

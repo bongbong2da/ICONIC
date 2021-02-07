@@ -3,11 +3,24 @@ import {Badge, Button, Card, Col, Divider} from 'antd';
 import {PostingModal} from "./PostingModal";
 import 'emoji-picker-element';
 
-type PostingTypes = {
-    idx : number
+export type PostingProps = {
+    posting : PostingTypes
 }
 
-export const Posting = ({idx} : PostingTypes) => {
+export type PostingTypes = {
+    idx: number
+    count: number
+    chan_idx: number
+    title: string
+    writer: string
+    emoji: string
+    content: string
+    isAttached: string
+    attach: string
+    reg: object
+}
+
+export const Posting = (props : PostingProps) => {
 
     let emojiCount = 0;
     
@@ -44,7 +57,7 @@ export const Posting = ({idx} : PostingTypes) => {
             let emoji = document.createTextNode(emojis[Math.floor(Math.random() * emojis.length)]);
 
             newNode.appendChild(emoji);
-            let target = document.getElementById("emojiBox" + idx);
+            let target = document.getElementById("emojiBox" + props.posting.idx);
             if (target) {
                 newNode.style.fontSize="21px";
                 target.append(newNode);
@@ -62,7 +75,6 @@ export const Posting = ({idx} : PostingTypes) => {
         printTestEmoji(80);
     },[]);
 
-
     return (
         <Col style={{margin: "5px"}}>
             <Card
@@ -70,13 +82,13 @@ export const Posting = ({idx} : PostingTypes) => {
                     <div>
                         <Badge
                             className="badge-example"
-                            count={randomNumber}
+                            count={props.posting.count}
                             style={{
                                 fontSize : "20px",
                                 backgroundColor: "red",
                                 color: "white",
                             }}/>
-                        <span>  Hi! This is my first posting :)</span>
+                        <span>{props.posting.title}</span>
                     </div>
                 }
                 hoverable
@@ -86,7 +98,7 @@ export const Posting = ({idx} : PostingTypes) => {
                     display: "block",
                     overflow : "auto"
                 }}
-                cover={<img alt="test_img" src="http://localhost:3000/logo.svg"/>}
+                cover={props.posting.isAttached === 'y' ? <img alt={props.posting.attach} src={`http://localhost:8080/images/${props.posting.attach}`}/> : null}
                 bordered={false}
                 onClick={showPosting}
             >
@@ -95,21 +107,17 @@ export const Posting = ({idx} : PostingTypes) => {
                     style={{
                         fontSize: "40px",
                     }}
-                >😈</Divider>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure
-                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                >{props.posting.emoji}</Divider>
+
+                {props.posting.content}
+
                 <Divider orientation={"right"}>
                     <Badge count={41}/>
                 </Divider>
                 <div>
-                    <PostingModal idx={idx} isVisible={isVisible} setVisible={setVisible}/>
+                    <PostingModal posting={props.posting} isVisible={isVisible} setVisible={setVisible}/>
                 </div>
-                <div id={"emojiBox" + idx} style={{fontSize: "12px", height : "100px", overflow : "auto"}}>
+                <div id={"emojiBox" + props.posting.idx} style={{fontSize: "12px", height : "100px", overflow : "auto"}}>
                 </div>
                 <Divider/>
                 <Button type="primary" color="red">Leave Emoji</Button>

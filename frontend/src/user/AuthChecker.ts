@@ -22,7 +22,7 @@ const AuthChecker = () => {
             dispatcher(loginStatus(true));
         })
         .catch(res => {
-            console.log(`JWT 인증 실패 ${res}`);
+            alert(`JWT 인증 실패 ${res}`);
             dispatcher(deleteToken());
             dispatcher(deleteUID());
             dispatcher(loginStatus(false));
@@ -30,6 +30,16 @@ const AuthChecker = () => {
             localStorage.removeItem("token");
             window.location.reload();
         });
+
+    axios("http://localhost:8080/post/get", {
+        headers : {
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+        .then(res => {
+            console.log(res.data);
+        })
+
 }
 
 export default AuthChecker;

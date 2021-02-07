@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Layout, Menu, Typography} from "antd";
+import {Divider, Layout, Menu, Modal, Typography} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import {SignUp} from "../user/SignUp";
 import ReactDOM from 'react-dom';
@@ -25,19 +25,43 @@ export const Header = () => {
     }
 
     const [isSignUpVisible, setIsSignUpVisible] = useState(false);
-    const goSignUp = () => {
+    const handleSignUpVisible = () => {
         if (isSignUpVisible) return;
         setIsSignUpVisible(!isSignUpVisible);
     }
 
     const [isSignInVisible, setIsSignInVisible] = useState(false);
-    const goSignIn = () => {
+    const handleSigInVisible = () => {
         if (isSignInVisible) return;
         setIsSignInVisible(!isSignInVisible);
     }
 
+    const [isLogoutVisible, setIsLogoutVisible] = useState(false);
+    const handleLogoutVisible = () => {
+        setIsLogoutVisible(!isLogoutVisible);
+    }
+
+    const logout = () => {
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        window.location.reload();
+    }
+
+    const logoutModal = (
+        <Modal
+            visible={isLogoutVisible}
+            onOk={logout}
+            onCancel={handleLogoutVisible}
+        >
+            <h2>로그아웃</h2>
+            <Divider/>
+            로그아웃 하시겠습니까?
+        </Modal>
+    )
+
     return (
         <Header>
+            {logoutModal}
             <Menu
                 theme={"dark"}
                 mode="horizontal"
@@ -52,11 +76,11 @@ export const Header = () => {
 
                 {!isLoggedIn?
                     <>
-                        <MenuItem style={{float : "right"}} key="5" onClick={goSignUp}>
+                        <MenuItem style={{float : "right"}} key="5" onClick={handleSignUpVisible}>
                             Sign-Up
                             <SignUp visible={isSignUpVisible} setIsSignUpVisible={setIsSignUpVisible}/>
                         </MenuItem>
-                        <MenuItem style={{float : "right"}} key="4" onClick={goSignIn}>
+                        <MenuItem style={{float : "right"}} key="4" onClick={handleSigInVisible}>
                             Sign-In
                             <SignIn visible={isSignInVisible} setIsSignInVisible={setIsSignInVisible} state={null}/>
                         </MenuItem>
@@ -65,6 +89,9 @@ export const Header = () => {
                     <>
                         <MenuItem style={{float : "right"}}>
                             Welcome {uid} !
+                        </MenuItem>
+                        <MenuItem style={{float:"right"}} onClick={handleLogoutVisible}>
+                            로그아웃
                         </MenuItem>
                     </>
                 }

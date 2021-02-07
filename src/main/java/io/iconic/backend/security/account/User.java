@@ -2,6 +2,7 @@ package io.iconic.backend.security.account;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,16 +30,22 @@ public class User {
 
     private String profile_img;
 
+    private Date regdate;
+
+    private Date logindate;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String username, String password, String profile_img) {
+    public User(String username, String password, String profile_img, Date regdate, Date logindate) {
         this.username = username;
         this.password = password;
         this.profile_img = profile_img;
+        this.regdate = regdate;
+        this.logindate = logindate;
     }
 
     public User() {
@@ -75,6 +82,22 @@ public class User {
 
     public void setProfile_img(String profile_img) {
         this.profile_img = profile_img;
+    }
+
+    public Date getRegdate() {
+        return regdate;
+    }
+
+    public void setRegdate(Date regdate) {
+        this.regdate = regdate;
+    }
+
+    public Date getLogindate() {
+        return logindate;
+    }
+
+    public void setLogindate(Date logindate) {
+        this.logindate = logindate;
     }
 
     public Set<Role> getRoles() {

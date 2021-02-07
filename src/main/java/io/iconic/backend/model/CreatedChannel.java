@@ -17,25 +17,25 @@ allocationSize = 1)
 public class CreatedChannel {
 
     @Id
-    @Column (name = "cChan_idx")
+    @Column (name = "cchan_idx")
     private int cChanIdx;
 
-    @Column (name = "cChan_name")
+    @Column (name = "cchan_name")
     private String cChanName;
 
-    @Column (name = "cChan_pop_max")
+    @Column (name = "cchan_pop_max")
     private int cChanPopMax;
 
-    @Column (name = "cChan_announce")
+    @Column (name = "cchan_announce")
     private String cChanAnnounce;
 
-    @Column (name = "cChan_manager")
+    @Column (name = "cchan_manager")
     private String cChanManager;
 
-    @Column (name = "cChan_isPublic")
+    @Column (name = "cchan_ispublic")
     private char cChanIsPublic;
 
-    @Column (name = "cChan_reg")
+    @Column (name = "cchan_reg")
     private Date cChanReg;
 
     public CreatedChannel() {
