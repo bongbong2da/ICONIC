@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface UserChannelRepository extends JpaRepository<UserChannel, Long> {
 
-    Optional<List<UserChannel>> getUserChannelsByUsername(String username);
+    Optional<List<UserChannel>> findUserChannelsByUsernameIs(String username);
 
 }

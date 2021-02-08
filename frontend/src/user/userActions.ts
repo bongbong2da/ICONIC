@@ -13,7 +13,7 @@ const initialUIDState = {
     username : 'initial data'
 }
 
-export function UIDReducer(state = initialUIDState, action : any){
+export function UIDReducer(state = initialUIDState, action : any) {
     switch (action?.type) {
         case SAVE_UID:
             return {

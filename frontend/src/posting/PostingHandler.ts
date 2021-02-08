@@ -12,8 +12,9 @@ type PostingSourceTypes = {
     postingWriter : string
 }
 
-export const parsingPost = (dbData : any) : PostingTypes[] => {
+export const parsingPost = (dbData : any | null) : PostingTypes[] => {
     let parsedData: PostingTypes[] = [];
+    if(dbData === null) return [];
     dbData.map((data : PostingSourceTypes) => {
         let parsingPost : PostingTypes = {
             idx : data.postingIdx,
@@ -29,6 +30,6 @@ export const parsingPost = (dbData : any) : PostingTypes[] => {
         };
         parsedData.push(parsingPost);
     });
-    console.log(`Parsing Completed : ${JSON.stringify(parsedData)}`)
+    // console.log(`Parsing Completed : ${JSON.stringify(parsedData)}`)
     return parsedData;
 }

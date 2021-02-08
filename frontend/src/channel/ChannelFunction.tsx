@@ -7,9 +7,9 @@ export const ChannelFunction = () => {
 
     return(
         <div style={{padding : "20px", backgroundColor : "#8f8f8f"}}>
-            <Button type="primary" style={{marginRight : "10px"}}>Create Post</Button>
-            <Button type="default" style={{marginRight : "10px"}}>Make Channel</Button>
-            <Button type="dashed" style={{marginRight : "10px"}}>Join Channel</Button>
+            <Button type="primary" style={{marginRight : "10px"}}>글쓰기</Button>
+            <Button type="default" style={{marginRight : "10px"}}>채널 만들기</Button>
+            <Button type="dashed" style={{marginRight : "10px"}}>채널 참가하기</Button>
             <Search style={{width : "200px"}} placeholder={"Search Keyword"}/>
         </div>
     )

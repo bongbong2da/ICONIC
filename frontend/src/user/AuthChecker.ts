@@ -30,16 +30,6 @@ const AuthChecker = () => {
             localStorage.removeItem("token");
             window.location.reload();
         });
-
-    axios("http://localhost:8080/post/get", {
-        headers : {
-            "Authorization" : `Bearer ${token}`
-        }
-    })
-        .then(res => {
-            console.log(res.data);
-        })
-
 }
 
 export default AuthChecker;

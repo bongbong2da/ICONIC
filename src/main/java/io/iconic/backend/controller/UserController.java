@@ -1,6 +1,8 @@
 package io.iconic.backend.controller;
 
+import io.iconic.backend.model.UserChannel;
 import io.iconic.backend.payload.request.LoginRequest;
+import io.iconic.backend.repository.UserChannelRepository;
 import io.iconic.backend.security.JwtUtils;
 import io.iconic.backend.security.account.ERole;
 import io.iconic.backend.security.account.Role;
@@ -47,6 +49,9 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private UserChannelRepository userChannelRepository;
+
+    @Autowired
     JwtUtils jwtUtils;
 
     @PutMapping("/signup")
@@ -88,6 +93,7 @@ public class UserController {
 
         user.setRoles(roles);
         userRepository.save(user);
+        userChannelRepository.save(new UserChannel(user.getUsername(), 1));
 
         return ResponseEntity.ok().body("REGISTERED");
 

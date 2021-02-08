@@ -1,5 +1,6 @@
 package io.iconic.backend.configuration;
 
+import io.iconic.backend.interceptor.CommonInterceptor;
 import io.iconic.backend.security.AuthEntryPointJwt;
 import io.iconic.backend.security.AuthTokenFilter;
 import io.iconic.backend.security.service.UserDetailsServiceImpl;

@@ -1,25 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import {Input, Row} from 'antd';
+import {Row} from 'antd';
 import {Posting, PostingTypes} from "./Posting";
 import axios from "axios";
-import {useSelector} from "react-redux";
 import {parsingPost} from './PostingHandler';
 
-export const PostPage = () => {
+type PostingPageProps = {
+    channel_idx : number
+}
+
+export const PostingPage = (props : PostingPageProps) => {
 
     const [list , setList] = useState([] as PostingTypes[]);
 
     useEffect(() => {
-        const dbData = axios.get("http://localhost:8080/post/get", {
+        console.log(`http://localhost:8080/post/get?idx=${props.channel_idx}`);
+        const dbData = axios.get(`http://localhost:8080/post/get?idx=${props.channel_idx}`, {
             headers : {
                 "Authorization" : `Bearer ${localStorage.getItem("token")}`
             }
         }).then(res=> {
             let parsedData = parsingPost(res.data);
             setList(parsedData);
+            console.log(`Postings Received...`);
         });
-        console.log(`List : ${list}`);
-    }, []);
+        // console.log(`List : ${list}`);
+    }, [props.channel_idx]);
 
     const sampleData = {
         idx : 1,
@@ -49,6 +54,20 @@ export const PostPage = () => {
         {...sampleData},
     ];
 
+    const emptyChannel = (
+        <div
+            style={{
+                margin : "20px",
+                padding : "20px",
+                borderRadius : "10px",
+                backgroundColor : "white",
+                fontSize : "20px"
+            }}
+        >
+            아무것도...없네요? 😱
+        </div>
+    )
+
     return (
         <div>
             <div id="modalPoint">
@@ -59,12 +78,12 @@ export const PostPage = () => {
                     justifyContent : "center"
                 }}
             >
-                {list.map(data => {
-                    console.log(`Rendering Data : ${data}`)
+                {list.length !== 0 ? list.map(data => {
+                    // console.log(`Rendering Data : ${data}`)
                     return (
                         <Posting key={data.idx} posting={data}/>
                     )
-                })}
+                }) : emptyChannel}
             </Row>
         </div>
     )

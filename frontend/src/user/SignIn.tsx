@@ -1,9 +1,6 @@
 import React, {useEffect} from 'react';
 import {Divider, Form, Input, Modal} from 'antd';
 import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from '../redux/rootReducer';
-import {saveUID} from "./userActions";
 
 type SignInTypes = {
     visible : boolean;

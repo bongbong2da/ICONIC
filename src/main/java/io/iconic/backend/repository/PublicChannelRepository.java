@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PublicChannelRepository extends JpaRepository<PublicChannel, Long> {
+public interface PublicChannelRepository extends JpaRepository<PublicChannel, Integer> {
 
     Optional<PublicChannel> findPublicChannelBypChanIdx(int pChanIdx);
 

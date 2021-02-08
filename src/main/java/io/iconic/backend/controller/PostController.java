@@ -25,14 +25,9 @@ public class PostController {
     private PostRepository postRepository;
 
     @GetMapping("/get")
-    public ResponseEntity get() {
-//        List<Posting> result = new ArrayList<>();
-//        postRepository.getAllByPostingChanIdxIs(1).map(data -> {
-//            result.add(data);
-//            return data;
-//        });
+    public ResponseEntity get(int idx) {
 
-        Optional<List<Posting>> result = postRepository.getAllByPostingChanIdxIs(1);
+        Optional<List<Posting>> result = postRepository.getAllByPostingChanIdxIs(idx);
 
         return ResponseEntity.ok().body(result);
     }

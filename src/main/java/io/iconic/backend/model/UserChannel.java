@@ -3,25 +3,31 @@ package io.iconic.backend.model;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users_channel")
 @ToString
 @Data
+@SequenceGenerator(name = "gen_seq_users_channel",
+sequenceName = "seq_users_channel",
+allocationSize = 1,
+initialValue = 2)
 public class UserChannel {
 
-    @Id
     @NotBlank
     private String username;
 
-    @NotBlank
+    @NotNull
     @Column(name = "channel_idx")
     private int channelIdx;
+
+    @Id
+    @Column(name = "idx")
+    @GeneratedValue(generator = "gen_seq_users_channel", strategy = GenerationType.SEQUENCE)
+    private int idx;
 
     public UserChannel() {
     }

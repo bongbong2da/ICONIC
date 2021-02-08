@@ -4,16 +4,14 @@ import {Channel} from "../channel/Channel";
 
 export const Content = () => {
 
-    const Content = Layout.Content;
-
     return (
-            <Content
+            <Layout.Content
                 id={"main-content"}
                 style={{
                     backgroundColor : "lightgray",
                 }}
             >
-                <Channel/>
-            </Content>
+                <Channel channel_idx={0}/>
+            </Layout.Content>
     )
 }

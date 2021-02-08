@@ -7,10 +7,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "public_channels")
-@SequenceGenerator(name = "seq_pChan_idx_gen",
-sequenceName = "seq_pChan_idx",
-initialValue = 0,
+@Table (name = "public_channels")
+@SequenceGenerator(name = "gen_seq_channel_idx",
+sequenceName = "seq_channel_idx",
+initialValue = 2,
 allocationSize = 1)
 @Data
 @ToString
@@ -18,6 +18,7 @@ public class PublicChannel {
 
     @Id
     @Column(name = "pchan_idx")
+    @GeneratedValue(generator = "gen_seq_channel_idx", strategy = GenerationType.SEQUENCE)
     private int pChanIdx;
 
     @Column(name = "pchan_name")

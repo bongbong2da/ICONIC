@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -35,17 +36,30 @@ public class ChannelController {
 
     @GetMapping("/get")
     public ResponseEntity getChannels(String username) {
-        Optional<List<UserChannel>> channelList = userChannelRepository.getUserChannelsByUsername(username);
+        Optional<List<UserChannel>> channelList = userChannelRepository.findUserChannelsByUsernameIs(username);
+        log.info("Presented Channel List : " + channelList);
 
         List<Optional<PublicChannel>> publicChannelList = new ArrayList<>();
         List<Optional<CreatedChannel>> createdChannelList = new ArrayList<>();
 
+        AtomicInteger count = new AtomicInteger();
+
         channelList.map(data -> {
-            log.info("Channel List : " + data.toString());
-            data.stream().forEach(channel -> {
-                log.info("Finding Channels By : " + channel.getChannelIdx());
-                publicChannelList.add(publicChannelRepository.findPublicChannelBypChanIdx(channel.getChannelIdx()));
-                createdChannelList.add(createdChannelRepository.findCreatedChannelBycChanIdx(channel.getChannelIdx()));
+            data.forEach(channel -> {
+                log.info("COUNT : " + count);
+                count.getAndIncrement();
+                int idx = channel.getChannelIdx();
+                log.info("Finding Channels By : " + idx);
+                Optional<PublicChannel> pChan = publicChannelRepository.findPublicChannelBypChanIdx(idx);
+                if(pChan.isPresent()) {
+                    log.info("pChan : " + pChan.toString());
+                    publicChannelList.add(pChan);
+                }
+                Optional<CreatedChannel> cChan = createdChannelRepository.findCreatedChannelBycChanIdx(idx);
+                if(cChan.isPresent()) {
+                    log.info("cChan : " + cChan.toString());
+                    createdChannelList.add(cChan);
+                }
             });
             return null;
         });
@@ -55,7 +69,36 @@ public class ChannelController {
         result.put("public_list", publicChannelList);
         result.put("created_list", createdChannelList);
 
+        result.forEach((item, index) -> {
+            log.info(item.toString() + " : " + index.toString());
+        });
+
         return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getChannelInfo")
+    public ResponseEntity getChannelInfo(int idx) {
+        Optional<PublicChannel> pChan = publicChannelRepository.findById(idx);
+        if(pChan.isPresent()) {
+
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("channel", pChan);
+            result.put("type", "public");
+
+            return ResponseEntity.ok().body(result);
+        }
+
+        Optional<CreatedChannel> cChan = createdChannelRepository.findById(idx);
+        if(cChan.isPresent()) {
+
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("channel", cChan);
+            result.put("type", "created");
+
+            return ResponseEntity.ok().body(result);
+        }
+
+        return ResponseEntity.badRequest().body("NOT FOUND");
     }
 
 }

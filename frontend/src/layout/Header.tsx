@@ -6,8 +6,9 @@ import ReactDOM from 'react-dom';
 import {Channel} from "../channel/Channel";
 import SignIn from "../user/SignIn";
 import AuthChecker from "../user/AuthChecker";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../redux/rootReducer";
+import {saveChannelIdx} from "../redux/reducer/channelRedux";
 
 export const Header = () => {
 
@@ -16,12 +17,14 @@ export const Header = () => {
     const mainContent = document.getElementById("main-content");
     const isLoggedIn : boolean = useSelector((state : RootState) => state.loginsStatus.isLoggedIn);
     const uid = localStorage.getItem("uid");
+    const dispatcher = useDispatch();
 
     useEffect(() => {
     });
 
     const goMain = () => {
-        ReactDOM.render(<Channel/>,mainContent);
+        dispatcher(saveChannelIdx(0));
+        // ReactDOM.render(<Channel/>,mainContent);
     }
 
     const [isSignUpVisible, setIsSignUpVisible] = useState(false);
@@ -70,25 +73,25 @@ export const Header = () => {
                 <MenuItem key="0" style={{fontSize: "20px"}} onClick={goMain}>
                     {"🏄🏻ICONIC"}
                 </MenuItem>
-                <MenuItem key="1">My Friends</MenuItem>
-                <MenuItem key="2">Public Channels</MenuItem>
-                <MenuItem key="3">HELP!</MenuItem>
+                <MenuItem key="1">친구</MenuItem>
+                <MenuItem key="2">공개 채널</MenuItem>
+                <MenuItem key="3">도움말</MenuItem>
 
                 {!isLoggedIn?
                     <>
                         <MenuItem style={{float : "right"}} key="5" onClick={handleSignUpVisible}>
-                            Sign-Up
+                            회원가입
                             <SignUp visible={isSignUpVisible} setIsSignUpVisible={setIsSignUpVisible}/>
                         </MenuItem>
                         <MenuItem style={{float : "right"}} key="4" onClick={handleSigInVisible}>
-                            Sign-In
+                            로그인
                             <SignIn visible={isSignInVisible} setIsSignInVisible={setIsSignInVisible} state={null}/>
                         </MenuItem>
                     </>
                     :
                     <>
                         <MenuItem style={{float : "right"}}>
-                            Welcome {uid} !
+                            환영합니다 {uid}님 !
                         </MenuItem>
                         <MenuItem style={{float:"right"}} onClick={handleLogoutVisible}>
                             로그아웃
