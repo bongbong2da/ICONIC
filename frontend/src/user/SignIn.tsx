@@ -31,8 +31,8 @@ const SignIn = ({visible, setIsSignInVisible, state} : SignInTypes) => {
         const response = axios.post("http://localhost:8080/user/signin", query)
             .then(res => {
                 const data = res.data;
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("uid", idNode.value);
+                sessionStorage.setItem("token", data.token);
+                sessionStorage.setItem("uid", idNode.value);
                 console.log("Login Success");
                 window.location.reload();
             });
@@ -46,6 +46,7 @@ const SignIn = ({visible, setIsSignInVisible, state} : SignInTypes) => {
             onCancel={handleVisible}
             okText={"Sign-In"}
             onOk={confirmSignIn}
+            okButtonProps={{htmlType : "submit"}}
         >
             <Form
                 style={{

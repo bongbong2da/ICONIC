@@ -9,7 +9,7 @@ const initialChannelIdx = {
 export function ChannelIdxReducer(state = initialChannelIdx, action : any) {
     switch (action.type) {
         case SAVE_CHANNEL_IDX:
-            console.log(`Set Channel Idx to ${action.idx}`);
+            // console.log(`Set Channel Idx to ${action.idx}`);
             return {
                 ...state,
                 idx : action.idx

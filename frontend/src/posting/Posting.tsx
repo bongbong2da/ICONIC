@@ -26,7 +26,8 @@ export const Posting = (props : PostingProps) => {
     
     const [isVisible, setVisible] = useState(false);
 
-    const showPosting = () => {
+    const displayPosting = () => {
+        if(isVisible) return;
         setVisible(!isVisible);
     }
 
@@ -36,7 +37,7 @@ export const Posting = (props : PostingProps) => {
         let number = Math.round(Math.random() * 100);
         setRandomNumber(number);
     };
-    setTimeout(randomSelectNumber, 1000);
+    // setTimeout(randomSelectNumber, 1000);
 
     const sleep = (ms : number) => {
         return new Promise(res => setTimeout(res, ms));
@@ -72,7 +73,7 @@ export const Posting = (props : PostingProps) => {
     }
 
     useEffect( () => {
-        printTestEmoji(80);
+        // printTestEmoji(80);
     },[]);
 
     return (
@@ -100,7 +101,7 @@ export const Posting = (props : PostingProps) => {
                 }}
                 cover={props.posting.isAttached === 'y' ? <img alt={props.posting.attach} src={`http://localhost:8080/images/${props.posting.attach}`}/> : null}
                 bordered={false}
-                onClick={showPosting}
+                onClick={displayPosting}
             >
                 <Divider
                     plain

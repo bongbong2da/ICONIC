@@ -1,23 +1,21 @@
-import React from 'react';
 import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {deleteToken, deleteUID, loginStatus, saveToken} from "./userActions";
-import {RootState} from "../redux/rootReducer";
 
 const AuthChecker = () => {
     const dispatcher = useDispatch();
 
-    if(!localStorage.getItem("token")) return;
-    const uid = (localStorage.getItem("uid") ? localStorage.getItem("uid") : null);
-    const token = (localStorage.getItem("token") ? localStorage.getItem("token") : null);
+    if(!sessionStorage.getItem("token")) return;
+    const uid = (sessionStorage.getItem("uid") ? sessionStorage.getItem("uid") : null);
+    const token = (sessionStorage.getItem("token") ? sessionStorage.getItem("token") : null);
 
-    axios.post("http://localhost:8080/user/isAuth", null, {
+    axios.post("http://localhost:8080/user/isAuth", {username : uid}, {
         headers : {
             Authorization : "Bearer " + token
         }
     })
         .then(res => {
-            console.log(res.data);
+            console.log("JWT AUTHORIZED SUCCESSFULLY");
             dispatcher(saveToken(res.data));
             dispatcher(loginStatus(true));
         })
@@ -26,8 +24,8 @@ const AuthChecker = () => {
             dispatcher(deleteToken());
             dispatcher(deleteUID());
             dispatcher(loginStatus(false));
-            localStorage.removeItem("uid");
-            localStorage.removeItem("token");
+            sessionStorage.removeItem("uid");
+            sessionStorage.removeItem("token");
             window.location.reload();
         });
 }

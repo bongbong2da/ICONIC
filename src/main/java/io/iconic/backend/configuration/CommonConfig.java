@@ -15,7 +15,6 @@ public class CommonConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(commonInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/images/**");
+                .addPathPatterns("/**");
     }
 }

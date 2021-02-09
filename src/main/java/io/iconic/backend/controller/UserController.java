@@ -127,9 +127,9 @@ public class UserController {
     }
 
     @PostMapping("/isAuth")
-    public ResponseEntity isAuth(HttpServletRequest request) {
+    public ResponseEntity isAuth(HttpServletRequest request, String username) {
         String token = request.getHeader("Authorization").substring(7, request.getHeader("Authorization").length());
-
+        log.info("Requested UID : " + username);
         log.info("Checking token is authorized : " + token);
 
         try {

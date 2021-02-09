@@ -1,8 +1,5 @@
 /* UID Redux Define */
 
-import {RootState} from "../redux/rootReducer";
-import {any} from "prop-types";
-
 const SAVE_UID = 'user/SAVE_UID';
 const DELETE_UID = 'user/DELETE_UID';
 

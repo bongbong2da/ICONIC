@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Row} from 'antd';
+import {Row, Typography} from 'antd';
 import {Posting, PostingTypes} from "./Posting";
 import axios from "axios";
 import {parsingPost} from './PostingHandler';
@@ -13,15 +13,15 @@ export const PostingPage = (props : PostingPageProps) => {
     const [list , setList] = useState([] as PostingTypes[]);
 
     useEffect(() => {
-        console.log(`http://localhost:8080/post/get?idx=${props.channel_idx}`);
+        // console.log(`http://localhost:8080/post/get?idx=${props.channel_idx}`);
         const dbData = axios.get(`http://localhost:8080/post/get?idx=${props.channel_idx}`, {
             headers : {
-                "Authorization" : `Bearer ${localStorage.getItem("token")}`
+                "Authorization" : `Bearer ${sessionStorage.getItem("token")}`
             }
         }).then(res=> {
             let parsedData = parsingPost(res.data);
             setList(parsedData);
-            console.log(`Postings Received...`);
+            // console.log(`Postings Received...`);
         });
         // console.log(`List : ${list}`);
     }, [props.channel_idx]);
@@ -64,7 +64,9 @@ export const PostingPage = (props : PostingPageProps) => {
                 fontSize : "20px"
             }}
         >
-            아무것도...없네요? 😱
+            <Typography.Paragraph strong >아무것도...없네요? 😱</Typography.Paragraph>
+            <Typography.Paragraph style={{fontSize : "13px"}} >첫 게시자가 되어보세요</Typography.Paragraph>
+            
         </div>
     )
 

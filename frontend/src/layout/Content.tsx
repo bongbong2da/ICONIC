@@ -8,7 +8,7 @@ export const Content = () => {
             <Layout.Content
                 id={"main-content"}
                 style={{
-                    backgroundColor : "lightgray",
+                    // backgroundColor : "lightgray",
                 }}
             >
                 <Channel channel_idx={0}/>

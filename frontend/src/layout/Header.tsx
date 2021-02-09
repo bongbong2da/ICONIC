@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Divider, Layout, Menu, Modal, Typography} from "antd";
+import {Avatar, Divider, Layout, Menu, Modal, Typography} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import {SignUp} from "../user/SignUp";
-import ReactDOM from 'react-dom';
-import {Channel} from "../channel/Channel";
 import SignIn from "../user/SignIn";
-import AuthChecker from "../user/AuthChecker";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../redux/rootReducer";
 import {saveChannelIdx} from "../redux/reducer/channelRedux";
@@ -16,7 +13,7 @@ export const Header = () => {
     const Title = Typography;
     const mainContent = document.getElementById("main-content");
     const isLoggedIn : boolean = useSelector((state : RootState) => state.loginsStatus.isLoggedIn);
-    const uid = localStorage.getItem("uid");
+    const uid = sessionStorage.getItem("uid");
     const dispatcher = useDispatch();
 
     useEffect(() => {
@@ -24,7 +21,6 @@ export const Header = () => {
 
     const goMain = () => {
         dispatcher(saveChannelIdx(0));
-        // ReactDOM.render(<Channel/>,mainContent);
     }
 
     const [isSignUpVisible, setIsSignUpVisible] = useState(false);
@@ -45,8 +41,8 @@ export const Header = () => {
     }
 
     const logout = () => {
-        localStorage.removeItem("uid");
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("uid");
+        sessionStorage.removeItem("token");
         window.location.reload();
     }
 
@@ -63,7 +59,9 @@ export const Header = () => {
     )
 
     return (
-        <Header>
+        <Header
+            style={{width : "100%"}}
+        >
             {logoutModal}
             <Menu
                 theme={"dark"}
@@ -73,28 +71,32 @@ export const Header = () => {
                 <MenuItem key="0" style={{fontSize: "20px"}} onClick={goMain}>
                     {"🏄🏻ICONIC"}
                 </MenuItem>
-                <MenuItem key="1">친구</MenuItem>
-                <MenuItem key="2">공개 채널</MenuItem>
-                <MenuItem key="3">도움말</MenuItem>
 
-                {!isLoggedIn?
+                {isLoggedIn ?
+                    <>
+                        <MenuItem key="1">친구 🙋🏾</MenuItem>
+                        <MenuItem key="2">공개 채널 🌏</MenuItem>
+                        <MenuItem key="3">도움말 👨🏻‍🔧</MenuItem>
+                    </> : null
+                }
+                {!isLoggedIn ?
                     <>
                         <MenuItem style={{float : "right"}} key="5" onClick={handleSignUpVisible}>
-                            회원가입
+                            회원가입 📝
                             <SignUp visible={isSignUpVisible} setIsSignUpVisible={setIsSignUpVisible}/>
                         </MenuItem>
                         <MenuItem style={{float : "right"}} key="4" onClick={handleSigInVisible}>
-                            로그인
+                            로그인 ✔️
                             <SignIn visible={isSignInVisible} setIsSignInVisible={setIsSignInVisible} state={null}/>
                         </MenuItem>
                     </>
                     :
                     <>
                         <MenuItem style={{float : "right"}}>
-                            환영합니다 {uid}님 !
+                            <Avatar src={'http://localhost:8080/images/default.png'}/>  {uid}
                         </MenuItem>
                         <MenuItem style={{float:"right"}} onClick={handleLogoutVisible}>
-                            로그아웃
+                            로그아웃 📴
                         </MenuItem>
                     </>
                 }

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Col, Divider, Modal, Row} from 'antd';
+import {Col, Divider, Modal, Row, Avatar, Typography, Card} from 'antd';
 import {PostingTypes} from "./Posting";
 
 type PostingModalProps = {
@@ -15,17 +15,17 @@ export const PostingModal = (props: PostingModalProps) => {
     }, []);
 
     const handleVisible = () => {
-        console.log(props.isVisible);
         props.setVisible(!props.isVisible);
     }
 
     return (
         <Modal
             width={1000}
-            title={props.posting.title}
+            title={`${props.posting.emoji} ${props.posting.title}`}
             visible={props.isVisible}
             onCancel={handleVisible}
-            cancelButtonProps={{disabled : true}}
+            cancelText={"닫기"}
+            okButtonProps={{style : {display : "none"}}}
         >
             <Row
                 style={{
@@ -37,17 +37,29 @@ export const PostingModal = (props: PostingModalProps) => {
                     display : "block",
                 }}>
                     <img style={{
+                        width : "100%"
                     }}
-                         src={`http://localhost:3000/images/${props.posting.attach}`} alt=""/>
+                         src={`http://localhost:8080/images/${props.posting.attach}`} alt={props.posting.attach}/>
+                    <Card
+                        style={{width : "100%", height : "65px", display : "block", textAlign : "center"}}
+                    >
+                        <Avatar src={'http://localhost:8080/images/default.png'}/>
+                        <Typography.Paragraph style={{display : "inline-block", marginLeft : "10px"}}>{props.posting.writer}</Typography.Paragraph>
+                    </Card>
                 </Col>
+
                 <Divider dashed type="vertical"/>
                 <Col
                     span={7}
                     style={{
                         padding : "10px",
-                        overflow : "auto"
+                        overflow : "auto",
+                        textAlign : "center",
+                        letterSpacing : "2px"
                     }}
                 >
+
+                    <Divider style={{fontSize : "40px"}} orientation={"center"}>{props.posting.emoji}</Divider>
                     {props.posting.content}
                 </Col>
                 <Col

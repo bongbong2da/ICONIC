@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import {UIDReducer, TokenReducer, LoginStatusReducer} from "../user/userActions";
+import {LoginStatusReducer, TokenReducer, UIDReducer} from "../user/userActions";
 import {ChannelIdxReducer} from "./reducer/channelRedux";
 
 const rootReducer = combineReducers({

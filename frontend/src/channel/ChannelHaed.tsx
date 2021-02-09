@@ -1,27 +1,29 @@
 import React from 'react';
-import {CreatedChannelTypes, PublicChannelTypes} from "../layout/SideBar";
+import {ChannelTypes} from "../layout/SideBar";
+import {useSelector} from "react-redux";
+import {RootState} from "../redux/rootReducer";
+import {Layout} from "antd";
 
 type ChannelHaedProps = {
-    pchannel_info : PublicChannelTypes | null;
-    cchannel_info : CreatedChannelTypes| null;
+    channel_data : ChannelTypes
 }
 
 export const ChannelHead = (props : ChannelHaedProps) => {
     return (
-        <div
+        <Layout
+            className={"channel-header"}
             style={{
-                width : "80%",
+                width : "95%",
                 margin : "20px",
                 padding : "10px",
-                backgroundColor : "white",
                 borderRadius : "10px",
             }}
         >
             <h2>
-                {props.pchannel_info ? props.pchannel_info.pchanName : props.cchannel_info?.cchanName}
+            {props.channel_data ? `${props.channel_data.chanEmoji} ${props.channel_data.chanName}` : null}
             </h2>
-            <strong>Manager</strong> : {props.pchannel_info ? props.pchannel_info.pchanAnnounce : props.cchannel_info?.cchanAnnounce}
-        </div>
+            <strong>Manager</strong> {props.channel_data ? props.channel_data.chanAnnounce : null}
+        </Layout>
         // <div
         //     style={{
         //         width : "80%",

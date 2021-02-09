@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Button, Form, Upload} from 'antd';
-import {LoadingOutlined, PlusOutlined, UploadOutlined} from "@ant-design/icons";
+import {Form, Upload} from 'antd';
+import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 
 type UploaderTypes = {
-    url : string
+    url : string | null
     setUrl : any
 }
 
@@ -31,11 +31,11 @@ export const Uploader = ({url, setUrl} : UploaderTypes) => {
 
 
     return (
-        <Form>
+        <>
             <Upload {...props} method={'POST'} listType={'picture-card'} onChange={handleChange}>
                 {url ? <img style={{width : "100%"}} src={url}/> : uploadButton}
             </Upload>
-        </Form>
+        </>
     )
 
 }
