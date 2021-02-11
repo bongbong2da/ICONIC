@@ -4,8 +4,8 @@ import MenuItem from "antd/lib/menu/MenuItem";
 import {SignUp} from "../user/SignUp";
 import SignIn from "../user/SignIn";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../redux/rootReducer";
-import {saveChannelIdx} from "../redux/reducer/channelRedux";
+import {RootState} from "../../redux/rootReducer";
+import {saveChannelIdx} from "../../redux/reducer/channelRedux";
 
 export const Header = () => {
 

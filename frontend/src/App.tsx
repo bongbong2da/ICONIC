@@ -1,20 +1,20 @@
 import React, {useEffect} from "react";
-import 'antd/dist/antd.css';
-import {Main} from "./layout/Main";
-import {createStore} from "redux";
-import rootReducer from "./redux/rootReducer";
-import {composeWithDevTools} from "redux-devtools-extension";
-import {Provider} from "react-redux";
+import 'semantic-ui-css/semantic.min.css';
+import Main from "./semantic/layout/Main";
+import SignIn from "./semantic/user/SignIn";
+import AuthChecker from "./semantic/user/AuthChecker";
 
 const App = () => {
-    const store = createStore(rootReducer, composeWithDevTools());
+
+    AuthChecker();
     useEffect(() => {
     });
 
     return (
-        <Provider store={store}>
-            <Main/>
-        </Provider>
+        <>
+             <Main/>
+             <SignIn/>
+        </>
     )
 }
 

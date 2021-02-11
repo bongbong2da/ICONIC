@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Layout, Menu, Typography} from "antd";
 import {useSelector} from "react-redux";
-import {RootState} from "../redux/rootReducer";
+import {RootState} from "../../redux/rootReducer";
 import axios from "axios";
 import ChannelItem from "../channel/ChannelItem";
 import MenuItem from "antd/lib/menu/MenuItem";

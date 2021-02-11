@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Divider, Typography} from "antd";
 import {useSelector} from "react-redux";
-import {RootState} from "../redux/rootReducer";
+import {RootState} from "../../redux/rootReducer";
 
 const ChannelIndex = () => {
 

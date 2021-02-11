@@ -1,14 +1,42 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Container, Grid, Header, Menu, Segment, Sidebar} from "semantic-ui-react";
 import "../style.less";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/rootReducer";
+import Side from "./Side";
+import ChannelIndex from "../channel/ChannelIndex";
 
 const Main = () => {
 
+    //States
     const [visible, setVisible] = useState(false);
 
+    //Redux
+    const isLoggedIn = useSelector((state: RootState) => state.loginsStatus.isLoggedIn);
+
+    //Methods
+    const logout = () => {
+        const q = confirm("로그아웃 하시겠습니까?");
+        if(q){
+            sessionStorage.removeItem("uid");
+            sessionStorage.removeItem("token");
+            window.location.reload();
+        }
+    }
+
+    //Use Effect
+    useEffect(() => {
+
+    });
+
+    //Rendering
+    if(isLoggedIn)
     return (
-        <Grid columns={2}>
-            <Grid.Row as={Menu} style={{margin: "20px"}} inverted>
+        <Container textAlign={"center"}>
+            <Menu style={{margin: "20px"}} inverted size={"huge"}>
+                <Menu.Item as={"a"} onClick={()=>setVisible(!visible)}>
+                    📃
+                </Menu.Item>
                 <Menu.Item as={"a"}>
                     🏄🏻ICONIC
                 </Menu.Item>
@@ -22,43 +50,20 @@ const Main = () => {
                     도움말 👨🏻‍🔧
                 </Menu.Item>
                 <Menu.Menu position={"right"}>
-                    <Menu.Item as={"a"}>
-                        Sign-In
-                    </Menu.Item>
-                    <Menu.Item as={"a"}>
-                        Sign-Up
+                    <Menu.Item as={"a"} onClick={logout}>
+                        Logout 💣
                     </Menu.Item>
                 </Menu.Menu>
-            </Grid.Row>
-            <Sidebar.Pushable as={Container} style={{width : "100%", margin : "10px"}}>
-                <Sidebar as={Menu}
-                         style={{padding:20, marginLeft : "10px"}}
-                         visible={true}
-                         animation={"push"}
-                         inverted
-                         vertical
-                >
-                    <Menu.Item as={'a'}>
-                        sidebar menu
-                    </Menu.Item>
-                    <Menu.Item as={'a'}>
-                        sidebar menu 2
-                    </Menu.Item>
-
-                </Sidebar>
-            <Sidebar.Pusher>
-                <Container>
-                {/*<Grid.Row style={{marginLeft : "10px"}} stretched>*/}
-                {/*    <Grid.Column width={"12"} textAlign={"center"}>*/}
-                        <Header size={"large"}>This is test header</Header>
-                        <p>this is test paragraph</p>
-                {/*    </Grid.Column>*/}
-                {/*</Grid.Row>*/}
-                </Container>
-            </Sidebar.Pusher>
+            </Menu>
+            <Sidebar.Pushable as={Container} style={{width: "100%"}}>
+                <Side visible={visible} setVisible={setVisible}/>
+                <Sidebar.Pusher dimmed={visible}>
+                    <ChannelIndex/>
+                </Sidebar.Pusher>
             </Sidebar.Pushable>
-        </Grid>
+        </Container>
     )
+    else return null as JSX.Element | null;
 }
 
 export default Main;

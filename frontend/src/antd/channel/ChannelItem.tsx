@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Badge, Menu} from "antd";
 import {ChannelTypes} from "../layout/SideBar";
 import {useDispatch} from "react-redux";
-import {saveChannelIdx} from "../redux/reducer/channelRedux";
+import {saveChannelIdx} from "../../redux/reducer/channelRedux";
 
 type ChannelItemProps = {
     channel_list: ChannelTypes[] | null;

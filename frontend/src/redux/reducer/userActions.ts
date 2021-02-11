@@ -80,3 +80,26 @@ export const LoginStatusReducer = (state= initialLoginStatus, action : any) => {
             return state;
     }
 }
+
+// User Info
+
+const SAVE_USERINFO = 'user/SAVE_USERINFO';
+
+export const saveUserinfo = (state : string) => {
+    console.log(`saving : ${state}`);
+    return ({type : SAVE_USERINFO, payload : state});
+}
+
+const initialUserInfo = {
+    userInfo : ''
+}
+
+export const UserInfoReducer = (state = initialLoginStatus, action : any) => {
+    switch (action.type) {
+        case SAVE_USERINFO:
+            return {
+                ...state,
+                userInfo : action.userInfo
+            }
+    }
+}

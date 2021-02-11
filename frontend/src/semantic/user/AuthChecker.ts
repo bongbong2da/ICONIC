@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useDispatch} from "react-redux";
-import {deleteToken, deleteUID, loginStatus, saveToken} from "./userActions";
+import {deleteToken, deleteUID, loginStatus, saveToken} from "../../redux/reducer/userActions";
 
 const AuthChecker = () => {
     const dispatcher = useDispatch();

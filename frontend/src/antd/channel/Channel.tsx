@@ -3,7 +3,7 @@ import {ChannelFunction} from "./ChannelFunction";
 import {PostingPage} from "../posting/PostingPage";
 import {ChannelHead} from "./ChannelHaed";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../redux/rootReducer";
+import {RootState} from "../../redux/rootReducer";
 import axios from "axios";
 import ChannelIndex from "./ChannelIndex";
 import {ChannelTypes} from "../layout/SideBar";
