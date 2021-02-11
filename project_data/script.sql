@@ -37,7 +37,7 @@ create table user_roles (
 );
 
 create sequence seq_channel_idx
-    start with 2
+    start with 0
     minvalue 0
     increment by 1;
 

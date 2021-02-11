@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Form, Upload} from 'antd';
+import {Upload} from 'antd';
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 
 type UploaderTypes = {

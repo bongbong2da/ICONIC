@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Picker, {IEmojiData} from "emoji-picker-react";
-import {Button, Col, Form, Input, Layout, Modal, Row, Typography} from "antd";
+import {Button, Form, Input, Layout, Modal, Typography} from "antd";
 import {Uploader} from "../modules/Uploader";
 
 type PostingCreatorProps = {

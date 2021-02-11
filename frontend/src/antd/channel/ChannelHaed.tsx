@@ -1,7 +1,5 @@
 import React from 'react';
 import {ChannelTypes} from "../layout/SideBar";
-import {useSelector} from "react-redux";
-import {RootState} from "../redux/rootReducer";
 import {Layout} from "antd";
 
 type ChannelHaedProps = {

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Col, Divider, Modal, Row, Avatar, Typography, Card} from 'antd';
+import {Avatar, Card, Col, Divider, Modal, Row, Typography} from 'antd';
 import {PostingTypes} from "./Posting";
 
 type PostingModalProps = {
