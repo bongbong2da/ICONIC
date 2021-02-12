@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import {Button, Dimmer, Form, FormProps, Grid, Header, Message, Segment} from "semantic-ui-react";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {loginStatus, saveToken, saveUID, saveUserinfo} from "../../redux/reducer/userActions";
+import {loginStatus, saveToken, saveUID, saveUserinfo, UserInfoType} from "../../redux/reducer/userActions";
 import {RootState} from "../../redux/rootReducer";
 
 const SignIn = () => {
@@ -34,7 +34,7 @@ const SignIn = () => {
                 dispatcher(saveUID(uid));
                 dispatcher(saveToken(token));
                 dispatcher(loginStatus(true));
-                dispatcher(saveUserinfo(JSON.stringify(res.data)));
+                dispatcher(saveUserinfo(res.data as UserInfoType));
             })
             .catch(e => {
                 console.log(e.data);

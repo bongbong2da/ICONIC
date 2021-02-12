@@ -85,21 +85,71 @@ export const LoginStatusReducer = (state= initialLoginStatus, action : any) => {
 
 const SAVE_USERINFO = 'user/SAVE_USERINFO';
 
-export const saveUserinfo = (state : string) => {
+export const saveUserinfo = (state : UserInfoType) => {
     console.log(`saving : ${state}`);
-    return ({type : SAVE_USERINFO, payload : state});
+    return ({type : SAVE_USERINFO, userInfo : state});
+}
+
+export type UserInfoType = {
+    id : number,
+    username : string,
+    type : string,
+    token : string,
+    email : string,
+    roles : string[],
+    profileImg : string
 }
 
 const initialUserInfo = {
-    userInfo : ''
+    userInfo : {
+        id : 0,
+        username : '',
+        type : '',
+        token : '',
+        email : '',
+        roles : [] as string[],
+        profileImg : ''
+    }
 }
 
-export const UserInfoReducer = (state = initialLoginStatus, action : any) => {
+export const UserInfoReducer = (state = initialUserInfo, action : any) => {
     switch (action.type) {
         case SAVE_USERINFO:
             return {
                 ...state,
                 userInfo : action.userInfo
             }
+        default :
+            return state;
     }
+}
+
+const SET_SELECTED_USER = 'user/SET_SELECTED_USER';
+
+export const setSelectedUser = (username : string) => ({type : SET_SELECTED_USER, username : username});
+
+export type ProfileTypes = {
+    id : number,
+    username : string,
+    profileImg : string,
+    regdate : string,
+    logindate : string,
+    roles : string[]
+}
+
+const initialSelectedUser = {
+    username : ''
+}
+
+export const SelectedUserReducer = (state = initialSelectedUser, action : any) => {
+    switch (action.type) {
+        case SET_SELECTED_USER:
+            return {
+                ...state,
+                username : action.username
+            }
+        default:
+            return state;
+    }
+
 }

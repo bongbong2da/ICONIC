@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {Button, Dimmer, Form, FormProps, Grid, Header, Message, Segment} from "semantic-ui-react";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
@@ -22,31 +22,40 @@ const SignUp = () => {
     const token = sessionStorage.getItem("token");
 
     //Login Method
-    const login = (e: FormEvent<HTMLFormElement>, values: FormProps) => {
+    const signUp = (e: FormEvent<HTMLFormElement>, values: FormProps) => {
         setLoading(true);
         axios.put("http://localhost:8080/user/signup", {username: username, password: password, profile_img : profileImg}, {})
             .then(res => {
-                console.log(res.data);
-                const uid = res.data.username;
-                const token = res.data.token;
-                sessionStorage.setItem("uid", uid);
-                sessionStorage.setItem("token", token);
-                setLoading(false);
-                dispatcher(saveUID(uid));
-                dispatcher(saveToken(token));
-                dispatcher(loginStatus(true));
-                dispatcher(saveUserinfo(JSON.stringify(res.data)));
+                console.log(res.data)
             })
             .catch(e => {
                 console.log(e.data);
-                alert("LoginFailed");
+                alert("SIGN_UP_FAILED");
                 setLoading(false);
             });
     }
 
+    const handleUpload = (e : ChangeEvent<HTMLInputElement>, values : any) => {
+        let formData = new FormData();
+        if(e.target.files) {
+            console.log(e.target.files[0]);
+            formData.append("multipartFile", e.target.files[0]);
+            axios.post("http://localhost:8080/upload/uploadImage", formData, {
+                headers : {
+                    "Content-Type" : "multipart/form-data"
+                }
+            })
+                .then(res=>{
+                    const imgName = res.data;
+                    setProfileImg(imgName.substring(imgName.lastIndexOf("/") + 1, imgName.length));
+                    loginStatus(res.data);
+                });
+        }
+    };
     //Use Effect
     useEffect(() => {
-    }, [isLogin]);
+        console.log(profileImg);
+    }, [isLogin, profileImg]);
 
     //Rendering
     if (!isLogin) {
@@ -57,7 +66,7 @@ const SignUp = () => {
                         🏄🏻 ICONIC
                     </Header>
                     <Form
-                        onSubmit={login}
+                        onSubmit={signUp}
                         loading={loading}
                     >
                         <Dimmer.Dimmable as={Segment} dimmed={loading} stacked>
@@ -69,23 +78,20 @@ const SignUp = () => {
                                         name="password" onChange={(e, {value}) => setPassword(value)}>
 
                             </Form.Input>
-                            <Form.Input fluid icon={'lock'} iconPosition={"left"} label={"Password"} type={"file"}
-                                        name="password" onChange={(e, {value}) => {
-                                            setProfileImg(value.substring(value.lastIndexOf("\\") + 1, value.length));
-                                            console.log(profileImg);
-                            }}>
+                            <Form.Input fluid icon={'lock'}
+                                        iconPosition={"left"}
+                                        label={"Password"}
+                                        type={"file"}
+                                        name="password"
+                                        onChange={handleUpload}
+                            >
 
                             </Form.Input>
                             <Form.Button size={"large"} type={"submit"} color={"facebook"}>
-                                Login
+                                Sign-Up
                             </Form.Button>
                         </Dimmer.Dimmable>
                     </Form>
-                    <Message style={{width: "100%", textAlign: "right"}}>
-                        <Button as={'a'} color={"linkedin"}>
-                            Sign-Up
-                        </Button>
-                    </Message>
                 </Grid.Column>
             </Grid>
         )

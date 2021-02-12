@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,40 +44,6 @@ public class ChannelController {
     public ResponseEntity getChannels(String username) {
         Optional<List<UserChannel>> channelList = userChannelRepository.findUserChannelsByUsernameIs(username);
         log.info("Presented Channel List : " + channelList);
-
-//        List<Optional<PublicChannel>> publicChannelList = new ArrayList<>();
-//        List<Optional<CreatedChannel>> createdChannelList = new ArrayList<>();
-//
-//        AtomicInteger count = new AtomicInteger();
-//
-//        channelList.map(data -> {
-//            data.forEach(channel -> {
-//                log.info("COUNT : " + count);
-//                count.getAndIncrement();
-//                int idx = channel.getChannelIdx();
-//                log.info("Finding Channels By : " + idx);
-//                Optional<PublicChannel> pChan = publicChannelRepository.findPublicChannelBypChanIdx(idx);
-//                if(pChan.isPresent()) {
-//                    log.info("pChan : " + pChan.toString());
-//                    publicChannelList.add(pChan);
-//                }
-//                Optional<CreatedChannel> cChan = createdChannelRepository.findCreatedChannelBycChanIdx(idx);
-//                if(cChan.isPresent()) {
-//                    log.info("cChan : " + cChan.toString());
-//                    createdChannelList.add(cChan);
-//                }
-//            });
-//            return null;
-//        });
-//
-//        Map<String, Object> result = new HashMap<String, Object>();
-//
-//        result.put("public_list", publicChannelList);
-//        result.put("created_list", createdChannelList);
-//
-//        result.forEach((item, index) -> {
-//            log.info(item.toString() + " : " + index.toString());
-//        });
         List<Optional<Channel>> result = new ArrayList<>();
 
         channelList.map(data -> {
@@ -99,6 +66,17 @@ public class ChannelController {
         }
 
         return ResponseEntity.badRequest().body("NOT FOUND");
+    }
+
+    @GetMapping("/getPublics")
+    public ResponseEntity getPublicChannels() {
+        Optional<List<Channel>> result = channelRespository.findAllByChanType("public");
+
+        if(result.isPresent()) {
+            return ResponseEntity.ok().body(result);
+        } else {
+            return ResponseEntity.badRequest().body("channel/BAD_REQUEST");
+        }
     }
 
 }

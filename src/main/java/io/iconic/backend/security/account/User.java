@@ -1,5 +1,9 @@
 package io.iconic.backend.security.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -15,6 +19,8 @@ import java.util.Set;
         initialValue = 0,
         allocationSize = 1
 )
+@ToString
+@Data
 public class User {
 
     @Id
@@ -26,9 +32,11 @@ public class User {
     private String username;
 
     @NotBlank
+    @JsonIgnore
     private String password;
 
-    private String profile_img;
+    @Column(name = "profile_img")
+    private String profileImg;
 
     private Date regdate;
 
@@ -40,10 +48,10 @@ public class User {
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String username, String password, String profile_img, Date regdate, Date logindate) {
+    public User(String username, String password, String profileImg, Date regdate, Date logindate) {
         this.username = username;
         this.password = password;
-        this.profile_img = profile_img;
+        this.profileImg = profileImg;
         this.regdate = regdate;
         this.logindate = logindate;
     }
@@ -52,59 +60,4 @@ public class User {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getProfile_img() {
-        return profile_img;
-    }
-
-    public void setProfile_img(String profile_img) {
-        this.profile_img = profile_img;
-    }
-
-    public Date getRegdate() {
-        return regdate;
-    }
-
-    public void setRegdate(Date regdate) {
-        this.regdate = regdate;
-    }
-
-    public Date getLogindate() {
-        return logindate;
-    }
-
-    public void setLogindate(Date logindate) {
-        this.logindate = logindate;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 }

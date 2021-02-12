@@ -117,28 +117,36 @@ public class UserController {
 
         Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
         user.ifPresent(data-> {
+            log.info(data.toString());
             data.setLogindate(new Date());
             User newData = userRepository.save(data);
         });
 
         System.out.println("불러온 권한들 : " + roles);
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, userDetails.getProfileImg()));
     }
 
     @PostMapping("/isAuth")
-    public ResponseEntity isAuth(HttpServletRequest request, String username) {
+    public ResponseEntity isAuth(HttpServletRequest request,@RequestBody Map<String, String> data) {
         String token = request.getHeader("Authorization").substring(7, request.getHeader("Authorization").length());
-        log.info("Requested UID : " + username);
+        log.info("Requested UID : " + data.get("username"));
         log.info("Checking token is authorized : " + token);
 
         try {
             jwtUtils.validateJwtToken(token);
+            Optional<User> user = userRepository.findByUsername(data.get("username"));
             log.info("validating success");
-            return ResponseEntity.ok().body("Authorized");
+            return ResponseEntity.ok().body(user);
         } catch (Exception e) {
             log.info("validating failed");
             return ResponseEntity.badRequest().body("Bad Request");
         }
+    }
+
+    @GetMapping("/getProfile")
+    public ResponseEntity getProfile(String username) {
+        Optional<User> result = userRepository.findByUsername(username);
+        return ResponseEntity.ok().body(result);
     }
 }

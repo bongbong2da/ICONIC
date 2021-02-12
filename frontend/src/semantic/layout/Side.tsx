@@ -1,24 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {Menu, Sidebar} from "semantic-ui-react";
 import ChannelSide, {ChannelTypes} from "../channel/ChannelSide";
-import {useSelector} from "react-redux";
-import {RootState} from "../../redux/rootReducer";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../redux/rootReducer";
 
 type SideProps = {
     visible : boolean
     setVisible : any
 }
 
-const Side = ({visible, setVisible} : SideProps) => {
+const Side = () => {
 
     //States
     const [channelList, setChannelList] = useState([] as ChannelTypes[]);
+    const [loading, setLoading] = useState(false);
 
     //Redux
     // const uid = useSelector((state : RootState) => state.UID.username);
     // const token = useSelector((state : RootState) => state.JWT.token);
+    const visibleSidebar = useSelector((state : RootState) => state.sidebar.visible);
+    const dispatcher = useDispatch();
 
+    //Variables
     const uid = sessionStorage.getItem("uid");
     const token = sessionStorage.getItem("token");
 
@@ -29,10 +33,7 @@ const Side = ({visible, setVisible} : SideProps) => {
                "Authorization" : token
            }
        }).then(res => {
-           console.log('Channel data received');
-           console.log('Channel data received');
            const data = res.data;
-           console.log(data);
            setChannelList(data);
        })
     },[uid, token]);
@@ -40,17 +41,11 @@ const Side = ({visible, setVisible} : SideProps) => {
     return (
         <Sidebar as={Menu}
                  style={{padding: 20, marginRight: "10px"}}
-                 visible={visible}
+                 visible={visibleSidebar}
                  animation={"push"}
                  inverted
                  vertical
         >
-            {/*<Menu.Item as={'a'} onClick={() => setVisible(!visible)}>*/}
-            {/*    sidebar menu*/}
-            {/*</Menu.Item>*/}
-            {/*<Menu.Item as={'a'}>*/}
-            {/*    sidebar menu 2*/}
-            {/*</Menu.Item>*/}
             <ChannelSide channel_list={channelList}/>
         </Sidebar>
     )

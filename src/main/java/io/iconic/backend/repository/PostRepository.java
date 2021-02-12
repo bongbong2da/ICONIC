@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Posting, Integer> {
 
-    Optional<List<Posting>> getAllByPostingChanIdxIs(int posting_chan_idx);
+    Optional<List<Posting>> getAllByPostingChanIdxOrderByPostingRegDesc(int posting_chan_idx);
 
 }

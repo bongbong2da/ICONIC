@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/post/*")
+@RequestMapping("/posting/*")
 public class PostingController {
 
     private final Logger log = LoggerFactory.getLogger(PostingController.class);
@@ -25,13 +26,14 @@ public class PostingController {
     @GetMapping("/get")
     public ResponseEntity get(int idx) {
 
-        Optional<List<Posting>> result = postRepository.getAllByPostingChanIdxIs(idx);
+        Optional<List<Posting>> result = postRepository.getAllByPostingChanIdxOrderByPostingRegDesc(idx);
 
         return ResponseEntity.ok().body(result);
     }
 
     @PostMapping("/create")
     public ResponseEntity create(PostingRequest postingRequest) {
+        log.info(postingRequest.toString());
         Posting posting = new Posting(
                 postingRequest.getPosting_idx(),
                 postingRequest.getPosting_chan_idx(),
@@ -41,7 +43,7 @@ public class PostingController {
                 postingRequest.getPosting_content(),
                 postingRequest.getPosting_isAttached(),
                 postingRequest.getPosting_attach(),
-                postingRequest.getPosting_reg()
+                new Date()
         );
 
         try {

@@ -1,6 +1,6 @@
 const SAVE_CHANNEL_IDX = "channel/SAVE_CHANNEL_IDX";
 
-export const saveChannelIdx = (idx : number) => ({type: SAVE_CHANNEL_IDX, idx: idx})
+export const saveChannelIdx = (idx : number) => ({type: SAVE_CHANNEL_IDX, idx: idx});
 
 const initialChannelIdx = {
     idx : 0
@@ -17,4 +17,4 @@ export function ChannelIdxReducer(state = initialChannelIdx, action : any) {
         default:
             return state;
     }
-}
+};

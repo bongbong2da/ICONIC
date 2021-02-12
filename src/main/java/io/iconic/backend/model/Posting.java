@@ -2,6 +2,7 @@ package io.iconic.backend.model;
 
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -44,6 +45,7 @@ public class Posting {
     private String postingAttach;
 
     @Column (name = "posting_reg")
+    @ColumnDefault(value = "sysdate")
     private Date postingReg;
 
     public Posting() {

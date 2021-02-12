@@ -9,24 +9,24 @@ import ChannelIndex from "./ChannelIndex";
 import {ChannelTypes} from "../layout/SideBar";
 
 type ChannelProps = {
-    channel_idx : number | null
+    channel_idx: number | null
 }
 
-export const Channel = (props : ChannelProps) => {
+export const Channel = (props: ChannelProps) => {
 
     const [channelInfo, setChannelInfo] = useState({} as ChannelTypes);
     const dispatcher = useDispatch();
-    let idx = useSelector((state : RootState) => state.channelIdx.idx);
-    let isLogin = useSelector((state : RootState) => state.loginsStatus.isLoggedIn);
+    let idx = useSelector((state: RootState) => state.channelIdx.idx);
+    let isLogin = useSelector((state: RootState) => state.loginsStatus.isLoggedIn);
     const uid = sessionStorage.getItem("uid");
     const token = sessionStorage.getItem("token");
 
     useEffect(() => {
-        if(isLogin && idx !==0) {
+        if (isLogin && idx !== 0) {
             // console.log(`http://localhost:8080/channel/getChannelInfo?idx=${idx}`);
             const response = axios.get(`http://localhost:8080/channel/getChannelInfo?idx=${idx}`, {
-                headers : {
-                    "Authorization" : `Bearer ${token}`
+                headers: {
+                    "Authorization": `Bearer ${token}`
                 }
             })
                 .then(res => {
@@ -42,12 +42,10 @@ export const Channel = (props : ChannelProps) => {
         >
             {isLogin && idx !== 0 ?
                 <>
-                <ChannelHead
-                    channel_data={channelInfo}
-                />
+                    <ChannelHead channel_data={channelInfo}/>
                     <ChannelFunction/>
                 </>
-            : null}
+                : null}
             {idx !== 0 ? <PostingPage channel_idx={idx}/> : <ChannelIndex/>}
         </div>
     )
