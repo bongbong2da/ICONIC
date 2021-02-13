@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Container, Dimmer, Segment, Sidebar} from "semantic-ui-react";
+import {Button, Container, Dimmer, Segment, Sidebar} from "semantic-ui-react";
 import "../style.less";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
-import Side from "./Side";
+import SideMenu from "./SideMenu";
 import ChannelIndex from "../channel/ChannelIndex";
 import HeaderMenu from './HeaderMenu';
 import Profile from "../user/Profile";
 import PostingCreator from "../posting/PostingCreator";
+import axios from "axios";
+import ChannelApply from "../channel/ChannelApply";
 
 const Main = () => {
 
@@ -18,6 +20,7 @@ const Main = () => {
     const dimmable = useSelector((state : RootState) => state.dimming.dimmable);
     const profileDimming = useSelector((state : RootState) => state.dimming.profileDimming);
     const postingCreatorDimming = useSelector((state : RootState) => state.dimming.postingCreatorDimming);
+    const channelApplyDimming = useSelector((state : RootState) => state.dimming.channelApplyDimming);
 
 
 
@@ -30,7 +33,6 @@ const Main = () => {
     if (isLoggedIn)
         return (
             <>
-                <HeaderMenu/>
                 <Dimmer.Dimmable dimmed={dimmable}>
                     <Dimmer active={profileDimming}>
                         <Profile/>
@@ -38,9 +40,13 @@ const Main = () => {
                     <Dimmer active={postingCreatorDimming}>
                         <PostingCreator/>
                     </Dimmer>
+                    <Dimmer active={channelApplyDimming}>
+                        <ChannelApply/>
+                    </Dimmer>
                     <Sidebar.Pushable>
-                        <Side/>
+                        <SideMenu/>
                         <Sidebar.Pusher dimmed={visibleSidebar}>
+                            <HeaderMenu/>
                             <ChannelIndex/>
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>

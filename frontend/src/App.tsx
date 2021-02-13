@@ -3,18 +3,30 @@ import 'semantic-ui-css/semantic.min.css';
 import Main from "./semantic/layout/Main";
 import SignIn from "./semantic/user/SignIn";
 import AuthChecker from "./semantic/user/AuthChecker";
+import {Dimmer, Loader} from "semantic-ui-react";
+import {useSelector} from "react-redux";
+import {RootState} from "./redux/rootReducer";
 
 const App = () => {
 
+    //Redux
+    const loadingRedirect = useSelector((state : RootState) => state.loading.redirect);
+    // console.log(loadingRedirect);
+
     AuthChecker();
+
     useEffect(() => {
+        console.log("RENDERING_APP");
     },[]);
 
     return (
-        <>
-             <Main/>
-             <SignIn/>
-        </>
+        <Dimmer.Dimmable dimmed={loadingRedirect}>
+            <Dimmer active={loadingRedirect}>
+                <Loader size={"massive"} active={loadingRedirect}/>
+            </Dimmer>
+            <Main/>
+            <SignIn/>
+        </Dimmer.Dimmable>
     )
 }
 

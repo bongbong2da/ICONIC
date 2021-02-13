@@ -15,4 +15,6 @@ public interface ChannelRespository extends JpaRepository<Channel, Integer> {
 
     Optional<List<Channel>> findAllByChanType(String type);
 
+    Optional<Channel> findChannelByChanCode(String code);
+
 }

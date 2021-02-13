@@ -1,11 +1,9 @@
 import React, {useEffect} from 'react';
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
-import {Container, Header, Image, Segment} from "semantic-ui-react";
-import {Typography} from "antd";
-import ChannelList from "./ChannelList";
-import Profile from "../user/Profile";
-import ChannelFunction from "./ChannelFunction";
+import {Container, Header, Loader, Segment} from "semantic-ui-react";
+import ChannelPostings from "./ChannelPostings";
+import ChannelHeader from "./ChannelHeader";
 
 const ChannelIndex = () => {
 
@@ -29,8 +27,6 @@ const ChannelIndex = () => {
                         - 0.1v가 배포되었습니다. 🎉 <br/>
                     </p>
                 </Segment>
-                {/*</Container>*/}
-                {/*<Container as={Segment} text inverted>*/}
                 <Segment>
                     <Header>🥳 돌아오셨군요 🥳</Header>
                     <p>
@@ -39,14 +35,13 @@ const ChannelIndex = () => {
                         좌측 메뉴에서 채널을 골라 새로운 소식을 확인해보세요.
                     </p>
                 </Segment>
-                {/*</Container>*/}
             </Container>
         )
     } else {
         return (
             <Container textAlign={"center"} style={{width:"100vw"}}>
-                <ChannelFunction/>
-                <ChannelList channel_idx={currentChannelIdx}/>
+                <ChannelHeader/>
+                <ChannelPostings channel_idx={currentChannelIdx}/>
             </Container>
         )
     }

@@ -1,16 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Menu, Sidebar} from "semantic-ui-react";
-import ChannelSide, {ChannelTypes} from "../channel/ChannelSide";
+import {Container, Divider, Icon, Menu, Sidebar} from "semantic-ui-react";
+import ChannelSideMenu, {ChannelTypes} from "../channel/ChannelSideMenu";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
+import {invertSidebarVisible} from "../../redux/reducer/sidebarReducer";
 
-type SideProps = {
-    visible : boolean
-    setVisible : any
-}
-
-const Side = () => {
+const SideMenu = () => {
 
     //States
     const [channelList, setChannelList] = useState([] as ChannelTypes[]);
@@ -20,23 +16,26 @@ const Side = () => {
     // const uid = useSelector((state : RootState) => state.UID.username);
     // const token = useSelector((state : RootState) => state.JWT.token);
     const visibleSidebar = useSelector((state : RootState) => state.sidebar.visible);
+    const refreshChannelList = useSelector((state : RootState) => state.refresh.refreshChannelList);
     const dispatcher = useDispatch();
 
     //Variables
     const uid = sessionStorage.getItem("uid");
     const token = sessionStorage.getItem("token");
 
+    //Mehotds
+    const handleSidebarClose = () => {
+        dispatcher(invertSidebarVisible());
+    }
+
     //Use Effect
     useEffect(() => {
        axios.get(`http://localhost:8080/channel/get?username=${uid}`, {
-           headers : {
-               "Authorization" : token
-           }
        }).then(res => {
            const data = res.data;
            setChannelList(data);
        })
-    },[uid, token]);
+    },[uid, token, refreshChannelList]);
 
     return (
         <Sidebar as={Menu}
@@ -46,9 +45,13 @@ const Side = () => {
                  inverted
                  vertical
         >
-            <ChannelSide channel_list={channelList}/>
+            <Container fluid textAlign={"center"}>
+                <Icon name={'window close'} rotated={"clockwise"} inverted onClick={handleSidebarClose}/>
+            </Container>
+            <Divider/>
+            <ChannelSideMenu channel_list={channelList}/>
         </Sidebar>
     )
 }
 
-export default Side;
+export default SideMenu;

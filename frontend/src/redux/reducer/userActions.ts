@@ -85,10 +85,8 @@ export const LoginStatusReducer = (state= initialLoginStatus, action : any) => {
 
 const SAVE_USERINFO = 'user/SAVE_USERINFO';
 
-export const saveUserinfo = (state : UserInfoType) => {
-    console.log(`saving : ${state}`);
-    return ({type : SAVE_USERINFO, userInfo : state});
-}
+export const saveUserinfo = (state : UserInfoType) => ({type : SAVE_USERINFO, userInfo : state});
+
 
 export type UserInfoType = {
     id : number,

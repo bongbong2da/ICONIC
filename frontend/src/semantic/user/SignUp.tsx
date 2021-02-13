@@ -21,7 +21,7 @@ const SignUp = () => {
     const uid = sessionStorage.getItem("uid");
     const token = sessionStorage.getItem("token");
 
-    //Login Method
+    //Method
     const signUp = (e: FormEvent<HTMLFormElement>, values: FormProps) => {
         setLoading(true);
         axios.put("http://localhost:8080/user/signup", {username: username, password: password, profile_img : profileImg}, {})
@@ -54,7 +54,6 @@ const SignUp = () => {
     };
     //Use Effect
     useEffect(() => {
-        console.log(profileImg);
     }, [isLogin, profileImg]);
 
     //Rendering

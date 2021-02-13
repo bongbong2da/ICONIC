@@ -1,23 +1,11 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {
-    Button,
-    Card,
-    Container,
-    Form,
-    FormTextArea,
-    Grid,
-    Image,
-    Input,
-    InputOnChangeData,
-    Segment,
-    TextArea
-} from "semantic-ui-react";
+import {Button, Card, Form, FormTextArea, Grid, Icon, Image, Input, InputOnChangeData} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import EmojiPicker, {IEmojiData} from "emoji-picker-react";
-import {loginStatus} from "../../redux/reducer/userActions";
 import axios from "axios";
 import {setDimmable, setPostingCreatorDimming} from "../../redux/reducer/dmmingReducer";
+import {refreshChannel} from "../../redux/reducer/refreshReducer";
 
 const PostingCreator = () => {
 
@@ -26,7 +14,7 @@ const PostingCreator = () => {
     const [profileImg, setProfileImg] = useState("default.png");
 
     //Redux
-    const dimming = useSelector((state: RootState) => state.dimming.postingCreatorDimming);
+    const creatorDimming = useSelector((state: RootState) => state.dimming.postingCreatorDimming);
     const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
     const currentChanIdx = useSelector((state : RootState) => state.channelIdx.idx);
     const dispatcher = useDispatch();
@@ -37,9 +25,14 @@ const PostingCreator = () => {
     //UseEffect
     useEffect(() => {
 
-    }, []);
+    });
 
     //Methods
+    const handleClose = () => {
+        dispatcher(setDimmable(false));
+        dispatcher(setPostingCreatorDimming(false));
+    }
+
     const onPicked = (e: any, data: IEmojiData) => {
         setEmoji(data.emoji);
         console.log(emoji);
@@ -64,25 +57,28 @@ const PostingCreator = () => {
         }
     }
 
-    const handleSubmit = (e : any) => {
+    const handleSubmit = async (e : any) => {
         const form = document.getElementById("posting-form") as HTMLFormElement;
         let formData = new FormData(form);
         console.log(formData);
-        axios.post("http://localhost:8080/posting/create", formData, {
+        await axios.post("http://localhost:8080/posting/create", formData, {
             headers : {
                 'Content-Type': 'application/json',
                 "Authorization" : `Bearer ${token}`
             }
         }).then(res => {
-            dispatcher(setDimmable(false));
-            dispatcher(setPostingCreatorDimming(false));
+            handleClose();
+            dispatcher(refreshChannel());
             console.log(res.data);
         })
+        form.reset();
+        setProfileImg("default.png");
+        setEmoji('');
     }
 
     return (
         <div>
-            <Input name={"upload"} type={"file"} onChange={onUpload} fluid/>
+            <Input name={"upload"} type={"file"} onChange={onUpload}/>
             <Grid
                 textAlign={"center"}
                 style={{
@@ -101,12 +97,12 @@ const PostingCreator = () => {
                                  marginTop: 50
                              }}
                              textAlign={"center"}>
+                    <Card.Header>
+                        <a onClick={()=>handleClose()}>닫기</a>
+                    </Card.Header>
                     <Card.Content>
                         <Card.Description>
-                            <Image as={'a'}
-                                   src={`http://localhost:8080/upload/images/${profileImg}`}
-                                   href={`http://localhost:8080/upload/images/${profileImg}`}
-                            />
+                            <Image src={`http://localhost:8080/upload/images/${profileImg}`}/>
                             <p>오늘의 기분은?</p>
                             <Input
                                 style={{
@@ -116,6 +112,7 @@ const PostingCreator = () => {
                                 size={"huge"}
                                 name={"posting_emoji"}
                                 type={"text"}
+                                disabled
                             />
                             <Input name={"posting_chan_idx"} type={"hidden"} value={currentChanIdx}/>
                             <Input name={"posting_attach"} type={"hidden"} id={"posting-attach"} value={profileImg}/>
@@ -124,7 +121,7 @@ const PostingCreator = () => {
                     </Card.Content>
                     <Card.Content extra>
                         <Card.Description>
-                            <EmojiPicker pickerStyle={{width: "100%"}} onEmojiClick={onPicked}/>
+                            <EmojiPicker preload={true} pickerStyle={{width: "100%"}} onEmojiClick={onPicked}/>
                         </Card.Description>
                     </Card.Content>
                 </Grid.Column>

@@ -18,12 +18,6 @@ public class CommonConfig implements WebMvcConfigurer {
     private CommonInterceptor commonInterceptor;
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(commonInterceptor)
-                .addPathPatterns("/**");
-    }
-
-    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/upload/**")
                 .addResourceLocations(uploadDir);

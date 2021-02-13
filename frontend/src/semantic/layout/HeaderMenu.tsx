@@ -5,7 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {saveChannelIdx} from "../../redux/reducer/channelRedux";
 import {setSelectedUser} from "../../redux/reducer/userActions";
-import {setProfileDimming} from "../../redux/reducer/dmmingReducer";
+import {setChannelApplyDimming, setProfileDimming} from "../../redux/reducer/dmmingReducer";
+import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const HeaderMenu = () => {
 
@@ -14,6 +15,7 @@ const HeaderMenu = () => {
     const visibleSidebar = useSelector((state : RootState) => state.sidebar.visible);
     const userInfo = useSelector((state : RootState) => state.userInfo.userInfo);
     const profileDimming = useSelector((state : RootState) => state.dimming.profileDimming);
+    const channelApplyDimming = useSelector((state : RootState) => state.dimming.channelApplyDimming);
     const dispatcher = useDispatch();
 
     //Methods
@@ -31,6 +33,10 @@ const HeaderMenu = () => {
         dispatcher(setProfileDimming(!profileDimming));
     }
 
+    const handleChannelApply = () => {
+        dispatcher(setChannelApplyDimming(!channelApplyDimming));
+    }
+
     //Use Effect
     useEffect(() => {
 
@@ -38,7 +44,7 @@ const HeaderMenu = () => {
 
     return (
         <Menu inverted size={"huge"} stackable>
-            <Menu.Item as={"a"} onClick={()=>dispatcher(invertSidebarVisible(visibleSidebar))}>
+            <Menu.Item as={"a"} onClick={()=>dispatcher(invertSidebarVisible())}>
                 📃채널
             </Menu.Item>
             <Menu.Item>
@@ -46,7 +52,6 @@ const HeaderMenu = () => {
             </Menu.Item>
             <Menu.Item as={"a"} onClick={() => {
                 dispatcher(saveChannelIdx(0));
-                dispatcher(invertSidebarVisible(true));
             }}>
                 🏄🏻ICONIC
             </Menu.Item>
@@ -56,12 +61,15 @@ const HeaderMenu = () => {
             <Menu.Item as={"a"}>
                 공개 채널 🌏
             </Menu.Item>
-            <Menu.Item as={"a"}>
+            <Menu.Item as={"a"} onClick={() => dispatcher(setLoadingRedirect(true))}>
                 도움말 👨🏻‍🔧
             </Menu.Item>
             <Menu.Menu position={"right"}>
+                <Menu.Item as={"a"} onClick={handleChannelApply}>
+                    채널 참가 👋🏻
+                </Menu.Item>
                 <Menu.Item as={"a"} onClick={handleProfile}>
-                    <Image src={`http://localhost:8080/upload/images/${userInfo.profileImg}`} avatar/>
+                    <Image src={userInfo.profileImg ? `http://localhost:8080/upload/images/${userInfo.profileImg}` : null} avatar/>
                     <span>{userInfo.username}</span>
                 </Menu.Item>
                 <Menu.Item as={"a"} onClick={logout}>

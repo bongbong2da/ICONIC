@@ -15,23 +15,25 @@ export type ChannelTypes = {
     chanManager : string
     chanIsPublic : string
     chanReg : object
+    chanCode : string
 }
 
 type ChannelSideProps = {
     channel_list : ChannelTypes[]
 }
 
-const ChannelSide = ({channel_list} : ChannelSideProps) => {
+const ChannelSideMenu = ({channel_list} : ChannelSideProps) => {
 
     //States
     const [channelList, setChannelList] = useState([] as ChannelTypes[] | null);
 
     //Redux
     const visibleSidebar = useSelector((state : RootState) => state.sidebar.visible);
+    const chanIdx = useSelector((state : RootState) => state.channelIdx.idx);
     const dispatcher = useDispatch();
 
     const handleChannelIdx = (idx : number) => {
-        dispatcher(invertSidebarVisible(visibleSidebar));
+        dispatcher(invertSidebarVisible());
         dispatcher(saveChannelIdx(idx));
     }
 
@@ -52,4 +54,4 @@ const ChannelSide = ({channel_list} : ChannelSideProps) => {
     )
 }
 
-export default ChannelSide;
+export default ChannelSideMenu;

@@ -40,28 +40,37 @@ const Posting = ({posting} : PostingProps) => {
 
     //UseEffect
     useEffect(() => {
-        console.log(post);
         axios.get(`http://localhost:8080/user/getProfile?username=` + decodeURI(posting.postingWriter))
             .then(res => {
-                console.log(`Writer : ${res.data}`)
                 setWriter(res.data);
             })
     },[]);
 
     return (
-        <Card style={{height : "500px",margin : "10px", overflow : "auto"}} key={posting.postingIdx}>
+        <Card style={{height : "500px",margin : "10px", overflow : "auto"}} key={posting.postingIdx} inverted>
             <Card.Content>
                 <Card.Header>
                     {posting.postingTitle}
                 </Card.Header>
             </Card.Content>
-            {posting.postingIsAttached === 'y' ?
-            <Image src={`http://localhost:8080/upload/images/${post.postingAttach}`} wrapped ui={false}/>
+            {post.postingIsAttached === 'y' ?
+            <Image
+                as={'a'}
+                src={post.postingAttach?
+                    `http://localhost:8080/upload/images/${post.postingAttach}`
+                    : `http://localhost:8080/upload/images/default.png`
+                }
+                href={`http://localhost:8080/upload/images/${post.postingAttach}`}
+                wrapped
+                ui={false}
+                size={"medium"}
+                rounded
+            />
             : null}
             <Divider style={{fontSize : '50px'}} horizontal>{posting.postingEmoji}</Divider>
             <Card.Content>
                 <Card.Header as={Container}>
-                    <Image src={`http://localhost:8080/upload/images/${writer.profileImg}`} avatar/>
+                    <Image src={writer.profileImg ? `http://localhost:8080/upload/images/${writer.profileImg}` : null} avatar/>
                     <a onClick={()=>handleClickProfile(posting.postingWriter)}>{posting.postingWriter}</a>
                 </Card.Header>
                 <Card.Meta>

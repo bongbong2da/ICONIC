@@ -1,6 +1,8 @@
 package io.iconic.backend.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,6 +14,8 @@ import java.util.Date;
 sequenceName = "seq_chnnels_idx",
 allocationSize = 1,
 initialValue = 0)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Channel {
 
     @Id
@@ -42,18 +46,7 @@ public class Channel {
     @Column(name = "chan_reg")
     private Date chanReg;
 
-    public Channel() {
-    }
+    @Column(name = "chan_code")
+    private String chanCode;
 
-    public Channel(int chanIdx, String chanType, String chanName, String chanEmoji, int chanPopMax, String chanAnnounce, String chanManager, char chanIsPublic, Date chanReg) {
-        this.chanIdx = chanIdx;
-        this.chanType = chanType;
-        this.chanName = chanName;
-        this.chanEmoji = chanEmoji;
-        this.chanPopMax = chanPopMax;
-        this.chanAnnounce = chanAnnounce;
-        this.chanManager = chanManager;
-        this.chanIsPublic = chanIsPublic;
-        this.chanReg = chanReg;
-    }
 }

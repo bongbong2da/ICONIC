@@ -9,6 +9,8 @@ import {
 import {ChannelIdxReducer} from "./reducer/channelRedux";
 import {SidebarReducer} from "./reducer/sidebarReducer";
 import {DimmingReducer} from "./reducer/dmmingReducer";
+import {RefreshReducer} from "./reducer/refreshReducer";
+import {LoadingReducer} from "./reducer/loadingReducer";
 
 const rootReducer = combineReducers({
     UID : UIDReducer,
@@ -18,7 +20,9 @@ const rootReducer = combineReducers({
     sidebar : SidebarReducer,
     userInfo : UserInfoReducer,
     dimming : DimmingReducer,
-    selectedUser : SelectedUserReducer
+    selectedUser : SelectedUserReducer,
+    refresh : RefreshReducer,
+    loading : LoadingReducer
 })
 
 export default rootReducer;
