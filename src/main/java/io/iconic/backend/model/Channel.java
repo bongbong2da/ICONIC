@@ -3,6 +3,7 @@ package io.iconic.backend.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,8 +11,8 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "channels")
-@SequenceGenerator(name = "gen_seq_channels_idx",
-sequenceName = "seq_chnnels_idx",
+@SequenceGenerator(name = "gen_seq_channel_idx",
+sequenceName = "seq_channel_idx",
 allocationSize = 1,
 initialValue = 0)
 @NoArgsConstructor
@@ -20,6 +21,7 @@ public class Channel {
 
     @Id
     @Column(name = "chan_idx")
+    @GeneratedValue(generator = "gen_seq_channel_idx", strategy = GenerationType.SEQUENCE)
     private int chanIdx;
 
     @Column(name = "chan_type")

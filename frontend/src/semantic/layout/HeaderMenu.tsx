@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {saveChannelIdx} from "../../redux/reducer/channelRedux";
 import {setSelectedUser} from "../../redux/reducer/userActions";
-import {setChannelApplyDimming, setProfileDimming} from "../../redux/reducer/dmmingReducer";
+import {setDimmingChannelApply, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
 import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const HeaderMenu = () => {
@@ -30,11 +30,11 @@ const HeaderMenu = () => {
 
     const handleProfile = () => {
         dispatcher(setSelectedUser(userInfo.username));
-        dispatcher(setProfileDimming(!profileDimming));
+        dispatcher(setDimmingProfile(!profileDimming));
     }
 
     const handleChannelApply = () => {
-        dispatcher(setChannelApplyDimming(!channelApplyDimming));
+        dispatcher(setDimmingChannelApply(!channelApplyDimming));
     }
 
     //Use Effect
@@ -44,7 +44,7 @@ const HeaderMenu = () => {
 
     return (
         <Menu inverted size={"huge"} stackable>
-            <Menu.Item as={"a"} onClick={()=>dispatcher(invertSidebarVisible())}>
+            <Menu.Item header as={"a"} onClick={()=>dispatcher(invertSidebarVisible())}>
                 📃채널
             </Menu.Item>
             <Menu.Item>

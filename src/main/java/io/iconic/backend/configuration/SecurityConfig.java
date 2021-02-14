@@ -1,6 +1,5 @@
 package io.iconic.backend.configuration;
 
-import io.iconic.backend.interceptor.CommonInterceptor;
 import io.iconic.backend.security.AuthEntryPointJwt;
 import io.iconic.backend.security.AuthTokenFilter;
 import io.iconic.backend.security.service.UserDetailsServiceImpl;
@@ -17,7 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 @EnableWebSecurity

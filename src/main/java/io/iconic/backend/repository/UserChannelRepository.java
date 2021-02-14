@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UserChannelRepository extends JpaRepository<UserChannel, Long> {
 
-    Optional<List<UserChannel>> findUserChannelsByUsernameIs(String username);
+    Optional<List<UserChannel>> findUserChannelsByUsernameIsOrderByChannelIdxAsc(String username);
 
     @Modifying
     @Transactional

@@ -1,24 +1,22 @@
 package io.iconic.backend.controller;
 
 import io.iconic.backend.model.Channel;
-import io.iconic.backend.model.CreatedChannel;
-import io.iconic.backend.model.PublicChannel;
 import io.iconic.backend.model.UserChannel;
+import io.iconic.backend.payload.request.ChannelCreateRequest;
 import io.iconic.backend.payload.request.ExitChannelRequest;
 import io.iconic.backend.payload.request.JoinChannelRequest;
 import io.iconic.backend.repository.ChannelRespository;
-import io.iconic.backend.repository.CreatedChannelRepository;
-import io.iconic.backend.repository.PublicChannelRepository;
 import io.iconic.backend.repository.UserChannelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -35,7 +33,7 @@ public class ChannelController {
 
     @GetMapping("/get")
     public ResponseEntity getChannels(String username) {
-        Optional<List<UserChannel>> channelList = userChannelRepository.findUserChannelsByUsernameIs(username);
+        Optional<List<UserChannel>> channelList = userChannelRepository.findUserChannelsByUsernameIsOrderByChannelIdxAsc(username);
         log.info("Presented Channel List : " + channelList);
         List<Optional<Channel>> result = new ArrayList<>();
 
@@ -75,9 +73,24 @@ public class ChannelController {
 
     @PostMapping("/join")
     public ResponseEntity joinChannel(JoinChannelRequest request) {
+
         Optional<Channel> channel = channelRespository.findChannelByChanCode(request.getCode());
 
+
         if(channel.isPresent()) {
+
+            UserChannel duplicatedChannelProbe = new UserChannel();
+            duplicatedChannelProbe.setChannelIdx(channel.get().getChanIdx());
+            duplicatedChannelProbe.setUsername(request.getUsername());
+
+            ExampleMatcher matcher = ExampleMatcher.matching()
+                    .withIgnorePaths("idx");
+            Example<UserChannel> example = Example.of(duplicatedChannelProbe, matcher);
+
+            Optional<UserChannel> duplicated = userChannelRepository.findOne(example);
+            if(duplicated.isPresent()) return ResponseEntity.ok().body("CHANNEL_DUPLICATED");
+
+
             UserChannel userChannel = new UserChannel();
             userChannel.setChannelIdx(channel.get().getChanIdx());
             userChannel.setUsername(request.getUsername());
@@ -99,6 +112,42 @@ public class ChannelController {
             e.printStackTrace();
             return ResponseEntity.ok().body("DELETE_FAILED");
         }
+    }
+
+    @PostMapping("create")
+    @Transactional
+    public ResponseEntity createChannel(ChannelCreateRequest request) {
+        log.info("======================================================");
+        log.info(request.toString());
+        log.info("======================================================");
+
+        UUID uuid = UUID.randomUUID();
+        String generatedUUID = uuid.toString().replace("-", "");
+        String handledUUID = generatedUUID.substring(0,8);
+
+        Optional<Channel> existingChannel = channelRespository.findChannelByChanCode(handledUUID);
+        if(existingChannel.isPresent()) return ResponseEntity.ok().body("UUID_DUPLICATED");
+
+        Channel channel = new Channel();
+        channel.setChanCode(handledUUID);
+        channel.setChanEmoji(request.getChanEmoji());
+        channel.setChanName(request.getChanName());
+        channel.setChanIsPublic(request.getChanIsPublic());
+        channel.setChanManager(request.getChanManager());
+        channel.setChanPopMax(request.getChanPopMax());
+        channel.setChanType(request.getChanType());
+        channel.setChanAnnounce(request.getChanAnnounce());
+        channel.setChanReg(new Date());
+
+        try {
+            Channel newChannel = channelRespository.save(channel);
+            userChannelRepository.save(new UserChannel(newChannel.getChanManager(), newChannel.getChanIdx()));
+            return ResponseEntity.ok().body("CHANNEL_CREATED");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok().body("CHANNEL_CREATE_FAILED");
+        }
+
     }
 
 }

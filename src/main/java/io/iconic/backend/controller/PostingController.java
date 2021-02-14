@@ -6,7 +6,8 @@ import io.iconic.backend.repository.PostingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,28 +58,31 @@ public class PostingController {
         }
     }
 
-    @PostMapping("/search/{chanIdx}/{keyword}")
+    @PostMapping("/search/{chanIdx}/{keyword}/{page}")
     public ResponseEntity serachByKeyword(
             @PathVariable("keyword") String keyword,
-            @PathVariable("chanIdx") int chanIdx
+            @PathVariable("chanIdx") int chanIdx,
+            @PathVariable("page") int page
     ) {
-        Posting probe = new Posting();
-        probe.setPostingChanIdx(chanIdx);
-        probe.setPostingTitle(keyword);
-        probe.setPostingContent(keyword);
-        probe.setPostingWriter(keyword);
 
-        ExampleMatcher matcher = ExampleMatcher
-                .matchingAny()
-                .withIgnoreCase()
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-                .withMatcher("posting_chan_idx", ExampleMatcher.GenericPropertyMatchers.exact());
-        ExampleMatcher matcher2 = ExampleMatcher
-                .matching()
-                .withMatcher("posting_chan_idx", ExampleMatcher.GenericPropertyMatchers.exact());
-        Example<Posting> result = Example.of(probe, matcher);
-        List<Posting> complete = postingRepository.findAll(result);
+        Page<List<Posting>> complete = postingRepository.getAllBySearchInQuery(chanIdx, keyword, PageRequest.of(page,10));
         return ResponseEntity.ok().body(complete);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity updatePosting(PostingRequest request) {
+        Optional<Posting> posting = postingRepository.findById(request.getPosting_idx());
+
+        posting.ifPresent(newPosting-> {
+            newPosting.setPostingChanIdx(request.getPosting_chan_idx());
+            newPosting.setPostingTitle(request.getPosting_title());
+            newPosting.setPostingEmoji(request.getPosting_emoji());
+            newPosting.setPostingAttach(request.getPosting_attach());
+            newPosting.setPostingContent(request.getPosting_content());
+            postingRepository.save(newPosting);
+        });
+
+        return ResponseEntity.ok().body("UPDATED");
     }
 
 

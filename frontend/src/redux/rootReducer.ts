@@ -11,6 +11,7 @@ import {SidebarReducer} from "./reducer/sidebarReducer";
 import {DimmingReducer} from "./reducer/dmmingReducer";
 import {RefreshReducer} from "./reducer/refreshReducer";
 import {LoadingReducer} from "./reducer/loadingReducer";
+import {PostingReducer} from "./reducer/postingReducer";
 
 const rootReducer = combineReducers({
     UID : UIDReducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
     dimming : DimmingReducer,
     selectedUser : SelectedUserReducer,
     refresh : RefreshReducer,
-    loading : LoadingReducer
+    loading : LoadingReducer,
+    posting : PostingReducer
 })
 
 export default rootReducer;

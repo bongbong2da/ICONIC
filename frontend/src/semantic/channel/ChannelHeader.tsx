@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Form, Header, Input, Segment} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
-import {setPostingCreatorDimming} from "../../redux/reducer/dmmingReducer";
+import {setDimmingPostingCreator} from "../../redux/reducer/dmmingReducer";
 import {RootState} from "../../redux/rootReducer";
 import {refreshChannel, refreshChannelList} from "../../redux/reducer/refreshReducer";
 import {ChannelTypes} from "./ChannelSideMenu";
@@ -22,7 +22,7 @@ const ChannelHeader = () => {
 
     //Methods
     const handleCreator = () => {
-        dispatcher(setPostingCreatorDimming(true));
+        dispatcher(setDimmingPostingCreator(true));
     }
 
     const handleRefresh = () => {
@@ -61,6 +61,19 @@ const ChannelHeader = () => {
         setLoading(false);
     }
 
+    const handleSearch = () => {
+        console.log("handleSearch...");
+        const keyword = document.getElementById("keyword") as HTMLInputElement;
+        axios.post(`http://localhost:8080/posting/search/${currentChanIdx}/${keyword.value}/1`,null, {
+            headers : {
+                "Authorization" : "Bearer " + token
+            }
+        })
+            .then(res => {
+                console.log(res.data);
+            })
+    }
+
     useEffect(() => {
        getChannelInfo();
     }, [currentChanIdx]);
@@ -68,16 +81,19 @@ const ChannelHeader = () => {
     return (
         <Segment inverted>
             <Header>{channelInfo.chanEmoji} {channelInfo.chanName}</Header>
-            <Segment inverted={true}>
+            <Segment inverted>
                 <Header>📢 공지사항</Header>
                 {channelInfo.chanAnnounce}
             </Segment>
 
             <Button style={{marginRight : "20px"}} size={"mini"} color={"facebook"} onClick={handleRefresh}>새로고침</Button>
             <Button style={{marginRight : "20px"}} size={"mini"} color={"facebook"} onClick={handleCreator}>글쓰기</Button>
-            <Form style={{display : "inline"}}>
-                <Input size={"mini"} icon={"search"} type={"text"}/>
-                <Button size={"mini"}>검색</Button>
+            <Form style={{display : "inline"}}
+                  id={"posting-search-form"}
+                  onSubmit={handleSearch}
+            >
+                <Input id={"keyword"} size={"mini"} icon={"search"} type={"text"}/>
+                <Button type={"submit"} size={"mini"}>검색</Button>
             </Form>
             <Button
                 style={{marginRight : "20px"}}

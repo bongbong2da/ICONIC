@@ -11,7 +11,6 @@ const App = () => {
 
     //Redux
     const loadingRedirect = useSelector((state : RootState) => state.loading.redirect);
-    // console.log(loadingRedirect);
 
     AuthChecker();
 

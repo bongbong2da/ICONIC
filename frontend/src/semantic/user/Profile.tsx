@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {ProfileTypes, UserInfoType} from "../../redux/reducer/userActions";
 import axios from "axios";
-import {setDimmable, setProfileDimming} from "../../redux/reducer/dmmingReducer";
+import {setDimmable, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
 
 const Profile = () => {
 
@@ -21,7 +21,7 @@ const Profile = () => {
     const handleDimmingToClose = () => {
         console.log("handling...")
         dispatcher(setDimmable(false));
-        dispatcher(setProfileDimming(false));
+        dispatcher(setDimmingProfile(false));
     }
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const Profile = () => {
                 <Grid.Column as={Card} style={{maxWidth: 300, maxHeight: 500, marginTop: 50}} textAlign={"center"}>
                     <Card.Header>
                     </Card.Header>
-                    <Image src={`http://localhost:8080/upload/images/${user.profileImg}`} size={"medium"} rounded
+                    <Image src={user.profileImg ? `http://localhost:8080/upload/images/${user.profileImg}` : null} size={"medium"} rounded
                            wrapped ui={false}/>
                     <Card.Content>
                         <Card.Description>

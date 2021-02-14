@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import EmojiPicker, {IEmojiData} from "emoji-picker-react";
 import axios from "axios";
-import {setDimmable, setPostingCreatorDimming} from "../../redux/reducer/dmmingReducer";
+import {setDimmable, setDimmingPostingCreator} from "../../redux/reducer/dmmingReducer";
 import {refreshChannel} from "../../redux/reducer/refreshReducer";
 
 const PostingCreator = () => {
@@ -25,12 +25,12 @@ const PostingCreator = () => {
     //UseEffect
     useEffect(() => {
 
-    });
+    },[emoji]);
 
     //Methods
     const handleClose = () => {
         dispatcher(setDimmable(false));
-        dispatcher(setPostingCreatorDimming(false));
+        dispatcher(setDimmingPostingCreator(false));
     }
 
     const onPicked = (e: any, data: IEmojiData) => {
@@ -60,7 +60,6 @@ const PostingCreator = () => {
     const handleSubmit = async (e : any) => {
         const form = document.getElementById("posting-form") as HTMLFormElement;
         let formData = new FormData(form);
-        console.log(formData);
         await axios.post("http://localhost:8080/posting/create", formData, {
             headers : {
                 'Content-Type': 'application/json',

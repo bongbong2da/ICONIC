@@ -46,14 +46,14 @@ const SignIn = () => {
 
     //Use Effect
     useEffect(() => {
-    }, [isLogin]);
+    }, []);
 
     //Rendering
     if (!isLogin) {
         return (
             <Grid textAlign={"center"} style={{height: "100vh"}}>
                 <Grid.Column style={{maxWidth: 450, marginTop: 150}}>
-                    <Header>
+                    <Header color={"teal"}>
                         🏄🏻 ICONIC
                     </Header>
                     <Form
