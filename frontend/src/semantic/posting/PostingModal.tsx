@@ -41,6 +41,7 @@ const PostingModal = () => {
 
         axios.post("http://localhost:8080/comment/create", formData, axiosConfig).then(res => {
             console.log(res.data);
+            source.reset();
             dispatcher(refreshPostingModal());
         })
     }
@@ -71,12 +72,13 @@ const PostingModal = () => {
                         <Image style={{width : "100%"}} src={`http://localhost:8080/upload/images/${currentPosting.postingAttach}`} />
 
                     </Segment>
-                            <p style={{fontSize : "50px"}}>{currentPosting.postingEmoji}</p>
+
                 </Grid.Column>
                 <Grid.Column textAlign={"center"} style={{width : "50%", height : "100%"}}>
                     <Segment>
                         <span>{new Date(currentPosting.postingReg).toDateString()}</span>
                         <Segment style={{marginBottom : "10px"}}>
+                            <p style={{fontSize : "80px"}}>{currentPosting.postingEmoji}</p>
                             <Label size={"massive"}>
                                 <Image src={`http://localhost:8080/upload/images/${currentWriter.profileImg}`} avatar/>
                                 {currentPosting.postingWriter}
@@ -98,7 +100,7 @@ const PostingModal = () => {
                         )
                     }) : null}
                     <Form id={"comment-form"} reply onSubmit={handleSubmit}>
-                        <Form.TextArea name={"commentContent"}/>
+                        <Form.TextArea name={"commentContent"} required/>
                         <Button type={"submit"} content='댓글 남기기' labelPosition='left' icon='edit' primary fluid/>
                     </Form>
                     <Button style={{marginTop : "40px"}} color={"red"} onClick={handleClose} fluid>닫기</Button>

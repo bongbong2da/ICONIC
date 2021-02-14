@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public class CommentController {
     @GetMapping("getComments")
     public ResponseEntity getComments(int idx) {
 
-        Optional<List<Comment>> result = commentRepository.getAllByPostingIdx(idx);
+        Optional<List<Comment>> result = commentRepository.getAllByPostingIdxOrderByCommentIdxDesc(idx);
 
         return ResponseEntity.ok().body(result);
     }
@@ -35,6 +36,7 @@ public class CommentController {
         result.setPostingIdx(request.getPostingIdx());
         result.setCommentEmoji(request.getCommentEmoji());
         result.setCommentWriter(request.getCommentWriter());
+        result.setCommentReg(new Date());
 
         try {
             commentRepository.save(result);

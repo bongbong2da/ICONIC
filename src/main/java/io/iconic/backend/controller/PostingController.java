@@ -85,5 +85,10 @@ public class PostingController {
         return ResponseEntity.ok().body("UPDATED");
     }
 
+    @PostMapping("delete/{idx}")
+    public ResponseEntity deletePosting(@PathVariable int idx) {
+        return ResponseEntity.ok().body("OK");
+    }
+
 
 }

@@ -34,6 +34,7 @@ const PostingCreator = () => {
     }
 
     const onPicked = (e: any, data: IEmojiData) => {
+        console.log("============ONPICKED============")
         setEmoji(data.emoji);
         console.log(emoji);
     }
@@ -60,6 +61,7 @@ const PostingCreator = () => {
     const handleSubmit = async (e : any) => {
         const form = document.getElementById("posting-form") as HTMLFormElement;
         let formData = new FormData(form);
+        formData.append("posting_emoji", emoji)
         await axios.post("http://localhost:8080/posting/create", formData, {
             headers : {
                 'Content-Type': 'application/json',
