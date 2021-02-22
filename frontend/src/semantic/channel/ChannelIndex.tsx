@@ -17,7 +17,8 @@ const ChannelIndex = () => {
     if (currentChannelIdx === 0) {
         return (
             <Container
-                style={{width:"100vw", height : "100vh"}}
+                textAlign={"center"}
+                style={{width:"70vw", height : "70vw"}}
             >
                 {/*<Container as={Segment} textAlign={"center"} text inverted>*/}
                 <Segment>

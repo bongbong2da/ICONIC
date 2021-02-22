@@ -5,6 +5,7 @@ import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {invertSidebarVisible} from "../../redux/reducer/sidebarReducer";
+import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const SideMenu = () => {
 
@@ -28,13 +29,19 @@ const SideMenu = () => {
         dispatcher(invertSidebarVisible());
     }
 
+    const getChannelList = async  () => {
+        dispatcher(setLoadingRedirect(true));
+        await axios.get(`http://localhost:8080/channel/get?username=${uid}`, {
+        }).then(res => {
+            const data = res.data;
+            setChannelList(data);
+        })
+        dispatcher(setLoadingRedirect(false));
+    }
+
     //Use Effect
     useEffect(() => {
-       axios.get(`http://localhost:8080/channel/get?username=${uid}`, {
-       }).then(res => {
-           const data = res.data;
-           setChannelList(data);
-       })
+        getChannelList();
     },[uid, token, refreshChannelList]);
 
     return (

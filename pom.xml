@@ -148,6 +148,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>iconic-backend</finalName>
     </build>
 
 </project>

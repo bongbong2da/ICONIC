@@ -4,6 +4,7 @@ import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {loginStatus, saveToken, saveUID, saveUserinfo, UserInfoType} from "../../redux/reducer/userActions";
 import {RootState} from "../../redux/rootReducer";
+import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const SignIn = () => {
 
@@ -22,6 +23,7 @@ const SignIn = () => {
 
     //Login Method
     const login = (e: FormEvent<HTMLFormElement>, values: FormProps) => {
+        dispatcher(setLoadingRedirect(true));
 
         setLoading(true);
         axios.post("http://localhost:8080/user/signin", {username: username, password: password}, {})
@@ -29,6 +31,7 @@ const SignIn = () => {
                 console.log(res.data);
                 const uid = res.data.username;
                 const token = res.data.token;
+                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
                 sessionStorage.setItem("uid", uid);
                 sessionStorage.setItem("token", token);
                 setLoading(false);
@@ -36,11 +39,13 @@ const SignIn = () => {
                 dispatcher(saveToken(token));
                 dispatcher(loginStatus(true));
                 dispatcher(saveUserinfo(res.data as UserInfoType));
+                dispatcher(setLoadingRedirect(false));
             })
             .catch(e => {
                 console.log(e.data);
                 alert("LoginFailed");
                 setLoading(false);
+                dispatcher(setLoadingRedirect(false));
             });
     }
 

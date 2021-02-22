@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Posting, {PostingTypes} from "../posting/Posting";
 import {Button, Card, Container, Grid, Header, Segment} from "semantic-ui-react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
+import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 
 type ChannelListProps = {
@@ -50,6 +51,7 @@ const ChannelPostings = (props: ChannelListProps) => {
     const token = sessionStorage.getItem("token");
 
     //Redux
+    const dispatcher = useDispatch();
     const refresh = useSelector((state : RootState) => state.refresh.refreshChannel);
     const chanIdx = useSelector((state: RootState) => state.channelIdx.idx);
 
@@ -63,6 +65,7 @@ const ChannelPostings = (props: ChannelListProps) => {
 
     //Methods
     const getPostings = async () => {
+        dispatcher(setLoadingRedirect(true));
         setPostingList([]);
         await axios.get(`http://localhost:8080/posting/get/${props.channel_idx}/${page}`, {
             headers: {
@@ -72,6 +75,7 @@ const ChannelPostings = (props: ChannelListProps) => {
             setPageData(res.data);
             setPostingList(res.data.content);
             // console.log(`Rendering Posting list...${JSON.stringify(postingList)}`);
+            dispatcher(setLoadingRedirect(false));
         });
     }
 

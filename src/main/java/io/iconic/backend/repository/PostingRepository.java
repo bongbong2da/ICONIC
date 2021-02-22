@@ -25,4 +25,6 @@ public interface PostingRepository extends JpaRepository<Posting, Integer> {
     @Transactional
     void deletePostingByPostingIdx(int idx);
 
+    Page<List<Posting>> getAllByPostingWriterAndPostingChanIdx(String writer, int chanIdx, Pageable pageable);
+
 }

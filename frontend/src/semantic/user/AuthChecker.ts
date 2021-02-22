@@ -6,7 +6,6 @@ import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 const AuthChecker = () => {
     const dispatcher = useDispatch();
 
-
     if(!sessionStorage.getItem("token")) return;
     // dispatcher(setLoadingRedirect(true));
     const uid = (sessionStorage.getItem("uid") ? sessionStorage.getItem("uid") : null);
@@ -25,6 +24,16 @@ const AuthChecker = () => {
             dispatcher(loginStatus(true));
             dispatcher(saveUserinfo(data));
             dispatcher(setLoadingRedirect(false));
+
+            window.onstorage = (e : StorageEvent) => {
+                if(e.oldValue !== e.newValue) {
+                    alert("임의로 수정 할 수 없습니다.");
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("uid");
+                    window.location.reload();
+                }
+            }
+
         })
         .catch(res => {
             alert(`JWT 인증 실패 ${res}`);

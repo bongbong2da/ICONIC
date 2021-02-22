@@ -6,6 +6,7 @@ import EmojiPicker, {IEmojiData} from "emoji-picker-react";
 import axios from "axios";
 import {setDimmable, setDimmingPostingCreator} from "../../redux/reducer/dmmingReducer";
 import {refreshChannel} from "../../redux/reducer/refreshReducer";
+import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const PostingCreator = () => {
 
@@ -29,7 +30,6 @@ const PostingCreator = () => {
 
     //Methods
     const handleClose = () => {
-        dispatcher(setDimmable(false));
         dispatcher(setDimmingPostingCreator(false));
     }
 
@@ -39,12 +39,13 @@ const PostingCreator = () => {
         console.log(emoji);
     }
 
-    const onUpload = (e: ChangeEvent<HTMLInputElement>, data : InputOnChangeData) => {
+    const onUpload = async (e: ChangeEvent<HTMLInputElement>, data : InputOnChangeData) => {
+        dispatcher(setLoadingRedirect(true));
         let formData = new FormData();
         if(e.target.files) {
             console.log(e.target.files[0]);
             formData.append("multipartFile", e.target.files[0]);
-            axios.post("http://localhost:8080/upload/uploadImage", formData, {
+            await axios.post("http://localhost:8080/upload/uploadImage", formData, {
                 headers : {
                     "Content-Type" : "multipart/form-data"
                 }
@@ -56,9 +57,11 @@ const PostingCreator = () => {
                     setProfileImg(fileName);
                 });
         }
+        dispatcher(setLoadingRedirect(false));
     }
 
     const handleSubmit = async (e : any) => {
+        dispatcher(setLoadingRedirect(true));
         const form = document.getElementById("posting-form") as HTMLFormElement;
         let formData = new FormData(form);
         formData.append("posting_emoji", emoji)
@@ -75,6 +78,7 @@ const PostingCreator = () => {
         form.reset();
         setProfileImg("default.png");
         setEmoji('');
+        dispatcher(setLoadingRedirect(false));
     }
 
     return (
@@ -99,7 +103,6 @@ const PostingCreator = () => {
                              }}
                              textAlign={"center"}>
                     <Card.Header>
-                        <a onClick={()=>handleClose()}>닫기</a>
                     </Card.Header>
                     <Card.Content>
                         <Card.Description>
@@ -143,6 +146,9 @@ const PostingCreator = () => {
                             <FormTextArea style={{height: "400px"}} name={"posting_content"}/>
                             <Button type={"submit"} fluid>작성하기</Button>
                         </Card.Description>
+                    </Card.Content>
+                    <Card.Content extra>
+                        <Button onClick={()=>handleClose()}>닫기</Button>
                     </Card.Content>
                 </Grid.Column>
             </Grid>

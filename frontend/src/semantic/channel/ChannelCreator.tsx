@@ -65,7 +65,7 @@ const ChannelCreator = () => {
                             <p>채널 이모티콘</p>
                             <Form.Input name={"chanEmoji"} fluid/>
                             <p>채널 소개말</p>
-                            <Form.TextArea name={"chanAnnounce"} fluid/>
+                            <Form.TextArea name={"chanAnnounce"}/>
                             <Form.Input type={"hidden"} name={"chanPopMax"} value={50} fluid/>
                             <Form.Input type={"hidden"} name={"chanManager"} value={userInfo.username} fluid/>
                             <Form.Input type={"hidden"} name={"chanIsPublic"} value={'y'} fluid/>

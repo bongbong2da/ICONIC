@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {saveChannelIdx} from "../../redux/reducer/channelRedux";
 import {setSelectedUser} from "../../redux/reducer/userActions";
-import {setDimmingChannelApply, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
+import {setDimmingChannelApply, setDimmingChannelCreator, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
 import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const HeaderMenu = () => {
@@ -37,6 +37,10 @@ const HeaderMenu = () => {
         dispatcher(setDimmingChannelApply(!channelApplyDimming));
     }
 
+    const handleChannelCreator = () => {
+        dispatcher(setDimmingChannelCreator(true));
+    }
+
     //Use Effect
     useEffect(() => {
 
@@ -58,8 +62,8 @@ const HeaderMenu = () => {
             <Menu.Item as={"a"}>
                 친구 🙋🏾
             </Menu.Item>
-            <Menu.Item as={"a"}>
-                공개 채널 🌏
+            <Menu.Item as={"a"} onClick={handleChannelCreator}>
+                채널 만들기 🌏
             </Menu.Item>
             <Menu.Item as={"a"} onClick={() => dispatcher(setLoadingRedirect(true))}>
                 도움말 👨🏻‍🔧

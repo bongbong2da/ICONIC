@@ -7,6 +7,7 @@ import {refreshChannel, refreshChannelList} from "../../redux/reducer/refreshRed
 import {ChannelTypes} from "./ChannelSideMenu";
 import axios from "axios";
 import {saveChannelIdx} from "../../redux/reducer/channelRedux";
+import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const ChannelHeader = () => {
 
@@ -16,9 +17,9 @@ const ChannelHeader = () => {
 
     //Redux
     const dispatcher = useDispatch();
-    const currentChanIdx = useSelector((state : RootState) => state.channelIdx.idx);
-    const userInfo = useSelector((state : RootState) => state.userInfo.userInfo);
-    const token = useSelector((state : RootState) => state.JWT.token);
+    const currentChanIdx = useSelector((state: RootState) => state.channelIdx.idx);
+    const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
+    const token = useSelector((state: RootState) => state.JWT.token);
 
     //Methods
     const handleCreator = () => {
@@ -32,11 +33,8 @@ const ChannelHeader = () => {
 
     const getChannelInfo = () => {
         setLoading(true);
-        axios.get(`http://localhost:8080/channel/getChannelInfo?idx=${currentChanIdx}`, {
-            headers : {
-                "Authorization" : token
-            }
-        }).then(res => {
+        axios.get(`http://localhost:8080/channel/getChannelInfo?idx=${currentChanIdx}`)
+            .then(res => {
             setChannelInfo(res.data);
         })
         setLoading(false);
@@ -49,11 +47,8 @@ const ChannelHeader = () => {
             const formData = new FormData();
             formData.append("username", userInfo.username);
             formData.append("idx", currentChanIdx);
-            axios.post(`http://localhost:8080/channel/exit`, formData, {
-                headers : {
-                    "Authorization" : token
-                }
-            }).then(res => {
+            axios.post(`http://localhost:8080/channel/exit`, formData)
+                .then(res => {
                 dispatcher(saveChannelIdx(0));
                 dispatcher(refreshChannelList());
             })
@@ -62,20 +57,22 @@ const ChannelHeader = () => {
     }
 
     const handleSearch = () => {
+        dispatcher(setLoadingRedirect(true));
         console.log("handleSearch...");
         const keyword = document.getElementById("keyword") as HTMLInputElement;
-        axios.post(`http://localhost:8080/posting/search/${currentChanIdx}/${keyword.value}/1`,null, {
-            headers : {
-                "Authorization" : "Bearer " + token
+        axios.post(`http://localhost:8080/posting/search/${currentChanIdx}/${keyword.value}/1`, null, {
+            headers: {
+                "Authorization": "Bearer " + token
             }
         })
             .then(res => {
                 console.log(res.data);
+                dispatcher(setLoadingRedirect(false));
             })
     }
 
     useEffect(() => {
-       getChannelInfo();
+        getChannelInfo();
     }, [currentChanIdx]);
 
     return (
@@ -86,9 +83,9 @@ const ChannelHeader = () => {
                 {channelInfo.chanAnnounce}
             </Segment>
 
-            <Button style={{marginRight : "20px"}} size={"mini"} color={"facebook"} onClick={handleRefresh}>새로고침</Button>
-            <Button style={{marginRight : "20px"}} size={"mini"} color={"facebook"} onClick={handleCreator}>글쓰기</Button>
-            <Form style={{display : "inline"}}
+            <Button style={{marginRight: "20px"}} size={"mini"} color={"facebook"} onClick={handleRefresh}>새로고침</Button>
+            <Button style={{marginRight: "20px"}} size={"mini"} color={"facebook"} onClick={handleCreator}>글쓰기</Button>
+            <Form style={{display: "inline"}}
                   id={"posting-search-form"}
                   onSubmit={handleSearch}
             >
@@ -96,16 +93,17 @@ const ChannelHeader = () => {
                 <Button type={"submit"} size={"mini"}>검색</Button>
             </Form>
             <Button
-                style={{marginRight : "20px"}}
+                style={{marginRight: "20px"}}
                 size={"mini"}
                 color={"red"}
                 onClick={handleExit}
-                {...channelInfo.chanManager === userInfo.username ? {disabled : true} : null}
+                {...channelInfo.chanManager === userInfo.username ? {disabled: true} : null}
             >채널 탈퇴</Button>
-            {channelInfo.chanManager === userInfo.username ?
+            {
+                channelInfo.chanManager === userInfo.username ?
                 <>
-            <p>매니저로 접속했습니다.</p>
-            <p>초대 코드 : {channelInfo.chanCode}</p>
+                    <p>매니저로 접속했습니다.</p>
+                    <p>초대 코드 : {channelInfo.chanCode}</p>
                 </>
                 : null
             }

@@ -89,9 +89,12 @@ const Main = () => {
                 {/*    TEST*/}
                 {/*</Button>*/}
                 <Button onClick={() => {
-                    dispatcher(setDimmingChannelCreator(true));
+                    axios.get(`/user/getProfile?username=test`)
+                        .then(res => {
+                            console.log(res.data);
+                        })
                 }}>
-                    TEST
+                    ...
                 </Button>
             </>
         )

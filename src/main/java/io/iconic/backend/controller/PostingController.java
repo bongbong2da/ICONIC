@@ -87,7 +87,26 @@ public class PostingController {
 
     @PostMapping("delete/{idx}")
     public ResponseEntity deletePosting(@PathVariable int idx) {
-        return ResponseEntity.ok().body("OK");
+
+        try {
+            postingRepository.deletePostingByPostingIdx(idx);
+            return ResponseEntity.ok().body("POSTING_DELETED");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok().body("POSTING_DELETE_FAILED");
+        }
+    }
+
+    @GetMapping("getById/{chanIdx}/{username}")
+    public ResponseEntity getById(@PathVariable int chanIdx, @PathVariable String username) {
+
+        Page<List<Posting>> result = postingRepository.getAllByPostingWriterAndPostingChanIdx(username, chanIdx, PageRequest.of(0,5));
+
+        log.info(result.toString());
+
+        if (result.isEmpty()) return ResponseEntity.ok().body("NO_POSTINGS");
+
+        return ResponseEntity.ok().body(result);
     }
 
 
