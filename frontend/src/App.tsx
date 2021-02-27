@@ -14,9 +14,9 @@ const App = () => {
     const loadingRedirect = useSelector((state : RootState) => state.loading.redirect);
 
     //axios config
-    axios.defaults.baseURL = "http://localhost:8080";
+    axios.defaults.baseURL = "http://218.154.12.199:8080";
 
-    // AuthChecker();
+    AuthChecker();
 
     useEffect(() => {
         console.log("RENDERING_APP");

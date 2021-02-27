@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Container, Dimmer, Form, Segment, Sidebar} from "semantic-ui-react";
+import React, {useEffect} from 'react';
+import {Dimmer, Sidebar} from "semantic-ui-react";
 import "../style.less";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
@@ -8,12 +8,10 @@ import ChannelIndex from "../channel/ChannelIndex";
 import HeaderMenu from './HeaderMenu';
 import Profile from "../user/Profile";
 import PostingCreator from "../posting/PostingCreator";
-import axios from "axios";
 import ChannelJoin from "../channel/ChannelJoin";
 import PostingModal from "../posting/PostingModal";
 import {invertSidebarVisible} from "../../redux/reducer/sidebarReducer";
 import ChannelCreator from "../channel/ChannelCreator";
-import {setDimmingChannelCreator} from "../../redux/reducer/dmmingReducer";
 
 const Main = () => {
 
@@ -78,7 +76,7 @@ const Main = () => {
                 {/*    formData.append("chanManager", "test");*/}
                 {/*    formData.append("chanIsPublic", "y");*/}
 
-                {/*    axios.post("http://localhost:8080/channel/create", formData, {*/}
+                {/*    axios.post("/channel/create", formData, {*/}
                 {/*        headers : {*/}
                 {/*            "Authorization" : `Bearer ${sessionStorage.getItem("token")}`*/}
                 {/*        }*/}
@@ -88,14 +86,14 @@ const Main = () => {
                 {/*}}>*/}
                 {/*    TEST*/}
                 {/*</Button>*/}
-                <Button onClick={() => {
-                    axios.get(`/user/getProfile?username=test`)
-                        .then(res => {
-                            console.log(res.data);
-                        })
-                }}>
-                    ...
-                </Button>
+                {/*<Button onClick={() => {*/}
+                {/*    axios.get(`/user/getProfile?username=test`)*/}
+                {/*        .then(res => {*/}
+                {/*            console.log(res.data);*/}
+                {/*        })*/}
+                {/*}}>*/}
+                {/*    ...*/}
+                {/*</Button>*/}
             </>
         )
     else return null as JSX.Element | null;

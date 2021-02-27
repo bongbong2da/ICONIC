@@ -33,7 +33,7 @@ const ChannelHeader = () => {
 
     const getChannelInfo = () => {
         setLoading(true);
-        axios.get(`http://localhost:8080/channel/getChannelInfo?idx=${currentChanIdx}`)
+        axios.get(`/channel/getChannelInfo?idx=${currentChanIdx}`)
             .then(res => {
             setChannelInfo(res.data);
         })
@@ -47,7 +47,7 @@ const ChannelHeader = () => {
             const formData = new FormData();
             formData.append("username", userInfo.username);
             formData.append("idx", currentChanIdx);
-            axios.post(`http://localhost:8080/channel/exit`, formData)
+            axios.post(`/channel/exit`, formData)
                 .then(res => {
                 dispatcher(saveChannelIdx(0));
                 dispatcher(refreshChannelList());
@@ -60,7 +60,7 @@ const ChannelHeader = () => {
         dispatcher(setLoadingRedirect(true));
         console.log("handleSearch...");
         const keyword = document.getElementById("keyword") as HTMLInputElement;
-        axios.post(`http://localhost:8080/posting/search/${currentChanIdx}/${keyword.value}/1`, null, {
+        axios.post(`/posting/search/${currentChanIdx}/${keyword.value}/1`, null, {
             headers: {
                 "Authorization": "Bearer " + token
             }

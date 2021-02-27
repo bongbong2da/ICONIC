@@ -24,7 +24,7 @@ const ChannelJoin = () => {
         const source = document.getElementById("channel-apply-form") as HTMLFormElement;
         let formData = new FormData(source);
         formData.append("username", userInfo.username);
-        axios.post("http://localhost:8080/channel/join", formData ,{
+        axios.post("/channel/join", formData ,{
             headers : {
                 "Authorization" : `Bearer ${token}`
             }

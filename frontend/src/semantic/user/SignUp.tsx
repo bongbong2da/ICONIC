@@ -24,7 +24,7 @@ const SignUp = () => {
     //Method
     const signUp = (e: FormEvent<HTMLFormElement>, values: FormProps) => {
         setLoading(true);
-        axios.put("http://localhost:8080/user/signup", {username: username, password: password, profile_img : profileImg}, {})
+        axios.put("/user/signup", {username: username, password: password, profile_img : profileImg}, {})
             .then(res => {
                 console.log(res.data)
             })
@@ -40,7 +40,7 @@ const SignUp = () => {
         if(e.target.files) {
             console.log(e.target.files[0]);
             formData.append("multipartFile", e.target.files[0]);
-            axios.post("http://localhost:8080/upload/uploadImage", formData, {
+            axios.post("/upload/uploadImage", formData, {
                 headers : {
                     "Content-Type" : "multipart/form-data"
                 }

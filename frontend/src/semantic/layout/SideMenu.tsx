@@ -31,7 +31,7 @@ const SideMenu = () => {
 
     const getChannelList = async  () => {
         dispatcher(setLoadingRedirect(true));
-        await axios.get(`http://localhost:8080/channel/get?username=${uid}`, {
+        await axios.get(`/channel/get?username=${uid}`, {
         }).then(res => {
             const data = res.data;
             setChannelList(data);

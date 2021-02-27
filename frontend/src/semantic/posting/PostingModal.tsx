@@ -43,7 +43,7 @@ const PostingModal = () => {
         formData.append("postingIdx", currentPosting.postingIdx);
         formData.append("commentEmoji", "*");
 
-        await axios.post("http://localhost:8080/comment/create", formData, axiosConfig).then(res => {
+        await axios.post("/comment/create", formData, axiosConfig).then(res => {
             console.log(res.data);
             source.reset();
             dispatcher(refreshPostingModal());
@@ -52,10 +52,11 @@ const PostingModal = () => {
     }
 
     const getComments = async () => {
+        console.log("GET_COMMENTS");
+        // if(comments.length === 0) return;
         dispatcher(setLoadingRedirect(true));
-        await axios.get(`http://localhost:8080/comment/getComments?idx=${currentPosting.postingIdx}`,axiosConfig)
+        await axios.get(`/comment/getComments?idx=${currentPosting.postingIdx}`,axiosConfig)
             .then(res => {
-                console.log(res.data);
                 setComments(res.data);
             })
         dispatcher(setLoadingRedirect(false));
@@ -70,7 +71,7 @@ const PostingModal = () => {
         const q = confirm("게시물을 삭제하시겠습니까?\n댓글을 포함해 모든 작업은 되돌릴 수 없습니다.");
 
         if(q) {
-            await axios.post(`http://localhost:8080/posting/delete/${currentPosting.postingIdx}`,null,axiosConfig)
+            await axios.post(`/posting/delete/${currentPosting.postingIdx}`,null,axiosConfig)
                 .then(res => {
                     console.log(res);
                     dispatcher(setDimmingPostingModal(false));
@@ -89,8 +90,6 @@ const PostingModal = () => {
     //UseEffect
     useEffect(() => {
         setModifyMode(false);
-        console.log(currentPosting);
-        console.log(currentWriter);
         getComments();
     },[currentPosting, currentWriter, refresh]);
 
@@ -103,7 +102,7 @@ const PostingModal = () => {
                             <Form.Input value={currentPosting.postingTitle} fluid/>
                         </Segment>
                         <Segment>
-                            <Image style={{width : "100%"}} src={`http://localhost:8080/upload/images/${currentPosting.postingAttach}`} />
+                            <Image style={{width : "100%"}} src={`/upload/images/${currentPosting.postingAttach}`} />
                         </Segment>
                     </Grid.Column>
                     <Grid.Column textAlign={"center"} style={{width : "50%", height : "100%"}}>
@@ -112,7 +111,7 @@ const PostingModal = () => {
                             <Segment style={{marginBottom : "10px"}}>
                                 <p style={{fontSize : "80px"}}>{currentPosting.postingEmoji}</p>
                                 <Label onClick={()=>handleProfile(currentWriter.username)} as={'a'} size={"massive"}>
-                                    <Image src={`http://localhost:8080/upload/images/${currentWriter.profileImg}`} avatar/>
+                                    <Image src={`/upload/images/${currentWriter.profileImg}`} avatar/>
                                     {currentPosting.postingWriter}
                                 </Label>
                             </Segment>
@@ -153,7 +152,7 @@ const PostingModal = () => {
                             <Header>{currentPosting.postingTitle}</Header>
                         </Segment>
                         <Segment>
-                            <Image style={{width : "100%"}} src={`http://localhost:8080/upload/images/${currentPosting.postingAttach}`} />
+                            <Image style={{width : "100%"}} src={`/upload/images/${currentPosting.postingAttach}`} />
                         </Segment>
                     </Grid.Column>
                     <Grid.Column textAlign={"center"} style={{width : "50%", height : "100%"}}>
@@ -162,7 +161,7 @@ const PostingModal = () => {
                             <Segment style={{marginBottom : "10px"}}>
                                 <p style={{fontSize : "80px"}}>{currentPosting.postingEmoji}</p>
                                 <Label onClick={()=>handleProfile(currentWriter.username)} as={'a'} size={"massive"}>
-                                    <Image src={`http://localhost:8080/upload/images/${currentWriter.profileImg}`} avatar/>
+                                    <Image src={`/upload/images/${currentWriter.profileImg}`} avatar/>
                                     {currentPosting.postingWriter}
                                 </Label>
                             </Segment>

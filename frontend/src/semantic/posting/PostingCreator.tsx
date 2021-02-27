@@ -45,7 +45,7 @@ const PostingCreator = () => {
         if(e.target.files) {
             console.log(e.target.files[0]);
             formData.append("multipartFile", e.target.files[0]);
-            await axios.post("http://localhost:8080/upload/uploadImage", formData, {
+            await axios.post("/upload/uploadImage", formData, {
                 headers : {
                     "Content-Type" : "multipart/form-data"
                 }
@@ -65,7 +65,7 @@ const PostingCreator = () => {
         const form = document.getElementById("posting-form") as HTMLFormElement;
         let formData = new FormData(form);
         formData.append("posting_emoji", emoji)
-        await axios.post("http://localhost:8080/posting/create", formData, {
+        await axios.post("/posting/create", formData, {
             headers : {
                 'Content-Type': 'application/json',
                 "Authorization" : `Bearer ${token}`
@@ -83,7 +83,7 @@ const PostingCreator = () => {
 
     return (
         <div>
-            <Input name={"upload"} type={"file"} onChange={onUpload}/>
+
             <Grid
                 textAlign={"center"}
                 style={{
@@ -106,7 +106,8 @@ const PostingCreator = () => {
                     </Card.Header>
                     <Card.Content>
                         <Card.Description>
-                            <Image src={`http://localhost:8080/upload/images/${profileImg}`}/>
+                            <Image src={`/upload/images/${profileImg}`}/>
+                            <Input name={"upload"} type={"file"} onChange={onUpload}/>
                             <p>오늘의 기분은?</p>
                             <Input
                                 style={{

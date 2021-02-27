@@ -26,7 +26,7 @@ const ProfileFeed = ({posting} : ProfileFeedProps) => {
 
     return (
         <Feed.Event>
-            <Feed.Label image={`http://localhost:8080/upload/images/${posting.postingAttach}`} />
+            <Feed.Label image={posting.postingAttach ? `/upload/images/${posting.postingAttach}` : null} />
             <Feed.Content>
                 <Feed.Summary>
                     <a onClick={setCurrentPosting}>{(posting.postingTitle).substring(0,10)}</a>

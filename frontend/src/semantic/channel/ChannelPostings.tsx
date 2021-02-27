@@ -67,7 +67,7 @@ const ChannelPostings = (props: ChannelListProps) => {
     const getPostings = async () => {
         dispatcher(setLoadingRedirect(true));
         setPostingList([]);
-        await axios.get(`http://localhost:8080/posting/get/${props.channel_idx}/${page}`, {
+        await axios.get(`/posting/get/${props.channel_idx}/${page}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }

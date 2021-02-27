@@ -13,14 +13,14 @@ const AuthChecker = () => {
 
     // console.log(`AUTHORIZING ${uid} and ${token}`);
 
-    axios.post("http://localhost:8080/user/isAuth", {username : uid}, {
+    axios.post("/user/isAuth", {username : uid}, {
         headers : {
             Authorization : "Bearer " + token
         }
     })
         .then(res => {
             const data = res.data as UserInfoType;
-            console.log(`JWT AUTHORIZED SUCCESSFULLY`);
+            console.log(`JWT_AUTHORIZED_SUCCESSFULLY`);
             dispatcher(loginStatus(true));
             dispatcher(saveUserinfo(data));
             dispatcher(setLoadingRedirect(false));

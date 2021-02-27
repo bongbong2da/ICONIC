@@ -47,7 +47,7 @@ const Posting = ({posting} : PostingProps) => {
 
     //UseEffect
     useEffect(() => {
-        axios.get(`http://localhost:8080/user/getProfile?username=` + decodeURI(posting.postingWriter))
+        axios.get(`/user/getProfile?username=` + decodeURI(posting.postingWriter))
             .then(res => {
                 setWriter(res.data);
             })
@@ -63,8 +63,8 @@ const Posting = ({posting} : PostingProps) => {
             {post.postingIsAttached === 'y' ?
             <Image
                 src={posting.postingAttach?
-                    `http://localhost:8080/upload/images/${posting.postingAttach}`
-                    : `http://localhost:8080/upload/images/default.png`
+                    `/upload/images/${posting.postingAttach}`
+                    : `/upload/images/default.png`
                 }
                 wrapped
                 ui={false}
@@ -75,8 +75,10 @@ const Posting = ({posting} : PostingProps) => {
             <Divider style={{fontSize : '50px'}} horizontal>{posting.postingEmoji}</Divider>
             <Card.Content>
                 <Card.Header>
-                    <Image src={writer.profileImg ? `http://localhost:8080/upload/images/${writer.profileImg}` : null} avatar/>
-                    <a onClick={()=>handleClickProfile(posting.postingWriter)}>{posting.postingWriter}</a>
+                    <Label size={"large"}>
+                        <Image src={writer.profileImg ? `/upload/images/${writer.profileImg}` : null} avatar/>
+                        <span onClick={()=>handleClickProfile(posting.postingWriter)}>{posting.postingWriter}</span>
+                    </Label>
                 </Card.Header>
                 <Card.Meta>
                     {new Date(posting.postingReg).toDateString()}

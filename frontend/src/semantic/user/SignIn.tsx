@@ -26,7 +26,7 @@ const SignIn = () => {
         dispatcher(setLoadingRedirect(true));
 
         setLoading(true);
-        axios.post("http://localhost:8080/user/signin", {username: username, password: password}, {})
+        axios.post("/user/signin", {username: username, password: password}, {})
             .then(res => {
                 console.log(res.data);
                 const uid = res.data.username;
@@ -66,12 +66,23 @@ const SignIn = () => {
                         loading={loading}
                     >
                         <Dimmer.Dimmable as={Segment} dimmed={loading} stacked>
-                            <Form.Input fluid icon={'user'} iconPosition={"left"} label={"Username"} name="username"
-                                        onChange={(e, {value}) => setUsername(value)}>
+                            <Form.Input fluid icon={'user'}
+                                        iconPosition={"left"}
+                                        label={"Username"}
+                                        name="username"
+                                        onChange={(e, {value}) => setUsername(value)}
+                                        type={"text"}
+                            >
 
                             </Form.Input>
-                            <Form.Input fluid icon={'lock'} iconPosition={"left"} label={"Password"} type={"password"}
-                                        name="password" onChange={(e, {value}) => setPassword(value)}>
+                            <Form.Input fluid icon={'lock'}
+                                        iconPosition={"left"}
+                                        label={"Password"}
+                                        type={"password"}
+                                        name="password"
+                                        onChange={(e, {value}) => setPassword(value)}
+                                        min={4}
+                            >
 
                             </Form.Input>
                             <Form.Button size={"large"} type={"submit"} color={"facebook"}>

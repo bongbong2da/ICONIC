@@ -31,7 +31,7 @@ const ChannelCreator = () => {
         const source = document.getElementById("channel-create-form") as HTMLFormElement;
         const formData = new FormData(source);
         formData.append("chanType", chanType);
-        axios.post("http://localhost:8080/channel/create", formData, axiosConfig)
+        axios.post("/channel/create", formData, axiosConfig)
             .then(res => {
                 console.log(res.data);
             })

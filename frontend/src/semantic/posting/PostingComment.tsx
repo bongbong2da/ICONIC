@@ -31,9 +31,9 @@ const PostingComment = ({comment} : PostingCommentProps) => {
 
     //Methods
     const getCommentWriterData = () => {
-        axios.get(`http://localhost:8080/user/getProfile?username=${comment.commentWriter}`,AxiosCustomConfig)
+        axios.get(`/user/getProfile?username=${comment.commentWriter}`)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setCommentWriter(res.data);
             })
     }
@@ -42,7 +42,7 @@ const PostingComment = ({comment} : PostingCommentProps) => {
         const q = confirm("댓글을 삭제하시겠습니까?");
 
         if (q) {
-            axios.post(`http://localhost:8080/comment/delete/${comment.commentIdx}`,null,{headers:{"Authorization":"Bearer " + sessionStorage.getItem("token")}})
+            axios.post(`/comment/delete/${comment.commentIdx}`,null,{headers:{"Authorization":"Bearer " + sessionStorage.getItem("token")}})
                 .then(res => {
                     console.log(res.data);
                     dispatcher(refreshPostingModal());
@@ -57,7 +57,7 @@ const PostingComment = ({comment} : PostingCommentProps) => {
 
     return (
         <Comment as={Segment}>
-            <Comment.Avatar as={'a'} src={`http://localhost:8080/upload/images/${commentWriter.profileImg}`}/>
+            <Comment.Avatar as={'a'} src={`/upload/images/${commentWriter.profileImg}`}/>
             <Comment.Content>
                 <Comment.Author as={'a'} content={comment.commentWriter}/>
                 <Comment.Metadata content={new Date(comment.commentReg).toDateString()}/>

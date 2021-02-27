@@ -29,7 +29,7 @@ const Profile = () => {
     }
 
     const getProfileUser = async () => {
-        await axios.get(`http://localhost:8080/user/getProfile?username=${selectedUser}`)
+        await axios.get(`/user/getProfile?username=${selectedUser}`)
             .then(res => {
                 setUser(res.data);
             });
@@ -39,14 +39,14 @@ const Profile = () => {
         if(currentChannel === 0) {
             return;
         }
-        await axios.get(`http://localhost:8080/posting/getById/${currentChannel}/${selectedUser}`,
+        await axios.get(`/posting/getById/${currentChannel}/${selectedUser}`,
             {
                 headers : {
                     "Authorization" : "Bearer " + sessionStorage.getItem("token")
                 }
             })
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setPostingFeeds(res.data.content);
             })
     }
@@ -62,7 +62,7 @@ const Profile = () => {
                 <Grid.Column as={Card} style={{maxWidth: 500, maxHeight: "100vh", overflow : "auto"}} textAlign={"center"}>
                     <Card.Header>
                     </Card.Header>
-                    <Image src={user.profileImg ? `http://localhost:8080/upload/images/${user.profileImg}` : null}
+                    <Image src={user.profileImg ? `/upload/images/${user.profileImg}` : null}
                            size={"medium"} rounded
                            wrapped ui={false}/>
                     <Card.Content>
