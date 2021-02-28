@@ -52,8 +52,12 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        getProfileUser();
-        getPostingFeeds();
+        if(selectedUser) {
+            console.log("GET_PROFILE_DATA");
+            getProfileUser();
+            getPostingFeeds();
+            console.log("GET_PROFILE_DATA_DONE");
+        }
     }, [selectedUser, currentChannel]);
 
     if (user) {

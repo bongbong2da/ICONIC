@@ -5,9 +5,10 @@ import {RootState} from "../../redux/rootReducer";
 import {setDimmingPostingModal, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
 import axios from "axios";
 import PostingComment, {CommentTypes} from "./PostingComment";
-import {refreshChannel, refreshChannelList, refreshPostingModal} from "../../redux/reducer/refreshReducer";
+import {refreshChannel, refreshPostingModal} from "../../redux/reducer/refreshReducer";
 import {setSelectedUser} from "../../redux/reducer/userActions";
-import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
+
+'use strict';
 
 const PostingModal = () => {
 
@@ -24,8 +25,8 @@ const PostingModal = () => {
 
     //Redux
     const dispatcher = useDispatch();
-    const postingModalDimming = useSelector((state : RootState) => state.dimming.postingModalDimming);
     const currentPosting = useSelector((state : RootState) => state.posting.postingCurrent);
+    const currentPostingIdx = useSelector((state : RootState) => state.channelIdx.idx);
     const currentWriter = useSelector((state : RootState) => state.posting.postingWriter);
     const userInfo = useSelector((state : RootState) => state.userInfo.userInfo);
     const refresh = useSelector((state : RootState) => state.refresh.refreshPostingModal);
@@ -36,7 +37,6 @@ const PostingModal = () => {
     }
 
     const handleSubmit = async () => {
-        dispatcher(setLoadingRedirect(true));
         const source = document.getElementById("comment-form") as HTMLFormElement;
         const formData = new FormData(source);
         formData.append("commentWriter", userInfo.username);
@@ -48,18 +48,16 @@ const PostingModal = () => {
             source.reset();
             dispatcher(refreshPostingModal());
         })
-        dispatcher(setLoadingRedirect(true));
     }
 
     const getComments = async () => {
+        if(currentPostingIdx === 0) return;
         console.log("GET_COMMENTS");
         // if(comments.length === 0) return;
-        dispatcher(setLoadingRedirect(true));
         await axios.get(`/comment/getComments?idx=${currentPosting.postingIdx}`,axiosConfig)
             .then(res => {
                 setComments(res.data);
             })
-        dispatcher(setLoadingRedirect(false));
     }
 
     const handleProfile = (writer : string) => {

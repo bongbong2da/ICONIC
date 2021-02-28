@@ -34,13 +34,10 @@ const PostingCreator = () => {
     }
 
     const onPicked = (e: any, data: IEmojiData) => {
-        console.log("============ONPICKED============")
         setEmoji(data.emoji);
-        console.log(emoji);
     }
 
     const onUpload = async (e: ChangeEvent<HTMLInputElement>, data : InputOnChangeData) => {
-        dispatcher(setLoadingRedirect(true));
         let formData = new FormData();
         if(e.target.files) {
             console.log(e.target.files[0]);
@@ -57,11 +54,9 @@ const PostingCreator = () => {
                     setProfileImg(fileName);
                 });
         }
-        dispatcher(setLoadingRedirect(false));
     }
 
     const handleSubmit = async (e : any) => {
-        dispatcher(setLoadingRedirect(true));
         const form = document.getElementById("posting-form") as HTMLFormElement;
         let formData = new FormData(form);
         formData.append("posting_emoji", emoji)
@@ -78,7 +73,6 @@ const PostingCreator = () => {
         form.reset();
         setProfileImg("default.png");
         setEmoji('');
-        dispatcher(setLoadingRedirect(false));
     }
 
     return (

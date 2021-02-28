@@ -6,7 +6,6 @@ import {RootState} from "../../redux/rootReducer";
 import {saveChannelIdx} from "../../redux/reducer/channelRedux";
 import {setSelectedUser} from "../../redux/reducer/userActions";
 import {setDimmingChannelApply, setDimmingChannelCreator, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
-import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const HeaderMenu = () => {
 
@@ -43,7 +42,7 @@ const HeaderMenu = () => {
 
     //Use Effect
     useEffect(() => {
-
+        console.log("RENDERING_HEADER_MENU");
     },[profileDimming]);
 
     return (
@@ -65,7 +64,7 @@ const HeaderMenu = () => {
             <Menu.Item as={"a"} onClick={handleChannelCreator}>
                 채널 만들기 🌏
             </Menu.Item>
-            <Menu.Item as={"a"} onClick={() => dispatcher(setLoadingRedirect(true))}>
+            <Menu.Item as={"a"}>
                 도움말 👨🏻‍🔧
             </Menu.Item>
             <Menu.Menu position={"right"}>

@@ -15,7 +15,8 @@ const SignIn = () => {
 
     //Redux
     const dispatcher = useDispatch();
-    const isLogin = useSelector((state: RootState) => state.loginsStatus.isLoggedIn);
+    const isLogin = useSelector((state : RootState) => state.loginsStatus.isLoggedIn);
+    const loadingRedirect = useSelector((state : RootState) => state.loading.redirect);
 
     //Storage Data
     const uid = sessionStorage.getItem("uid");
@@ -24,8 +25,6 @@ const SignIn = () => {
     //Login Method
     const login = (e: FormEvent<HTMLFormElement>, values: FormProps) => {
         dispatcher(setLoadingRedirect(true));
-
-        setLoading(true);
         axios.post("/user/signin", {username: username, password: password}, {})
             .then(res => {
                 console.log(res.data);
@@ -44,7 +43,6 @@ const SignIn = () => {
             .catch(e => {
                 console.log(e.data);
                 alert("LoginFailed");
-                setLoading(false);
                 dispatcher(setLoadingRedirect(false));
             });
     }
@@ -63,9 +61,8 @@ const SignIn = () => {
                     </Header>
                     <Form
                         onSubmit={login}
-                        loading={loading}
                     >
-                        <Dimmer.Dimmable as={Segment} dimmed={loading} stacked>
+                        <Dimmer.Dimmable as={Segment} stacked>
                             <Form.Input fluid icon={'user'}
                                         iconPosition={"left"}
                                         label={"Username"}

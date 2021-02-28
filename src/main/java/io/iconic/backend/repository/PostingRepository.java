@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -25,6 +26,8 @@ public interface PostingRepository extends JpaRepository<Posting, Integer> {
     @Transactional
     void deletePostingByPostingIdx(int idx);
 
-    Page<List<Posting>> getAllByPostingWriterAndPostingChanIdx(String writer, int chanIdx, Pageable pageable);
+    Page<List<Posting>> getAllByPostingWriterAndPostingChanIdxOrderByPostingRegDesc(String writer, int chanIdx, Pageable pageable);
+
+    Long countPostingsByPostingChanIdxAndPostingRegBetween(int chanIdx, Date begin, Date end);
 
 }

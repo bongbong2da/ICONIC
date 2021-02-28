@@ -7,7 +7,6 @@ import {refreshChannel, refreshChannelList} from "../../redux/reducer/refreshRed
 import {ChannelTypes} from "./ChannelSideMenu";
 import axios from "axios";
 import {saveChannelIdx} from "../../redux/reducer/channelRedux";
-import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const ChannelHeader = () => {
 
@@ -57,7 +56,6 @@ const ChannelHeader = () => {
     }
 
     const handleSearch = () => {
-        dispatcher(setLoadingRedirect(true));
         console.log("handleSearch...");
         const keyword = document.getElementById("keyword") as HTMLInputElement;
         axios.post(`/posting/search/${currentChanIdx}/${keyword.value}/1`, null, {
@@ -67,7 +65,6 @@ const ChannelHeader = () => {
         })
             .then(res => {
                 console.log(res.data);
-                dispatcher(setLoadingRedirect(false));
             })
     }
 

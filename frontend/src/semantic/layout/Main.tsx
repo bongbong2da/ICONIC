@@ -12,6 +12,7 @@ import ChannelJoin from "../channel/ChannelJoin";
 import PostingModal from "../posting/PostingModal";
 import {invertSidebarVisible} from "../../redux/reducer/sidebarReducer";
 import ChannelCreator from "../channel/ChannelCreator";
+import axios from "axios";
 
 const Main = () => {
 
@@ -66,34 +67,6 @@ const Main = () => {
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>
                 </Dimmer.Dimmable>
-                {/*<Button onClick={() => {*/}
-                {/*    const formData = new FormData();*/}
-                {/*    formData.append("chanType", "public");*/}
-                {/*    formData.append("chanName", "test create channel");*/}
-                {/*    formData.append("chanEmoji", "E");*/}
-                {/*    formData.append("chanPopMax", "50");*/}
-                {/*    formData.append("chanAnnounce", "test announce");*/}
-                {/*    formData.append("chanManager", "test");*/}
-                {/*    formData.append("chanIsPublic", "y");*/}
-
-                {/*    axios.post("/channel/create", formData, {*/}
-                {/*        headers : {*/}
-                {/*            "Authorization" : `Bearer ${sessionStorage.getItem("token")}`*/}
-                {/*        }*/}
-                {/*    }).then(res => {*/}
-                {/*        console.log(res.data);*/}
-                {/*    })*/}
-                {/*}}>*/}
-                {/*    TEST*/}
-                {/*</Button>*/}
-                {/*<Button onClick={() => {*/}
-                {/*    axios.get(`/user/getProfile?username=test`)*/}
-                {/*        .then(res => {*/}
-                {/*            console.log(res.data);*/}
-                {/*        })*/}
-                {/*}}>*/}
-                {/*    ...*/}
-                {/*</Button>*/}
             </>
         )
     else return null as JSX.Element | null;

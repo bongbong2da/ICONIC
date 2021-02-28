@@ -1,19 +1,19 @@
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {deleteToken, deleteUID, loginStatus, saveUserinfo, UserInfoType} from "../../redux/reducer/userActions";
-import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
-const AuthChecker = () => {
+const AuthChecker = async () => {
     const dispatcher = useDispatch();
 
     if(!sessionStorage.getItem("token")) return;
     // dispatcher(setLoadingRedirect(true));
     const uid = (sessionStorage.getItem("uid") ? sessionStorage.getItem("uid") : null);
     const token = (sessionStorage.getItem("token") ? sessionStorage.getItem("token") : null);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     // console.log(`AUTHORIZING ${uid} and ${token}`);
 
-    axios.post("/user/isAuth", {username : uid}, {
+    await axios.post("/user/isAuth", {username : uid}, {
         headers : {
             Authorization : "Bearer " + token
         }
@@ -23,7 +23,6 @@ const AuthChecker = () => {
             console.log(`JWT_AUTHORIZED_SUCCESSFULLY`);
             dispatcher(loginStatus(true));
             dispatcher(saveUserinfo(data));
-            dispatcher(setLoadingRedirect(false));
 
             window.onstorage = (e : StorageEvent) => {
                 if(e.oldValue !== e.newValue) {

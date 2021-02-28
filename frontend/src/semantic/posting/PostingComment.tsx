@@ -57,7 +57,7 @@ const PostingComment = ({comment} : PostingCommentProps) => {
 
     return (
         <Comment as={Segment}>
-            <Comment.Avatar as={'a'} src={`/upload/images/${commentWriter.profileImg}`}/>
+            <Comment.Avatar as={'a'} src={commentWriter.profileImg? `/upload/images/${commentWriter.profileImg}` : '/upload/images/default.png'}/>
             <Comment.Content>
                 <Comment.Author as={'a'} content={comment.commentWriter}/>
                 <Comment.Metadata content={new Date(comment.commentReg).toDateString()}/>

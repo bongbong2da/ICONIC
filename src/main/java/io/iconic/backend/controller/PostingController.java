@@ -28,7 +28,7 @@ public class PostingController {
 
     @GetMapping("/get/{chanIdx}/{page}")
     public ResponseEntity get(@PathVariable int chanIdx, @PathVariable int page) {
-        Page<List<Posting>> result = postingRepository.getAllByPostingChanIdxOrderByPostingRegDesc(chanIdx, PageRequest.of(page, 8));
+        Page<List<Posting>> result = postingRepository.getAllByPostingChanIdxOrderByPostingRegDesc(chanIdx, PageRequest.of(page, 12));
         return ResponseEntity.ok().body(result);
     }
 
@@ -100,7 +100,7 @@ public class PostingController {
     @GetMapping("getById/{chanIdx}/{username}")
     public ResponseEntity getById(@PathVariable int chanIdx, @PathVariable String username) {
 
-        Page<List<Posting>> result = postingRepository.getAllByPostingWriterAndPostingChanIdx(username, chanIdx, PageRequest.of(0,5));
+        Page<List<Posting>> result = postingRepository.getAllByPostingWriterAndPostingChanIdxOrderByPostingRegDesc(username, chanIdx, PageRequest.of(0,5));
 
         log.info(result.toString());
 
@@ -109,5 +109,17 @@ public class PostingController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("getNewPostingCount")
+    public ResponseEntity getNewPositngCount(int idx) {
 
+        Date begin = new Date();
+        begin = new Date(begin.getTime() + (1000*60*60*24*-1));
+        Date end = new Date();
+
+        Long count = postingRepository.countPostingsByPostingChanIdxAndPostingRegBetween(idx, begin, end);
+
+        log.info("New Postings Count : " + count);
+
+        return ResponseEntity.ok().body(count);
+    }
 }

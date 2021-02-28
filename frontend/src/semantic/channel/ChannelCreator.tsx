@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useEffect, useState} from 'react';
-import {Button, Card, DropdownProps, Form, Grid, Segment} from "semantic-ui-react";
+import {Button, Card, Divider, DropdownProps, Form, Grid, Header, Segment} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import axios from "axios";
@@ -54,7 +54,7 @@ const ChannelCreator = () => {
             <Grid as={Segment} textAlign={"center"} style={{color: "black"}} >
                 <Grid.Column as={Card}>
                     <Card.Header style={{marginBottom: "10px"}}>
-                        <a onClick={handleClose}>닫기</a>
+                        <Header>채널 만들기</Header>
                     </Card.Header>
                     <Card.Content>
                         <Card.Description>
@@ -63,16 +63,17 @@ const ChannelCreator = () => {
                             <p>채널 이름</p>
                             <Form.Input name={"chanName"} fluid/>
                             <p>채널 이모티콘</p>
-                            <Form.Input name={"chanEmoji"} fluid/>
+                            <Form.Input name={"chanEmoji"} max={1} fluid/>
                             <p>채널 소개말</p>
                             <Form.TextArea name={"chanAnnounce"}/>
                             <Form.Input type={"hidden"} name={"chanPopMax"} value={50} fluid/>
                             <Form.Input type={"hidden"} name={"chanManager"} value={userInfo.username} fluid/>
                             <Form.Input type={"hidden"} name={"chanIsPublic"} value={'y'} fluid/>
                             <Button content={"만들기"} color={"instagram"} type={"submit"} fluid/>
+                            <Divider/>
+                            <Button onClick={handleClose} fluid>닫기</Button>
                         </Card.Description>
                     </Card.Content>
-
                 </Grid.Column>
             </Grid>
         </Form>
