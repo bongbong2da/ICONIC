@@ -21,12 +21,12 @@ const Main = () => {
     const isLoggedIn = useSelector((state: RootState) => state.loginsStatus.isLoggedIn);
     const visibleSidebar = useSelector((state: RootState) => state.sidebar.visible);
     const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
-    const dimmable = useSelector((state : RootState) => state.dimming.dimmable);
-    const profileDimming = useSelector((state : RootState) => state.dimming.profileDimming);
-    const postingCreatorDimming = useSelector((state : RootState) => state.dimming.postingCreatorDimming);
-    const channelApplyDimming = useSelector((state : RootState) => state.dimming.channelApplyDimming);
-    const postingModalDimming = useSelector((state : RootState) => state.dimming.postingModalDimming);
-    const channelCreatorDimming = useSelector((state : RootState) => state.dimming.channelCreatorDimming);
+    const dimmable = useSelector((state : RootState) => state.dimming.dimming);
+    const profileDimming = useSelector((state : RootState) => state.dimming.profileVisible);
+    const postingCreatorDimming = useSelector((state : RootState) => state.dimming.postingCreatorVisible);
+    const channelApplyDimming = useSelector((state : RootState) => state.dimming.channelApplyVisible);
+    const postingModalDimming = useSelector((state : RootState) => state.dimming.postingModalVisible);
+    const channelCreatorDimming = useSelector((state : RootState) => state.dimming.channelCreatorVisible);
 
     //Methods
     const handleDimming = () => {
@@ -59,7 +59,7 @@ const Main = () => {
                     <Dimmer active={channelApplyDimming}>
                         <ChannelJoin/>
                     </Dimmer>
-                    <Sidebar.Pushable>
+                    <Sidebar.Pushable style={{height : "100vh"}}>
                         <SideMenu/>
                         <Sidebar.Pusher onClick={handleDimming} dimmed={visibleSidebar}>
                             <HeaderMenu/>

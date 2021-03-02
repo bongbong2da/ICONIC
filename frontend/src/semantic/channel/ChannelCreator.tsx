@@ -3,7 +3,7 @@ import {Button, Card, Divider, DropdownProps, Form, Grid, Header, Segment} from 
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import axios from "axios";
-import {setDimmingChannelCreator} from "../../redux/reducer/dmmingReducer";
+import {setVisibleChannelCreator} from "../../redux/reducer/visibleReducer";
 
 const ChannelCreator = () => {
 
@@ -37,9 +37,10 @@ const ChannelCreator = () => {
             })
     }
 
-    const handleClose = () => {
+    const handleClose = (e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
         (document.getElementById("channel-create-form") as HTMLFormElement).reset();
-        dispatcher(setDimmingChannelCreator(false));
+        dispatcher(setVisibleChannelCreator(false));
     }
 
     const handleChanTypeChange = (e : SyntheticEvent<HTMLElement>, values : DropdownProps) => {setChanType(values.value as string);
@@ -51,7 +52,7 @@ const ChannelCreator = () => {
 
     return (
         <Form id={"channel-create-form"} style={{width : "50vw"}} onSubmit={handleSubmit}>
-            <Grid as={Segment} textAlign={"center"} style={{color: "black"}} >
+            <Grid as={Segment} textAlign={"center"} style={{color: "black"}} stackable>
                 <Grid.Column as={Card}>
                     <Card.Header style={{marginBottom: "10px"}}>
                         <Header>채널 만들기</Header>
@@ -71,7 +72,7 @@ const ChannelCreator = () => {
                             <Form.Input type={"hidden"} name={"chanIsPublic"} value={'y'} fluid/>
                             <Button content={"만들기"} color={"instagram"} type={"submit"} fluid/>
                             <Divider/>
-                            <Button onClick={handleClose} fluid>닫기</Button>
+                            <Button onClick={(e) => handleClose(e)} fluid>닫기</Button>
                         </Card.Description>
                     </Card.Content>
                 </Grid.Column>

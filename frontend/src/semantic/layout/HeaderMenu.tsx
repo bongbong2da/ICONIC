@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {saveChannelIdx} from "../../redux/reducer/channelRedux";
 import {setSelectedUser} from "../../redux/reducer/userActions";
-import {setDimmingChannelApply, setDimmingChannelCreator, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
+import {setVisibleChannelApply, setVisibleChannelCreator, setVisibleProfile} from "../../redux/reducer/visibleReducer";
 
 const HeaderMenu = () => {
 
@@ -13,8 +13,8 @@ const HeaderMenu = () => {
     const isLoggedIn = useSelector((state: RootState) => state.loginsStatus.isLoggedIn);
     const visibleSidebar = useSelector((state : RootState) => state.sidebar.visible);
     const userInfo = useSelector((state : RootState) => state.userInfo.userInfo);
-    const profileDimming = useSelector((state : RootState) => state.dimming.profileDimming);
-    const channelApplyDimming = useSelector((state : RootState) => state.dimming.channelApplyDimming);
+    const profileDimming = useSelector((state : RootState) => state.dimming.profileVisible);
+    const channelApplyDimming = useSelector((state : RootState) => state.dimming.channelApplyVisible);
     const dispatcher = useDispatch();
 
     //Methods
@@ -29,24 +29,23 @@ const HeaderMenu = () => {
 
     const handleProfile = () => {
         dispatcher(setSelectedUser(userInfo.username));
-        dispatcher(setDimmingProfile(!profileDimming));
+        dispatcher(setVisibleProfile(!profileDimming));
     }
 
     const handleChannelApply = () => {
-        dispatcher(setDimmingChannelApply(!channelApplyDimming));
+        dispatcher(setVisibleChannelApply(!channelApplyDimming));
     }
 
     const handleChannelCreator = () => {
-        dispatcher(setDimmingChannelCreator(true));
+        dispatcher(setVisibleChannelCreator(true));
     }
 
     //Use Effect
     useEffect(() => {
-        console.log("RENDERING_HEADER_MENU");
     },[profileDimming]);
 
     return (
-        <Menu inverted size={"huge"} stackable>
+        <Menu inverted size={"huge"} pointing>
             <Menu.Item header as={"a"} onClick={()=>dispatcher(invertSidebarVisible())}>
                 📃채널
             </Menu.Item>

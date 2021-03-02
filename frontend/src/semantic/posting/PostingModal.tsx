@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Comment, Container, Form, Grid, Header, Image, Label, Segment} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
-import {setDimmingPostingModal, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
+import {setVisiblePostingModal, setVisibleProfile} from "../../redux/reducer/visibleReducer";
 import axios from "axios";
 import PostingComment, {CommentTypes} from "./PostingComment";
 import {refreshChannel, refreshPostingModal} from "../../redux/reducer/refreshReducer";
@@ -33,7 +33,7 @@ const PostingModal = () => {
 
     //Methods
     const handleClose = () => {
-        dispatcher(setDimmingPostingModal(false));
+        dispatcher(setVisiblePostingModal(false));
     }
 
     const handleSubmit = async () => {
@@ -62,7 +62,7 @@ const PostingModal = () => {
 
     const handleProfile = (writer : string) => {
         dispatcher(setSelectedUser(writer));
-        dispatcher(setDimmingProfile(true));
+        dispatcher(setVisibleProfile(true));
     }
 
     const handleDelete = async () => {
@@ -72,7 +72,7 @@ const PostingModal = () => {
             await axios.post(`/posting/delete/${currentPosting.postingIdx}`,null,axiosConfig)
                 .then(res => {
                     console.log(res);
-                    dispatcher(setDimmingPostingModal(false));
+                    dispatcher(setVisiblePostingModal(false));
                     dispatcher(refreshChannel());
                 })
         }

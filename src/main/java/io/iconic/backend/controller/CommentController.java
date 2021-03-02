@@ -58,4 +58,11 @@ public class CommentController {
         }
     }
 
+    @GetMapping("getCommentsCount")
+    public ResponseEntity getCommentsCount(int idx) {
+        Long result = commentRepository.countCommentsByPostingIdx(idx);
+
+        return ResponseEntity.ok().body(result);
+    }
+
 }

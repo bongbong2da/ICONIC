@@ -76,29 +76,36 @@ const ChannelPostings = (props: ChannelListProps) => {
         });
     }
 
+    //Renderings
+    const pageNavigation = (
+        <Container style={{margin : "10px"}} textAlign={"center"} fluid>
+            <Button size={"mini"} onClick={()=>setPage(0)} {...pageData.first ? {disabled : true} : null}>{'<<'}</Button>
+            <Button size={"mini"} onClick={()=>setPage(page-1)} {...pageData.first ? {disabled : true} : null}>{'<'}</Button>
+            <span style={{color : "white"}}> {pageData.number+1} / {pageData.totalPages} </span>
+            <Button size={"mini"} onClick={()=>setPage(page+1)}  {...pageData.last ? {disabled : true} : null}>{'>'}</Button>
+            <Button size={"mini"} onClick={()=>setPage(pageData.totalPages-1)} {...pageData.last ? {disabled : true} : null}>{'>>'}</Button>
+        </Container>
+    )
+
+
     //Use Effect
     useEffect(() => {
         getPostings();
     }, [chanIdx, refresh, page]);
 
     return (
-        <Grid
+        <Container
             as={Card.Group}
             style={{
-                width: "100vw",
-                height: "100vh",
-                overflow: "auto",
+                width: "100%",
+                // height: "100vh",
+                // overflow: "scroll",
             }}
             textAlign={"center"}
+            // itemsPerRow={6}
             centered
         >
-            <Container style={{marginTop : "10px"}} textAlign={"center"} fluid>
-                <Button size={"mini"} onClick={()=>setPage(0)} {...pageData.first ? {disabled : true} : null}>{'<<'}</Button>
-                <Button size={"mini"} onClick={()=>setPage(page-1)} {...pageData.first ? {disabled : true} : null}>{'<'}</Button>
-                <span style={{color : "white"}}> {pageData.number+1} / {pageData.totalPages} </span>
-                <Button size={"mini"} onClick={()=>setPage(page+1)}  {...pageData.last ? {disabled : true} : null}>{'>'}</Button>
-                <Button size={"mini"} onClick={()=>setPage(pageData.totalPages-1)} {...pageData.last ? {disabled : true} : null}>{'>>'}</Button>
-            </Container>
+            {pageNavigation}
             {postingList ?
                 postingList.map((posting : PostingTypes, index) =>{
                     return (
@@ -107,14 +114,8 @@ const ChannelPostings = (props: ChannelListProps) => {
                 })
                 : ifNull
             }
-            <Container style={{marginTop : "10px"}} textAlign={"center"} fluid>
-                <Button size={"mini"} onClick={()=>setPage(0)} {...pageData.first ? {disabled : true} : null}>{'<<'}</Button>
-                <Button size={"mini"} onClick={()=>setPage(page-1)} {...pageData.first ? {disabled : true} : null}>{'<'}</Button>
-                <span style={{color : "white"}}> {pageData.number+1} / {pageData.totalPages} </span>
-                <Button size={"mini"} onClick={()=>setPage(page+1)}  {...pageData.last ? {disabled : true} : null}>{'>'}</Button>
-                <Button size={"mini"} onClick={()=>setPage(pageData.totalPages-1)} {...pageData.last ? {disabled : true} : null}>{'>>'}</Button>
-            </Container>
-        </Grid>
+            {pageNavigation}
+        </Container>
     )
 }
 

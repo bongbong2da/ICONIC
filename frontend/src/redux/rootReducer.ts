@@ -8,7 +8,7 @@ import {
 } from "./reducer/userActions";
 import {ChannelIdxReducer} from "./reducer/channelRedux";
 import {SidebarReducer} from "./reducer/sidebarReducer";
-import {DimmingReducer} from "./reducer/dmmingReducer";
+import {VisibleReducer} from "./reducer/visibleReducer";
 import {RefreshReducer} from "./reducer/refreshReducer";
 import {LoadingReducer} from "./reducer/loadingReducer";
 import {PostingReducer} from "./reducer/postingReducer";
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
     channelIdx : ChannelIdxReducer,
     sidebar : SidebarReducer,
     userInfo : UserInfoReducer,
-    dimming : DimmingReducer,
+    dimming : VisibleReducer,
     selectedUser : SelectedUserReducer,
     refresh : RefreshReducer,
     loading : LoadingReducer,

@@ -4,6 +4,7 @@ import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {loginStatus, saveToken, saveUID, saveUserinfo} from "../../redux/reducer/userActions";
 import {RootState} from "../../redux/rootReducer";
+import CheckMediaType from "../../util/CheckMediaType";
 
 const SignUp = () => {
 
@@ -27,6 +28,8 @@ const SignUp = () => {
         axios.put("/user/signup", {username: username, password: password, profile_img : profileImg}, {})
             .then(res => {
                 console.log(res.data)
+                alert("회원가입이 완료되었습니다.");
+                window.location.href = "http://218.154.12.199:3000";
             })
             .catch(e => {
                 console.log(e.data);
@@ -38,7 +41,6 @@ const SignUp = () => {
     const handleUpload = (e : ChangeEvent<HTMLInputElement>, values : any) => {
         let formData = new FormData();
         if(e.target.files) {
-            console.log(e.target.files[0]);
             formData.append("multipartFile", e.target.files[0]);
             axios.post("/upload/uploadImage", formData, {
                 headers : {
@@ -47,11 +49,18 @@ const SignUp = () => {
             })
                 .then(res=>{
                     const imgName = res.data;
+                    const checked = CheckMediaType(res.data);
+                    if(!checked) {
+                        const target = document.getElementById("uploadInput") as HTMLInputElement;
+                        target.value = "";
+                        setProfileImg("default.png");
+                    }
                     setProfileImg(imgName.substring(imgName.lastIndexOf("/") + 1, imgName.length));
                     loginStatus(res.data);
                 });
         }
     };
+
     //Use Effect
     useEffect(() => {
     }, [isLogin, profileImg]);
@@ -61,7 +70,7 @@ const SignUp = () => {
         return (
             <Grid textAlign={"center"} style={{height: "100vh"}}>
                 <Grid.Column style={{maxWidth: 450, marginTop: 150}}>
-                    <Header>
+                    <Header as={'a'} href={"http://218.154.12.199:3000"} color={"teal"}>
                         🏄🏻 ICONIC
                     </Header>
                     <Form
@@ -69,12 +78,25 @@ const SignUp = () => {
                         loading={loading}
                     >
                         <Dimmer.Dimmable as={Segment} dimmed={loading} stacked>
-                            <Form.Input fluid icon={'user'} iconPosition={"left"} label={"Username"} name="username"
-                                        onChange={(e, {value}) => setUsername(value)}>
+                            <Form.Input fluid
+                                        icon={'user'}
+                                        iconPosition={"left"}
+                                        label={"Username"}
+                                        name="username"
+                                        onChange={(e, {value}) => setUsername(value)}
+                                        required
+                            >
 
                             </Form.Input>
-                            <Form.Input fluid icon={'lock'} iconPosition={"left"} label={"Password"} type={"password"}
-                                        name="password" onChange={(e, {value}) => setPassword(value)}>
+                            <Form.Input fluid
+                                        icon={'lock'}
+                                        iconPosition={"left"}
+                                        label={"Password"}
+                                        type={"password"}
+                                        name="password"
+                                        onChange={(e, {value}) => setPassword(value)}
+                                        required
+                            >
 
                             </Form.Input>
                             <Form.Input fluid icon={'lock'}
@@ -83,6 +105,7 @@ const SignUp = () => {
                                         type={"file"}
                                         name="password"
                                         onChange={handleUpload}
+                                        id={"uploadInput"}
                             >
 
                             </Form.Input>

@@ -47,6 +47,10 @@ const SignIn = () => {
             });
     }
 
+    const handleSignUp = () => {
+        window.location.href = "http://218.154.12.199:3000/signup";
+    }
+
     //Use Effect
     useEffect(() => {
     }, []);
@@ -56,7 +60,7 @@ const SignIn = () => {
         return (
             <Grid textAlign={"center"} style={{height: "100vh"}}>
                 <Grid.Column style={{maxWidth: 450, marginTop: 150}}>
-                    <Header color={"teal"}>
+                    <Header as={'a'} color={"teal"}>
                         🏄🏻 ICONIC
                     </Header>
                     <Form
@@ -82,13 +86,13 @@ const SignIn = () => {
                             >
 
                             </Form.Input>
-                            <Form.Button size={"large"} type={"submit"} color={"facebook"}>
+                            <Form.Button fluid size={"large"} type={"submit"} color={"facebook"}>
                                 Login
                             </Form.Button>
                         </Dimmer.Dimmable>
                     </Form>
                     <Message style={{width: "100%", textAlign: "right"}}>
-                        <Button as={'a'} color={"linkedin"}>
+                        <Button as={'a'} color={"linkedin"} onClick={handleSignUp}>
                             Sign-Up
                         </Button>
                     </Message>

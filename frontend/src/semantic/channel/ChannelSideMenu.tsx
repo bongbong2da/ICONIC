@@ -5,6 +5,7 @@ import {RootState} from "../../redux/rootReducer";
 import {saveChannelIdx} from "../../redux/reducer/channelRedux";
 import {invertSidebarVisible} from "../../redux/reducer/sidebarReducer";
 import axios from "axios";
+import ChannelSideMenuItem from "./ChannelSideMenuItem";
 
 export type ChannelTypes = {
     chanIdx : number
@@ -27,30 +28,11 @@ const ChannelSideMenu = ({channel_list} : ChannelSideProps) => {
 
     //States
     const [channelList, setChannelList] = useState([] as ChannelTypes[] | null);
-    const [newPostingsCount, setNewPostingsCount] = useState();
 
     //Redux
     const visibleSidebar = useSelector((state : RootState) => state.sidebar.visible);
     const chanIdx = useSelector((state : RootState) => state.channelIdx.idx);
     const dispatcher = useDispatch();
-
-    const handleChannelIdx = (idx : number) => {
-        dispatcher(invertSidebarVisible());
-        dispatcher(saveChannelIdx(idx));
-    }
-
-    const getNewPostingsCount = async (idx : number) => {
-        await axios.get(`/posting/getNewPostingCount?idx=${idx}`, {
-            headers : {
-                "Authorization" : `Bearer ${sessionStorage.getItem("token")}`
-            }
-        })
-            .then(res => {
-                setNewPostingsCount(res.data);
-                console.log(res.data);
-                return res.data;
-            })
-    }
 
     useEffect(() => {
         if(channel_list) setChannelList(channel_list);
@@ -59,11 +41,11 @@ const ChannelSideMenu = ({channel_list} : ChannelSideProps) => {
     return (
         <>
             {channelList ? channelList.map((channel : ChannelTypes, index) => {
-                const newCount = getNewPostingsCount(channel.chanIdx)
                 return (
-                        <Menu.Item key={index} as={'a'} onClick={()=>handleChannelIdx(channel.chanIdx)}>
-                            <p>{newCount} {`${channel.chanEmoji} ${channel.chanName}`}</p>
-                        </Menu.Item>
+                        // <Menu.Item key={index} as={'a'} onClick={()=>handleChannelIdx(channel.chanIdx)}>
+                        //     <p>{`${channel.chanEmoji} ${channel.chanName}`}</p>
+                        // </Menu.Item>
+                        <ChannelSideMenuItem channel={channel} key={index}/>
                 )
             }) : null}
         </>

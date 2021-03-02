@@ -40,7 +40,7 @@ const ChannelIndex = () => {
         )
     } else {
         return (
-            <Container textAlign={"center"} style={{width:"100vw"}}>
+            <Container textAlign={"center"} style={{width:"100%", minHeight : "100vh"}}>
                 <ChannelHeader/>
                 <ChannelPostings channel_idx={currentChannelIdx}/>
             </Container>

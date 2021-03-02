@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Button, Card, Divider, Form, Grid, Input} from "semantic-ui-react";
-import {setDimmingChannelApply} from "../../redux/reducer/dmmingReducer";
+import {setVisibleChannelApply} from "../../redux/reducer/visibleReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import axios from "axios";
@@ -11,13 +11,13 @@ const ChannelJoin = () => {
 
     //redux
     const dispatcher = useDispatch();
-    const channelApplyDimming = useSelector((state : RootState) => state.dimming.channelApplyDimming);
+    const channelApplyDimming = useSelector((state : RootState) => state.dimming.channelApplyVisible);
     const token = useSelector((state : RootState) => state.JWT.token);
     const userInfo = useSelector((state : RootState) => state.userInfo.userInfo);
 
     //methods
     const handleChannelApply = () => {
-        dispatcher(setDimmingChannelApply(!channelApplyDimming));
+        dispatcher(setVisibleChannelApply(!channelApplyDimming));
     }
 
     const handleJoin = () => {
@@ -34,16 +34,16 @@ const ChannelJoin = () => {
                 if(msg === 'JOINED') {
                     alert("가입되었습니다.");
                     dispatcher(refreshChannelList());
-                    dispatcher(setDimmingChannelApply(false));
+                    dispatcher(setVisibleChannelApply(false));
                     dispatcher(invertSidebarVisible());
                 }
                 else if (msg === "CHANNEL_DUPLICATED") {
                     alert("이미 가입되어있는 채널입니다.");
-                    dispatcher(setDimmingChannelApply(false));
+                    dispatcher(setVisibleChannelApply(false));
                     dispatcher(invertSidebarVisible());
                 } else {
                     alert("실패했습니다.");
-                    dispatcher(setDimmingChannelApply(false));
+                    dispatcher(setVisibleChannelApply(false));
                 }
             });
     }

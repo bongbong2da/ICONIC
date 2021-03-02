@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Form, Header, Input, Segment} from "semantic-ui-react";
+import {Button, Form, Header, Input, Menu, Segment} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
-import {setDimmingPostingCreator} from "../../redux/reducer/dmmingReducer";
+import {setVisiblePostingCreator} from "../../redux/reducer/visibleReducer";
 import {RootState} from "../../redux/rootReducer";
 import {refreshChannel, refreshChannelList} from "../../redux/reducer/refreshReducer";
 import {ChannelTypes} from "./ChannelSideMenu";
@@ -22,7 +22,7 @@ const ChannelHeader = () => {
 
     //Methods
     const handleCreator = () => {
-        dispatcher(setDimmingPostingCreator(true));
+        dispatcher(setVisiblePostingCreator(true));
     }
 
     const handleRefresh = () => {
@@ -79,27 +79,31 @@ const ChannelHeader = () => {
                 <Header>📢 공지사항</Header>
                 {channelInfo.chanAnnounce}
             </Segment>
+            <Menu compact inverted stackable>
+                <Menu.Item size={"mini"} onClick={handleRefresh}>새로고침</Menu.Item>
+                <Menu.Item size={"mini"} onClick={handleCreator}>글쓰기</Menu.Item>
+                <Menu.Item>
+                <Form style={{display: "inline"}}
+                      id={"posting-search-form"}
+                      onSubmit={handleSearch}
+                >
+                    <Input id={"keyword"} size={"mini"} icon={"search"} type={"text"}/>
+                    <Button type={"submit"} size={"mini"}>검색</Button>
+                </Form>
+                </Menu.Item>
+                {channelInfo.chanManager === userInfo.username ?
+                    <Menu.Item
+                        size={"mini"}
+                        onClick={handleExit}
 
-            <Button style={{marginRight: "20px"}} size={"mini"} color={"facebook"} onClick={handleRefresh}>새로고침</Button>
-            <Button style={{marginRight: "20px"}} size={"mini"} color={"facebook"} onClick={handleCreator}>글쓰기</Button>
-            <Form style={{display: "inline"}}
-                  id={"posting-search-form"}
-                  onSubmit={handleSearch}
-            >
-                <Input id={"keyword"} size={"mini"} icon={"search"} type={"text"}/>
-                <Button type={"submit"} size={"mini"}>검색</Button>
-            </Form>
-            <Button
-                style={{marginRight: "20px"}}
-                size={"mini"}
-                color={"red"}
-                onClick={handleExit}
-                {...channelInfo.chanManager === userInfo.username ? {disabled: true} : null}
-            >채널 탈퇴</Button>
+                    >채널 탈퇴</Menu.Item>
+                    : null}
+
+            </Menu>
+
             {
                 channelInfo.chanManager === userInfo.username ?
                 <>
-                    <p>매니저로 접속했습니다.</p>
                     <p>초대 코드 : {channelInfo.chanCode}</p>
                 </>
                 : null

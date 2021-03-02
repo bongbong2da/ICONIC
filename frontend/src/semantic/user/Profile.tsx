@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Feed, Grid, Image} from "semantic-ui-react";
+import {Button, Card, Feed, Grid, Image} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {ProfileTypes} from "../../redux/reducer/userActions";
 import axios from "axios";
-import {setDimmable, setDimmingProfile} from "../../redux/reducer/dmmingReducer";
+import {setDimming, setVisibleProfile} from "../../redux/reducer/visibleReducer";
 import {PostingTypes} from "../posting/Posting";
 import ProfileFeed from "./ProfileFeed";
 
@@ -16,16 +16,15 @@ const Profile = () => {
 
     //Redux
     const selectedUser = useSelector((state: RootState) => state.selectedUser.username);
-    const dimmable = useSelector((state: RootState) => state.dimming.dimmable);
-    const profileDimming = useSelector((state: RootState) => state.dimming.postingCreatorDimming);
+    const dimmable = useSelector((state: RootState) => state.dimming.dimming);
+    const profileDimming = useSelector((state: RootState) => state.dimming.postingCreatorVisible);
     const currentChannel = useSelector((state : RootState) => state.channelIdx.idx);
     const dispatcher = useDispatch();
 
     //Methods
     const handleDimmingToClose = () => {
-        console.log("handling...")
-        dispatcher(setDimmable(false));
-        dispatcher(setDimmingProfile(false));
+        dispatcher(setDimming(false));
+        dispatcher(setVisibleProfile(false));
     }
 
     const getProfileUser = async () => {
@@ -62,8 +61,8 @@ const Profile = () => {
 
     if (user) {
         return (
-            <Grid textAlign={"center"} style={{height: "100vh"}} onClick={handleDimmingToClose}>
-                <Grid.Column as={Card} style={{maxWidth: 500, maxHeight: "100vh", overflow : "auto"}} textAlign={"center"}>
+            <Grid textAlign={"center"} style={{height: "100vh"}}>
+                <Grid.Column as={Card} style={{width: "400px", height: "100%", overflow : "auto"}} textAlign={"center"}>
                     <Card.Header>
                     </Card.Header>
                     <Image src={user.profileImg ? `/upload/images/${user.profileImg}` : null}
@@ -84,6 +83,11 @@ const Profile = () => {
                                     )
                                 }) : <></>}
                         </Feed>
+                    </Card.Content>
+                    <Card.Content extra>
+                        <Card.Description>
+                            <Button onClick={handleDimmingToClose} fluid>닫기</Button>
+                        </Card.Description>
                     </Card.Content>
                 </Grid.Column>
             </Grid>
