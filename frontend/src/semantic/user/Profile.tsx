@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Feed, Grid, Image} from "semantic-ui-react";
+import {Button, Feed, Image, Modal} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {ProfileTypes} from "../../redux/reducer/userActions";
@@ -16,8 +16,7 @@ const Profile = () => {
 
     //Redux
     const selectedUser = useSelector((state: RootState) => state.selectedUser.username);
-    const dimmable = useSelector((state: RootState) => state.dimming.dimming);
-    const profileDimming = useSelector((state: RootState) => state.dimming.postingCreatorVisible);
+    const visible = useSelector((state: RootState) => state.dimming.profileVisible);
     const currentChannel = useSelector((state : RootState) => state.channelIdx.idx);
     const dispatcher = useDispatch();
 
@@ -52,29 +51,19 @@ const Profile = () => {
 
     useEffect(() => {
         if(selectedUser) {
-            console.log("GET_PROFILE_DATA");
             getProfileUser();
             getPostingFeeds();
-            console.log("GET_PROFILE_DATA_DONE");
         }
-    }, [selectedUser, currentChannel]);
+    }, [selectedUser, currentChannel, visible]);
 
     if (user) {
         return (
-            <Grid textAlign={"center"} style={{height: "100vh"}}>
-                <Grid.Column as={Card} style={{width: "400px", height: "100%", overflow : "auto"}} textAlign={"center"}>
-                    <Card.Header>
-                    </Card.Header>
-                    <Image src={user.profileImg ? `/upload/images/${user.profileImg}` : null}
-                           size={"medium"} rounded
-                           wrapped ui={false}/>
-                    <Card.Content>
-                        <Card.Description>
+            <Modal open={visible}>
+                <Modal.Content image>
+                    <Image wrapped src={user.profileImg ? `/upload/images/${user.profileImg}` : null}/>
+                    <Modal.Description>
                             <p>Username : {user.username}</p>
                             <p>Last Login : {new Date(user.logindate).toString()}</p>
-                        </Card.Description>
-                    </Card.Content>
-                    <Card.Content extra={true}>
                         <Feed>
                             {postingFeeds && currentChannel !== 0 ?
                                 postingFeeds.map((feed, index) => {
@@ -83,14 +72,12 @@ const Profile = () => {
                                     )
                                 }) : <></>}
                         </Feed>
-                    </Card.Content>
-                    <Card.Content extra>
-                        <Card.Description>
-                            <Button onClick={handleDimmingToClose} fluid>닫기</Button>
-                        </Card.Description>
-                    </Card.Content>
-                </Grid.Column>
-            </Grid>
+                    </Modal.Description>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button onClick={handleDimmingToClose} fluid>닫기</Button>
+                </Modal.Actions>
+            </Modal>
         )
     } else return <></>;
 }

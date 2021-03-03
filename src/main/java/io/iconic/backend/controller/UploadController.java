@@ -1,11 +1,14 @@
 package io.iconic.backend.controller;
 
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -42,7 +45,9 @@ public class UploadController {
 
     @PostMapping("/uploadImage")
     public ResponseEntity uploadImage(@RequestParam("multipartFile") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
-        System.out.println("Request file name : " + multipartFile.getOriginalFilename());
+        String originalName = multipartFile.getOriginalFilename();
+        String ext = originalName.substring(originalName.lastIndexOf(".") + 1, originalName.length());
+        System.out.println("Request file name : " + originalName);
 
 //        String rootPath = request.getSession().getServletContext().getRealPath("/resources/upload/");
 
@@ -61,6 +66,14 @@ public class UploadController {
         File target = new File(filePath);
 
         multipartFile.transferTo(target);
+
+        if(ext.equals("gif")) return ResponseEntity.ok().body(filePath);
+
+        BufferedImage bufferedImage = ImageIO.read(target);
+
+        bufferedImage = Scalr.crop(bufferedImage, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
+
+        ImageIO.write(Scalr.resize(bufferedImage, 1500), ext, target);
 
         System.out.println("Uploaded Successfully : " + filePath);
 

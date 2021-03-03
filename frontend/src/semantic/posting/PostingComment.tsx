@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Comment, Segment} from "semantic-ui-react";
-import AxiosCustomConfig from "../../configuration/AxiosCustomConfig";
 import axios from "axios";
 import {ProfileTypes} from "../../redux/reducer/userActions";
 import {useDispatch, useSelector} from "react-redux";
@@ -28,6 +27,7 @@ const PostingComment = ({comment} : PostingCommentProps) => {
     //Redux
     const dispatcher = useDispatch();
     const userInfo = useSelector((state : RootState) => state.userInfo.userInfo);
+    const currentPosting = useSelector((state : RootState) => state.posting.postingCurrent);
 
     //Methods
     const getCommentWriterData = () => {
@@ -52,8 +52,9 @@ const PostingComment = ({comment} : PostingCommentProps) => {
 
     //UseEffect
     useEffect(() => {
+        console.log("RENDERING_COMMENT")
        getCommentWriterData();
-    },[userInfo]);
+    },[userInfo, comment]);
 
     return (
         <Comment as={Segment}>

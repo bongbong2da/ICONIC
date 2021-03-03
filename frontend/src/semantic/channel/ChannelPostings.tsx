@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Posting, {PostingTypes} from "../posting/Posting";
-import {Button, Card, Container, Grid, Header, Segment} from "semantic-ui-react";
+import {Button, Card, Container, Header, Segment} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 

@@ -73,19 +73,20 @@ const SignIn = () => {
                                         name="username"
                                         onChange={(e, {value}) => setUsername(value)}
                                         type={"text"}
-                            >
-
-                            </Form.Input>
+                                        required
+                                        placeholder={'아이디를 입력하세요'}
+                                        minLength={4}
+                            />
                             <Form.Input fluid icon={'lock'}
                                         iconPosition={"left"}
                                         label={"Password"}
                                         type={"password"}
                                         name="password"
                                         onChange={(e, {value}) => setPassword(value)}
-                                        min={4}
-                            >
-
-                            </Form.Input>
+                                        minLength={4}
+                                        required
+                                        placeholder={'비밀번호를 입력하세요'}
+                            />
                             <Form.Button fluid size={"large"} type={"submit"} color={"facebook"}>
                                 Login
                             </Form.Button>

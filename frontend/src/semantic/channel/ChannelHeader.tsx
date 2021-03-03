@@ -80,8 +80,8 @@ const ChannelHeader = () => {
                 {channelInfo.chanAnnounce}
             </Segment>
             <Menu compact inverted stackable>
-                <Menu.Item size={"mini"} onClick={handleRefresh}>새로고침</Menu.Item>
-                <Menu.Item size={"mini"} onClick={handleCreator}>글쓰기</Menu.Item>
+                <Menu.Item size={"mini"} onClick={handleRefresh}>새로고침 🔄</Menu.Item>
+                <Menu.Item size={"mini"} onClick={handleCreator}>글쓰기 ✍</Menu.Item>
                 <Menu.Item>
                 <Form style={{display: "inline"}}
                       id={"posting-search-form"}

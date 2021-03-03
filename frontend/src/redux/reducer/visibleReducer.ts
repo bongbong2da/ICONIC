@@ -1,17 +1,17 @@
 
-const SET_DIMMING = "dimmer/SET_DIMMING";
-const SET_VISIBLE_PROFILE = "dimmer/SET_VISIBLE_PROFILE";
-const SET_VISIBLE_POSTING_CREATOR = "dimmer/SET_VISIBLE_POSTING_CREATOR";
-const SET_VISIBLE_CHANNEL_APPLY = "dimmer/SET_VISIBLE_CHANNEL_APPLY";
-const SET_VISIBLE_POSTING_MODAL = "dimmer/SET_VISIBLE_POSTING_MODAL";
-const SET_VISIBLE_CHANNEL_CREATOR = "dimmer/SET_VISIBLE_CHANNEL_CREATOR";
+const SET_DIMMING = "visible/SET_DIMMING";
+const SET_VISIBLE_PROFILE = "visible/SET_VISIBLE_PROFILE";
+const SET_VISIBLE_POSTING_CREATOR = "visible/SET_VISIBLE_POSTING_CREATOR";
+const SET_VISIBLE_CHANNEL_APPLY = "visible/SET_VISIBLE_CHANNEL_APPLY";
+const SET_VISIBLE_POSTING_MODAL = "visible/SET_VISIBLE_POSTING_MODAL";
+const SET_VISIBLE_CHANNEL_CREATOR = "visible/SET_VISIBLE_CHANNEL_CREATOR";
 
-export const setDimming = (dimming : boolean) => ({type : SET_DIMMING, dimmable : dimming});
-export const setVisibleProfile = (dimming : boolean) => ({type : SET_VISIBLE_PROFILE, profileDimming : dimming});
-export const setVisiblePostingCreator = (dimming : boolean) => ({type : SET_VISIBLE_POSTING_CREATOR, postingCreatorDimming : dimming})
-export const setVisibleChannelApply = (dimming : boolean) => ({type : SET_VISIBLE_CHANNEL_APPLY, channelApplyDimming : dimming});
-export const setVisiblePostingModal = (dimming : boolean) => ({type : SET_VISIBLE_POSTING_MODAL, postingModalDimming : dimming});
-export const setVisibleChannelCreator = (dimming : boolean) => ({type : SET_VISIBLE_CHANNEL_CREATOR, channelCreatorDimming : dimming});
+export const setDimming = (visible : boolean) => ({type : SET_DIMMING, dimmable : visible});
+export const setVisibleProfile = (visible : boolean) => ({type : SET_VISIBLE_PROFILE, profileDimming : visible});
+export const setVisiblePostingCreator = (visible : boolean) => ({type : SET_VISIBLE_POSTING_CREATOR, postingCreatorDimming : visible})
+export const setVisibleChannelApply = (visible : boolean) => ({type : SET_VISIBLE_CHANNEL_APPLY, channelApplyDimming : visible});
+export const setVisiblePostingModal = (visible : boolean) => ({type : SET_VISIBLE_POSTING_MODAL, postingModalDimming : visible});
+export const setVisibleChannelCreator = (visible : boolean) => ({type : SET_VISIBLE_CHANNEL_CREATOR, channelCreatorDimming : visible});
 
 const initialVisibleStates = {
     dimming : false,

@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {Button, Form, Grid, Header, Image, Input, InputOnChangeData, Segment} from "semantic-ui-react";
+import {Button, Form, Header, Image, Input, InputOnChangeData, Modal} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import EmojiPicker, {IEmojiData} from "emoji-picker-react";
 import axios from "axios";
 import {setVisiblePostingCreator} from "../../redux/reducer/visibleReducer";
-import {refreshChannel} from "../../redux/reducer/refreshReducer";
+import {refreshChannel, refreshChannelList} from "../../redux/reducer/refreshReducer";
 import CheckMediaType from "../../util/CheckMediaType";
 
 const PostingCreator = () => {
@@ -13,12 +13,13 @@ const PostingCreator = () => {
     //States
     const [emoji, setEmoji] = useState('');
     const [profileImg, setProfileImg] = useState("default.png");
+    const [visiblePicker, setVisiblePicker] = useState(false);
 
     //Redux
-    const creatorDimming = useSelector((state: RootState) => state.dimming.postingCreatorVisible);
+    const dispatcher = useDispatch();
+    const visible = useSelector((state: RootState) => state.dimming.postingCreatorVisible);
     const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
     const currentChanIdx = useSelector((state: RootState) => state.channelIdx.idx);
-    const dispatcher = useDispatch();
 
     //Variables
     const token = sessionStorage.getItem("token");
@@ -26,11 +27,15 @@ const PostingCreator = () => {
     //UseEffect
     useEffect(() => {
 
-    }, [emoji]);
+    }, [emoji, visible]);
 
     //Methods
     const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
+        (document.getElementById("posting-form") as HTMLFormElement).reset();
+        setProfileImg('default.png');
+        setEmoji('');
+        setVisiblePicker(false);
         dispatcher(setVisiblePostingCreator(false));
     }
 
@@ -65,7 +70,7 @@ const PostingCreator = () => {
     const handleSubmit = async (e: any) => {
         const form = document.getElementById("posting-form") as HTMLFormElement;
         let formData = new FormData(form);
-        formData.append("posting_emoji", emoji)
+        // formData.append("posting_emoji", emoji)
         await axios.post("/posting/create", formData, {
             headers: {
                 'Content-Type': 'application/json',
@@ -74,6 +79,7 @@ const PostingCreator = () => {
         }).then(res => {
             handleClose(e);
             dispatcher(refreshChannel());
+            dispatcher(refreshChannelList());
             console.log(res.data);
         })
         form.reset();
@@ -81,65 +87,56 @@ const PostingCreator = () => {
         setEmoji('');
     }
 
+    const handlePickerVisible = (e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        setVisiblePicker(!visiblePicker);
+    }
+
     return (
-        <Grid
-            textAlign={"center"}
-            style={{
-                height: "100vh",
-                width: "75vw"
-            }}
-            columns={2}
+        <Modal
+            open={visible}
             as={Form}
             onSubmit={handleSubmit}
             id={"posting-form"}
-            stackable
         >
-            <Grid.Column
-                textAlign={"center"}>
-                <Segment inverted>
-                    <Header>
+                    <Modal.Header>
                         글쓰기
-                    </Header>
-                    <Image style={{display : "inline-block"}} src={`/upload/images/${profileImg}`} fluid/>
+                    </Modal.Header>
+            <Modal.Content image>
+                {profileImg !== 'default.png' ? <Image style={{display : "inline-block"}} src={`/upload/images/${profileImg}`} fluid/> : null}
+            </Modal.Content>
+            <Modal.Content>
+                <Modal.Description style={{textAlign : "center"}}>
                     <Input id={"fileInput"} name={"upload"} type={"file"} onChange={onUpload} fluid/>
-                    <Header size={"medium"}>오늘의 기분은?</Header>
-                    <Form.Input
-                        // style={{
-                        //     display : "inline-block"
-                        // }}
-                        value={emoji}
-                        size={"massive"}
-                        name={"posting_emoji"}
-                        type={"text"}
-                        disabled
-                        fluid
-                    />
                     <Input name={"posting_chan_idx"} type={"hidden"} value={currentChanIdx}/>
                     <Input name={"posting_attach"} type={"hidden"} id={"posting-attach"} value={profileImg}/>
                     <Input name={"posting_isAttached"} type={"hidden"} id={"posting-isAttached"} value={'y'}/>
-                    <EmojiPicker preload={true} pickerStyle={{width: "100%"}} onEmojiClick={onPicked}/>
-                </Segment>
-            </Grid.Column>
-            <Grid.Column
-                // style={{
-                //     maxWidth: "50vw",
-                //     maxHeight: "90vh",
-                //     marginTop: 50,
-                //     color: "black"
-                // }}
-                textAlign={"center"}>
-                <Segment inverted>
-                    {/*<p>글 제목</p>*/}
-                    {/*<Form.Input name={"posting_title"} type={"text"} fluid/>*/}
+                    <Button color={"google plus"} onClick={(event => handlePickerVisible(event))} fluid>{!visiblePicker ? `이모티콘 선택하기` : '접기'}</Button>
+                    <p>외부에서 이모티콘 데이터를 받아와, 다소 시간이 걸릴 수 있습니다.</p>
+                    {visiblePicker ?
+                        <>
+                            <Header size={"medium"}>오늘의 기분은?</Header>
+                            <Form.Input
+                                value={emoji}
+                                size={"massive"}
+                                name={"posting_emoji"}
+                                type={"text"}
+                                fluid
+                            />
+                        <EmojiPicker preload={true} onEmojiClick={onPicked}/>
+                        </>
+                        : null}
                     <Form.Input name={"posting_writer"} type={"hidden"} value={userInfo.username}/>
                     <br/>
                     <p>글 내용</p>
                     <Form.TextArea required style={{height: "400px"}} name={"posting_content"}/>
-                    <Button type={"submit"} color={"facebook"} fluid>작성하기</Button>
-                    <Button onClick={(e) => handleClose(e)} fluid>닫기</Button>
-                </Segment>
-            </Grid.Column>
-        </Grid>
+                </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button type={"submit"} color={"facebook"} fluid>작성하기</Button>
+                <Button onClick={(e) => handleClose(e)} fluid>닫기</Button>
+            </Modal.Actions>
+        </Modal>
     )
 }
 

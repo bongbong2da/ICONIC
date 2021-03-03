@@ -12,7 +12,6 @@ import ChannelJoin from "../channel/ChannelJoin";
 import PostingModal from "../posting/PostingModal";
 import {invertSidebarVisible} from "../../redux/reducer/sidebarReducer";
 import ChannelCreator from "../channel/ChannelCreator";
-import axios from "axios";
 
 const Main = () => {
 

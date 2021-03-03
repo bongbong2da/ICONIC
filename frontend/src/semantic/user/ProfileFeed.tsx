@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Feed, Icon} from "semantic-ui-react";
+import {Feed} from "semantic-ui-react";
 import {PostingTypes} from "../posting/Posting";
 import {useDispatch} from "react-redux";
 import {setPostingCurrent} from "../../redux/reducer/postingReducer";
@@ -22,7 +22,6 @@ const ProfileFeed = ({posting} : ProfileFeedProps) => {
     }
 
     useEffect(() => {
-        console.log("feed")
     }, [posting]);
 
     return (
@@ -31,7 +30,7 @@ const ProfileFeed = ({posting} : ProfileFeedProps) => {
             <Feed.Content>
                 <Feed.Summary>
                     <a onClick={setCurrentPosting}>{posting.postingTitle ? (posting.postingTitle).substring(0,10) : null}</a>
-                    <Feed.Date>{new Date(posting.postingReg).toDateString()}</Feed.Date>
+                    <Feed.Date onClick={setCurrentPosting}>{new Date(posting.postingReg).toDateString()}</Feed.Date>
                 </Feed.Summary>
                 <Feed.Meta>
                     <Feed.Like>

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
-import {Container, Header, Loader, Segment} from "semantic-ui-react";
+import {Container, Header, Segment} from "semantic-ui-react";
 import ChannelPostings from "./ChannelPostings";
 import ChannelHeader from "./ChannelHeader";
 
@@ -24,6 +24,10 @@ const ChannelIndex = () => {
                 <Segment>
                     <Header>📢 개발자 알림 📢</Header>
                     <p>
+                        공지사항 <br/>
+                        - 개발서버를 그대로 사용중이라 수시로 서버가 재시작 될 수 있습니다. <br/>
+                        - 개발자 컴퓨터가 꺼져있는 동안은 서버도 같이 종료됩니다.(전기세 절약) <br/>
+                        <br/>
                         업데이트 내역 <br/>
                         - 0.1v가 배포되었습니다. 🎉 <br/>
                     </p>

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Comment, Container, Form, Grid, Header, Image, Label, Segment} from "semantic-ui-react";
+import React, {ChangeEvent, useEffect, useState} from 'react';
+import {Button, Comment, Container, Form, Header, Image, InputOnChangeData, Label, Modal} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
 import {setVisiblePostingModal, setVisibleProfile} from "../../redux/reducer/visibleReducer";
@@ -7,6 +7,8 @@ import axios from "axios";
 import PostingComment, {CommentTypes} from "./PostingComment";
 import {refreshChannel, refreshPostingModal} from "../../redux/reducer/refreshReducer";
 import {setSelectedUser} from "../../redux/reducer/userActions";
+import EmojiPicker, {IEmojiData} from "emoji-picker-react";
+import CheckMediaType from "../../util/CheckMediaType";
 
 'use strict';
 
@@ -14,29 +16,32 @@ const PostingModal = () => {
 
     //Variables
     const axiosConfig = {
-        headers : {
-            "Authorization" : `Bearer ${sessionStorage.getItem("token")}`
+        headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
         }
     }
 
     //States
     const [comments, setComments] = useState([] as CommentTypes[]);
     const [modifyMode, setModifyMode] = useState(false);
+    const [emoji, setEmoji] = useState('');
+    const [profileImg, setProfileImg] = useState("default.png");
 
     //Redux
     const dispatcher = useDispatch();
-    const currentPosting = useSelector((state : RootState) => state.posting.postingCurrent);
-    const currentPostingIdx = useSelector((state : RootState) => state.channelIdx.idx);
-    const currentWriter = useSelector((state : RootState) => state.posting.postingWriter);
-    const userInfo = useSelector((state : RootState) => state.userInfo.userInfo);
-    const refresh = useSelector((state : RootState) => state.refresh.refreshPostingModal);
+    const visible = useSelector((state : RootState) => state.dimming.postingModalVisible);
+    const currentPosting = useSelector((state: RootState) => state.posting.postingCurrent);
+    const currentChanIdx = useSelector((state: RootState) => state.channelIdx.idx);
+    const currentWriter = useSelector((state: RootState) => state.posting.postingWriter);
+    const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
+    const refresh = useSelector((state: RootState) => state.refresh.refreshPostingModal);
 
     //Methods
     const handleClose = () => {
         dispatcher(setVisiblePostingModal(false));
     }
 
-    const handleSubmit = async () => {
+    const handleCommentSubmit = async () => {
         const source = document.getElementById("comment-form") as HTMLFormElement;
         const formData = new FormData(source);
         formData.append("commentWriter", userInfo.username);
@@ -50,17 +55,33 @@ const PostingModal = () => {
         })
     }
 
+    const handleSubmit = async () => {
+        const form = document.getElementById("posting-form") as HTMLFormElement;
+        let formData = new FormData(form);
+        formData.append("posting_emoji", emoji)
+        await axios.post("/posting/create", formData, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(res => {
+            // handleClose(e);
+            dispatcher(refreshChannel());
+        })
+        form.reset();
+        setProfileImg("default.png");
+        setEmoji('');
+    }
+
     const getComments = async () => {
-        if(currentPostingIdx === 0) return;
-        console.log("GET_COMMENTS");
+        if (currentChanIdx === 0) return;
         // if(comments.length === 0) return;
-        await axios.get(`/comment/getComments?idx=${currentPosting.postingIdx}`,axiosConfig)
+        await axios.get(`/comment/getComments?idx=${currentPosting.postingIdx}`, axiosConfig)
             .then(res => {
                 setComments(res.data);
             })
     }
 
-    const handleProfile = (writer : string) => {
+    const handleProfile = (writer: string) => {
         dispatcher(setSelectedUser(writer));
         dispatcher(setVisibleProfile(true));
     }
@@ -68,14 +89,43 @@ const PostingModal = () => {
     const handleDelete = async () => {
         const q = confirm("게시물을 삭제하시겠습니까?\n댓글을 포함해 모든 작업은 되돌릴 수 없습니다.");
 
-        if(q) {
-            await axios.post(`/posting/delete/${currentPosting.postingIdx}`,null,axiosConfig)
+        if (q) {
+            await axios.post(`/posting/delete/${currentPosting.postingIdx}`, null, axiosConfig)
                 .then(res => {
                     console.log(res);
                     dispatcher(setVisiblePostingModal(false));
                     dispatcher(refreshChannel());
                 })
         }
+    }
+
+    const onUpload = async (e: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+        console.log("submitting...")
+        let formData = new FormData();
+        if (e.target.files) {
+            console.log(e.target.files[0]);
+            formData.append("multipartFile", e.target.files[0]);
+            await axios.post("/upload/uploadImage", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+                .then(res => {
+                    console.log(res.data);
+                    const checked = CheckMediaType(res.data);
+                    if(!checked) {
+                        const target = document.getElementById('fileInput') as HTMLInputElement;
+                        target.value = "default.png";
+                    }
+                    const imgName = res.data;
+                    const fileName = imgName.substring(imgName.lastIndexOf("/") + 1, imgName.length);
+                    setProfileImg(fileName);
+                });
+        }
+    }
+
+    const onPicked = (e: any, data: IEmojiData) => {
+        setEmoji(data.emoji);
     }
 
     //Renders
@@ -88,109 +138,92 @@ const PostingModal = () => {
     //UseEffect
     useEffect(() => {
         setModifyMode(false);
+        setProfileImg(currentPosting.postingAttach);
+        setEmoji(currentPosting.postingEmoji);
         getComments();
-    },[currentPosting, currentWriter, refresh]);
+    }, [currentPosting, currentWriter, refresh, visible]);
 
-    if(modifyMode)
+    if (modifyMode)
         return (
-            <Grid as={Segment} textAlign={"left"} style={{width : "70vw", color : "black"}}>
-                <Grid.Row>
-                    <Grid.Column style={{width : "50%", height : "100%"}}>
-                        <Segment>
-                            <Form.Input value={currentPosting.postingTitle} fluid/>
-                        </Segment>
-                        <Segment>
-                            <Image style={{width : "100%"}} src={`/upload/images/${currentPosting.postingAttach}`} />
-                        </Segment>
-                    </Grid.Column>
-                    <Grid.Column textAlign={"center"} style={{width : "50%", height : "100%"}}>
-                        <Segment>
-                            <span>{new Date(currentPosting.postingReg).toDateString()}</span>
-                            <Segment style={{marginBottom : "10px"}}>
-                                <p style={{fontSize : "80px"}}>{currentPosting.postingEmoji}</p>
-                                <Label onClick={()=>handleProfile(currentWriter.username)} as={'a'} size={"massive"}>
-                                    <Image src={`/upload/images/${currentWriter.profileImg}`} avatar/>
-                                    {currentPosting.postingWriter}
-                                </Label>
-                            </Segment>
-                            <Form.TextArea style={{width : "100%", overflow : "auto", whiteSpace : "pre-line", fontSize : "16px", textAlign : "left"}}>
-                                {currentPosting.postingContent}
-                            </Form.TextArea>
-                        </Segment>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Segment style={{width : "100%", padding: "10px"}}>
-                        <Comment.Group as={Container}>
-                            <Header>댓글</Header>
-                            {comments?
-                                comments.map((comment, index) => {
-                                    return (
-                                        <PostingComment key={index} comment={comment}/>
-                                    )
-                                }) : ifNull}
-                            <Form id={"comment-form"} reply onSubmit={handleSubmit}>
-                                <Form.TextArea name={"commentContent"} required/>
-                                <Button type={"submit"} content='댓글 남기기' labelPosition='left' icon='edit' primary fluid/>
-                            </Form>
-                            <Button style={{marginTop : "40px"}} color={"red"} onClick={handleClose} fluid>닫기</Button>
-                            <Button style={{marginTop : "40px"}} color={"red"} onClick={handleDelete} fluid>변경</Button>
-                        </Comment.Group>
-                    </Segment>
-                </Grid.Row>
-            </Grid>
+            <Modal id={'posting-form'} as={Form} open={visible} style={{textAlign : "center"}} onSubmit={handleSubmit}>
+                <Modal.Content image>
+                    <Image wrapped src={`/upload/images/${profileImg}`} fluid/>
+                </Modal.Content>
+                <Modal.Content>
+                    <Modal.Description>
+                        <Form.Input type={'file'} onChange={onUpload}/>
+                        <Form.Input name={'posting_idx'} type={'hidden'} value={currentPosting.postingIdx}/>
+                        <Form.Input
+                            value={emoji}
+                            size={"massive"}
+                            name={"posting_emoji"}
+                            type={"text"}
+                            fluid
+                        />
+                        <EmojiPicker preload={true} onEmojiClick={onPicked}/>
+                        <Form.TextArea
+                            name={'posting_content'}
+                        >
+                            {currentPosting.postingContent}
+                        </Form.TextArea>
+                    </Modal.Description>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button type={"submit"}>수정</Button>
+                    <Button fluid onClick={()=>setModifyMode(false)}>취소</Button>
+                </Modal.Actions>
+            </Modal>
         )
 
-    if(!modifyMode)
+    if (!modifyMode)
         return (
-            <Grid as={Segment} textAlign={"left"} style={{width : "70vw", color : "black"}}>
-                <Grid.Row>
-                    <Grid.Column style={{width : "50%", height : "100%"}}>
-                        <Segment>
-                            <Header>{currentPosting.postingTitle}</Header>
-                        </Segment>
-                        <Segment>
-                            <Image style={{width : "100%"}} src={`/upload/images/${currentPosting.postingAttach}`} />
-                        </Segment>
-                    </Grid.Column>
-                    <Grid.Column textAlign={"center"} style={{width : "50%", height : "100%"}}>
-                        <Segment>
-                            <span>{new Date(currentPosting.postingReg).toDateString()}</span>
-                            <Segment style={{marginBottom : "10px"}}>
-                                <p style={{fontSize : "80px"}}>{currentPosting.postingEmoji}</p>
-                                <Label onClick={()=>handleProfile(currentWriter.username)} as={'a'} size={"massive"}>
-                                    <Image src={`/upload/images/${currentWriter.profileImg}`} avatar/>
-                                    {currentPosting.postingWriter}
-                                </Label>
-                            </Segment>
-                            <Segment style={{width : "100%", overflow : "auto", whiteSpace : "pre-line", fontSize : "16px", textAlign : "left"}}>
-                                {currentPosting.postingContent}
-                            </Segment>
-                        </Segment>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Segment style={{width : "100%", padding: "10px"}}>
+            <Modal open={visible} style={{textAlign : "center"}}>
+                <Modal.Content image>
+                    {currentPosting.postingAttach !== 'default.png' ? <Image wrapped src={`/upload/images/${currentPosting.postingAttach}`}fluid/> : null}
+                </Modal.Content>
+                <Modal.Content
+                    style={{
+                        overflow: "auto",
+                        whiteSpace: "pre-line",
+                        fontSize: "30px",
+                    }}
+                >
+                    {currentPosting.postingContent}
+                </Modal.Content>
+                <Modal.Header>
+                    <span style={{fontSize : "12px"}}>{new Date(currentPosting.postingReg).toDateString()}</span>
+                    <span style={{fontSize: "40px", display : "inline-block"}}>{currentPosting.postingEmoji}</span>
+                    <Label style={{width : "100%"}} onClick={() => handleProfile(currentWriter.username)} as={'a'} size={"massive"}>
+                        <Image src={`/upload/images/${currentWriter.profileImg}`} avatar/>
+                        {currentPosting.postingWriter}
+                    </Label>
+                </Modal.Header>
+
+                <Modal.Content style={{textAlign : "left"}}>
                     <Comment.Group as={Container}>
                         <Header>댓글</Header>
-                        {comments?
-                        comments.map((comment, index) => {
-                            return (
-                                <PostingComment key={index} comment={comment}/>
-                            )
-                        }) : ifNull}
-                        <Form id={"comment-form"} reply onSubmit={handleSubmit}>
+                        {comments ?
+                            comments.map((comment, index) => {
+                                return (
+                                    <PostingComment key={index} comment={comment}/>
+                                )
+                            }) : ifNull}
+                        <Form id={"comment-form"} reply onSubmit={handleCommentSubmit}>
                             <Form.TextArea name={"commentContent"} required/>
                             <Button type={"submit"} content='댓글 남기기' labelPosition='left' icon='edit' primary fluid/>
                         </Form>
-                        <Button style={{marginTop : "40px"}} color={"grey"} onClick={handleClose} fluid>닫기</Button>
+                        <Button style={{marginTop: "40px"}} color={"grey"} onClick={handleClose} fluid>닫기</Button>
                         {userInfo.username === currentPosting.postingWriter ?
                             <Button style={{marginTop: "40px"}} color={"red"} onClick={handleDelete} fluid>삭제</Button>
-                        : null}
+                            : null}
                     </Comment.Group>
-                    </Segment>
-                </Grid.Row>
-            </Grid>
+                </Modal.Content>
+                {/*{userInfo.username === currentPosting.postingWriter ?*/}
+                {/*    <Modal.Actions>*/}
+                {/*        <Button onClick={()=>setModifyMode(true)}>수정하기</Button>*/}
+                {/*    </Modal.Actions>*/}
+                {/*: null}*/}
+            </Modal>
         )
     else return <></> as JSX.Element
 }

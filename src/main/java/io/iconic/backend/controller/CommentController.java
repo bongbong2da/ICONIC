@@ -22,7 +22,7 @@ public class CommentController {
     @GetMapping("getComments")
     public ResponseEntity getComments(int idx) {
 
-        Optional<List<Comment>> result = commentRepository.getAllByPostingIdxOrderByCommentIdxDesc(idx);
+        Optional<List<Comment>> result = commentRepository.getAllByPostingIdxOrderByCommentIdxAsc(idx);
 
         return ResponseEntity.ok().body(result);
     }

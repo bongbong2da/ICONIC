@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Menu} from "semantic-ui-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/rootReducer";
-import {saveChannelIdx} from "../../redux/reducer/channelRedux";
-import {invertSidebarVisible} from "../../redux/reducer/sidebarReducer";
-import axios from "axios";
 import ChannelSideMenuItem from "./ChannelSideMenuItem";
 
 export type ChannelTypes = {

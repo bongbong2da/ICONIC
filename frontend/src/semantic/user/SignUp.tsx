@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {Button, Dimmer, Form, FormProps, Grid, Header, Message, Segment} from "semantic-ui-react";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {loginStatus, saveToken, saveUID, saveUserinfo} from "../../redux/reducer/userActions";
+import {loginStatus} from "../../redux/reducer/userActions";
 import {RootState} from "../../redux/rootReducer";
 import CheckMediaType from "../../util/CheckMediaType";
 
@@ -24,6 +24,8 @@ const SignUp = () => {
 
     //Method
     const signUp = (e: FormEvent<HTMLFormElement>, values: FormProps) => {
+        const passwordCheck = validatingPassword();
+        if(!passwordCheck) return;
         setLoading(true);
         axios.put("/user/signup", {username: username, password: password, profile_img : profileImg}, {})
             .then(res => {
@@ -61,6 +63,20 @@ const SignUp = () => {
         }
     };
 
+    const validatingPassword = () => {
+        const first = (document.getElementById("password") as HTMLInputElement);
+        const second = (document.getElementById("password-check") as HTMLInputElement);
+
+        if(first.value !== second.value) {
+            alert("입력하신 비밀번호가 다릅니다.");
+            first.value = '';
+            second.value = '';
+            first.focus();
+            return false;
+        }
+        return true;
+    }
+
     //Use Effect
     useEffect(() => {
     }, [isLogin, profileImg]);
@@ -85,20 +101,30 @@ const SignUp = () => {
                                         name="username"
                                         onChange={(e, {value}) => setUsername(value)}
                                         required
+                                        minLength="4"
                             >
 
                             </Form.Input>
                             <Form.Input fluid
                                         icon={'lock'}
+                                        id={'password'}
                                         iconPosition={"left"}
                                         label={"Password"}
                                         type={"password"}
                                         name="password"
                                         onChange={(e, {value}) => setPassword(value)}
                                         required
-                            >
-
-                            </Form.Input>
+                                        minLength="4"
+                            />
+                            <Form.Input fluid
+                                        id={'password-check'}
+                                        icon={'lock'}
+                                        iconPosition={"left"}
+                                        label={"Check Again"}
+                                        type={"password"}
+                                        onChange={(e, {value}) => setPassword(value)}
+                                        required
+                            />
                             <Form.Input fluid icon={'lock'}
                                         iconPosition={"left"}
                                         label={"Password"}
@@ -114,6 +140,11 @@ const SignUp = () => {
                             </Form.Button>
                         </Dimmer.Dimmable>
                     </Form>
+                    <Message style={{width: "100%", textAlign: "right"}}>
+                        <Button as={'a'} color={"linkedin"} href={'http://218.154.12.199:3000'}>
+                            Go Back
+                        </Button>
+                    </Message>
                 </Grid.Column>
             </Grid>
         )

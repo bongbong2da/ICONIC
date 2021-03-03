@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Container, Divider, Grid, Header, Image, Label} from "semantic-ui-react";
+import {Card, Divider, Grid, Image, Label} from "semantic-ui-react";
 import {ProfileTypes, setSelectedUser} from "../../redux/reducer/userActions";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {setDimming, setVisiblePostingModal, setVisibleProfile} from "../../redux/reducer/visibleReducer";
 import {setPostingCurrent, setPostingWriter} from "../../redux/reducer/postingReducer";
-import {refreshChannel} from "../../redux/reducer/refreshReducer";
 
 export type PostingTypes = {
     postingIdx: number
@@ -95,18 +94,18 @@ const Posting = ({posting}: PostingProps) => {
                     <Grid columns={commentsCount !== 0 && isNew ? 2 : 1} stackable>
                             {isNew ?
                                 <Grid.Column>
-                                <Label style={{width : "100%"}} color={"red"}>new</Label>
+                                <Label style={{width : "100%"}} color={"red"}>NEW 🌟</Label>
                                 </Grid.Column>
                                 : null}
                             {commentsCount !== 0 ?
                                 <Grid.Column>
-                                <Label style={{width : "100%"}} color={"teal"}>댓글 {commentsCount}개</Label>
+                                <Label style={{width : "100%"}} color={"teal"}>댓글 {commentsCount}개 🦜</Label>
                                 </Grid.Column>
                                 : null}
                     </Grid>
                 </Card.Header>
                     <Card.Meta>
-                        <Label style={{width : "100%", marginBottom : "10px", marginTop : "10px"}} size={"large"}>
+                        <Label style={{width : "100%", marginBottom : "10px", marginTop : "10px"}} size={"large"} color={"purple"}>
                             <Image src={writer.profileImg ? `/upload/images/${writer.profileImg}` : null} avatar/>
                             <span onClick={() => handleClickProfile(posting.postingWriter)}>{posting.postingWriter}</span>
                         </Label>
@@ -114,7 +113,7 @@ const Posting = ({posting}: PostingProps) => {
                         {new Date(posting.postingReg).toDateString()}
                     </Card.Meta>
                 <Divider/>
-                <Card.Description>
+                <Card.Description style={{fontSize : "20px", whiteSpace : "pre-line"}}>
                     {posting.postingContent}
                 </Card.Description>
             </Card.Content>

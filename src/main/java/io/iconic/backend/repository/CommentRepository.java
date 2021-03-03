@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-    Optional<List<Comment>> getAllByPostingIdxOrderByCommentIdxDesc(int idx);
+    Optional<List<Comment>> getAllByPostingIdxOrderByCommentIdxAsc(int idx);
 
     @Modifying
     @Transactional
