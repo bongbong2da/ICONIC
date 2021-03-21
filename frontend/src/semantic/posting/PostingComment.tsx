@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Comment, Segment} from "semantic-ui-react";
+import {Comment} from "semantic-ui-react";
 import axios from "axios";
 import {ProfileTypes} from "../../redux/reducer/userActions";
 import {useDispatch, useSelector} from "react-redux";
@@ -57,7 +57,7 @@ const PostingComment = ({comment} : PostingCommentProps) => {
     },[userInfo, comment]);
 
     return (
-        <Comment as={Segment}>
+        <Comment>
             <Comment.Avatar as={'a'} src={commentWriter.profileImg? `/upload/images/${commentWriter.profileImg}` : '/upload/images/default.png'}/>
             <Comment.Content>
                 <Comment.Author as={'a'} content={comment.commentWriter}/>

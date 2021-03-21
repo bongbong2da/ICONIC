@@ -105,8 +105,8 @@ const Posting = ({posting}: PostingProps) => {
                     </Grid>
                 </Card.Header>
                     <Card.Meta>
-                        <Label style={{width : "100%", marginBottom : "10px", marginTop : "10px"}} size={"large"} color={"purple"}>
-                            <Image src={writer.profileImg ? `/upload/images/${writer.profileImg}` : null} avatar/>
+                        <Label style={{width : "100%", marginBottom : "10px", marginTop : "10px"}} size={"large"} color={"black"} image>
+                            <Image src={writer.profileImg ? `/upload/images/${writer.profileImg}` : null}/>
                             <span onClick={() => handleClickProfile(posting.postingWriter)}>{posting.postingWriter}</span>
                         </Label>
                         <br/>

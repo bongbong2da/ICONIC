@@ -133,8 +133,8 @@ const PostingCreator = () => {
                 </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
-                <Button type={"submit"} color={"facebook"} fluid>작성하기</Button>
-                <Button onClick={(e) => handleClose(e)} fluid>닫기</Button>
+                <Button type={"submit"} color={"facebook"}>작성하기</Button>
+                <Button onClick={(e) => handleClose(e)}>닫기</Button>
             </Modal.Actions>
         </Modal>
     )

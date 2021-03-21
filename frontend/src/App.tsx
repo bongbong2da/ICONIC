@@ -3,7 +3,7 @@ import 'semantic-ui-css/semantic.min.css';
 import Main from "./semantic/layout/Main";
 import SignIn from "./semantic/user/SignIn";
 import AuthChecker from "./semantic/user/AuthChecker";
-import {Button, Dimmer, Loader} from "semantic-ui-react";
+import {Dimmer, Loader} from "semantic-ui-react";
 import {useSelector} from "react-redux";
 import {RootState} from "./redux/rootReducer";
 import axios from "axios";
