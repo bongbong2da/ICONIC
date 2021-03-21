@@ -1,15 +1,15 @@
 create table users(
                       id double primary key ,
-                      username varchar(4000),
-                      password varchar(4000),
+                      username text,
+                      password text,
                       regdate datetime default sysdate(),
-                      profile_img varchar(4000),
+                      profile_img text,
                       logindate datetime
 );
 
 create table roles(
                       id double primary key ,
-                      name varchar(4000)
+                      name text
 );
 
 create sequence seq_user_idx
@@ -31,12 +31,12 @@ create sequence seq_channel_idx
 create table posting (
                          posting_idx double primary key ,
                          posting_chan_idx double,
-                         posting_title varchar(4000),
-                         posting_writer varchar(4000),
-                         posting_emoji varchar(4000),
-                         posting_content varchar(4000),
+                         posting_title text,
+                         posting_writer text,
+                         posting_emoji text,
+                         posting_content text,
                          posting_isAttached char(1),
-                         posting_attach varchar(4000),
+                         posting_attach text,
                          posting_reg datetime
 );
 
@@ -48,10 +48,10 @@ create sequence seq_posting_idx
 create table posting_comment (
                                  comment_idx double primary key ,
                                  posting_idx double,
-                                 comment_emoji varchar(4000),
-                                 comment_content varchar(4000),
+                                 comment_emoji text,
+                                 comment_content text,
                                  comment_reg datetime default sysdate(),
-                                 comment_writer varchar(4000)
+                                 comment_writer text
 );
 
 create sequence seq_comment_idx
@@ -60,13 +60,13 @@ create sequence seq_comment_idx
     increment by 1;
 
 create table users_friends (
-                               username varchar(4000),
-                               friendName varchar(4000)
+                               username text,
+                               friendName text
 );
 
 create table users_channel (
                                idx double primary key,
-                               username varchar(4000),
+                               username text,
                                channel_idx double
 );
 
@@ -77,9 +77,9 @@ create sequence seq_users_channel_idx
 
 create table log_request (
                              idx double primary key ,
-                             ip varchar(4000),
-                             method varchar(4000),
-                             url varchar(4000),
+                             ip text,
+                             method text,
+                             url text,
                              regDate datetime default sysdate()
 );
 
@@ -90,15 +90,15 @@ create sequence seq_log_request
 
 create table channels (
                           chan_idx double primary key,
-                          chan_type varchar(4000),
-                          chan_name varchar(4000),
-                          chan_emoji varchar(4000),
+                          chan_type text,
+                          chan_name text,
+                          chan_emoji text,
                           chan_pop_max double,
-                          chan_announce varchar(4000),
-                          chan_manager varchar(4000),
+                          chan_announce text,
+                          chan_manager text,
                           chan_isPublic char(1),
                           chan_reg datetime,
-                          chan_code varchar(4000)
+                          chan_code text
 );
 
 insert into channels values (1, 'public', '공용 채널', '🦔', 50, '테스트 공지사항', 'test', 'y', sysdate());
