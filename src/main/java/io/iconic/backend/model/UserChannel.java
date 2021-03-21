@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "users_channel")
 @ToString
 @Data
-@SequenceGenerator(name = "gen_seq_users_channel",
-sequenceName = "seq_users_channel",
+@SequenceGenerator(name = "gen_seq_users_channel_idx",
+sequenceName = "seq_users_channel_idx",
 allocationSize = 1,
 initialValue = 2)
 public class UserChannel {
@@ -26,7 +26,7 @@ public class UserChannel {
 
     @Id
     @Column(name = "idx")
-    @GeneratedValue(generator = "gen_seq_users_channel", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "gen_seq_users_channel_idx", strategy = GenerationType.SEQUENCE)
     private int idx;
 
     public UserChannel() {
