@@ -101,6 +101,6 @@ create table channels (
                           chan_code text
 );
 
-insert into channels values (1, 'public', '공용 채널', '🦔', 50, '테스트 공지사항', 'test', 'y', sysdate());
-insert into channels values (2, 'users', '맹글어온 채널', '🍀', 50, '테스트 공지사항', 'test', 'y', sysdate());
+insert into channels values (1, 'public', '공용 채널', '^^', 50, '테스트 공지사항', 'test', 'y', sysdate(), 'WELCOME');
+insert into channels values (2, 'created', '맹글어온 채널', '🍀', 50, '테스트 공지사항', 'test', 'y', sysdate(), 'TESTEST');
 commit;

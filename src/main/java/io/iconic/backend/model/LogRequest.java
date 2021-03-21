@@ -19,7 +19,7 @@ public class LogRequest {
     @Id
     @Column(name = "idx")
     @GeneratedValue(generator = "gen_seq_log_request",
-                    strategy = GenerationType.SEQUENCE)
+                    strategy = GenerationType.IDENTITY)
     private int idx;
 
     @Column(name = "ip")

@@ -22,7 +22,7 @@ public class Comment {
 
     @Id
     @Column(name = "comment_idx")
-    @GeneratedValue(generator = "gen_seq_comment_idx", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "gen_seq_comment_idx", strategy = GenerationType.IDENTITY)
     private int commentIdx;
 
     @Column(name = "posting_idx")

@@ -24,7 +24,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+    @GeneratedValue(strategy = GenerationType.IDENTITY,
     generator = "seq_user_idx_gen")
     private Integer id;
 

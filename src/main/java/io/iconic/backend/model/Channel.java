@@ -21,7 +21,7 @@ public class Channel {
 
     @Id
     @Column(name = "chan_idx")
-    @GeneratedValue(generator = "gen_seq_channel_idx", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "gen_seq_channel_idx", strategy = GenerationType.IDENTITY)
     private int chanIdx;
 
     @Column(name = "chan_type")

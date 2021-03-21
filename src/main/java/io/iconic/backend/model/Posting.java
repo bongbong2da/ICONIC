@@ -18,7 +18,7 @@ allocationSize = 1)
 public class Posting {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+    @GeneratedValue(strategy = GenerationType.IDENTITY,
                     generator = "seq_posting_idx_gen")
     @Column (name = "posting_idx")
     private int postingIdx;
