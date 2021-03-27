@@ -1,18 +1,12 @@
 FROM node:latest
 
-CMD ["cd", "frontend"]
-
-RUN npm install -g npm@7.7.5
-RUN npm run build
-
+RUN mkdir /app
 WORKDIR /app
-
-COPY ./ /app
-
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json /app/package.json
 RUN npm install
-
-COPY ./build /app/build
+EXPOSE 80
+COPY . /app
 
 RUN npx serve -s build
 
-EXPOSE 80
