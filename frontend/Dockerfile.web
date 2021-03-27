@@ -5,7 +5,7 @@ RUN npm install react-scripts@3.0.1 -g
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY ./package.json ./package-lock.json /app/
-RUN npm install
-EXPOSE 80
+RUN npm install --production
+EXPOSE $PORT
 COPY . /app
-RUN heroku local web
+RUN npx serve -s
