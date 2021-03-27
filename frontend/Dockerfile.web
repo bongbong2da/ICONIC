@@ -8,5 +8,3 @@ COPY ./package.json ./package-lock.json /app/
 RUN npm install
 EXPOSE 80
 COPY . /app
-
-RUN npx serve -s -p 80 build
