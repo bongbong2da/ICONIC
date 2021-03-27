@@ -1,14 +1,15 @@
 FROM node:latest
 
-WORKDIR /frontend
+RUN npm run build
 
-COPY ./ ./
+WORKDIR /app
+
+COPY ./ /app
 
 RUN npm install -g npm
 RUN npm install
-RUN npm run build
 
-COPY ./build ./build
+COPY ./build /app/build
 
 RUN npx serve -s build
 
