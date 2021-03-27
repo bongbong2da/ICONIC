@@ -1,23 +1,22 @@
-version: "3"
+version: "2"
 
 services:
-  frontend:
-    container_name: iconic-frontend
-    build:
-      context: ./frontend
-      dockerfile: ./Dockerfile
+  iconic-jenkins:
+    image: custom-jenkins
+    user: root
+    volumes:
+      - ~/jenkins:/var/jenkins_home
+      - ~/.aws:/root/.aws
     ports:
-      - "3000:3000"
-    image: bongdev/iconic-frontend
+      - "8081:8080"
 
-  backend:
-    container_name: iconic-backend
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+  iconic-mariaDB:
+    image: mariadb
+    user: root
+    environment:
+      MYSQL_ROOT_PASSWORD : '1234'
     ports:
-    - "9080:9080"
-    image: bongdev/iconic-backend
+      - "4406:3306"
 
 
 #    volumes:

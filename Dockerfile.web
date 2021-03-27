@@ -1,0 +1,10 @@
+FROM node:latest
+
+WORKDIR /frontend
+
+RUN npm install -g npm
+RUN npm install
+RUN npm install -g serve
+RUN serve -s build
+
+EXPOSE 80
