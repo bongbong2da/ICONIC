@@ -4,7 +4,10 @@ WORKDIR /frontend
 
 RUN npm install -g npm
 RUN npm install
-RUN npm install -g serve
-RUN npm run start
+RUN npm run build
+
+COPY ./build ./build
+
+RUN npx serve -s build
 
 EXPOSE 80
