@@ -4,5 +4,6 @@ WORKDIR /app
 COPY . .
 ENV PATH node_modules/.bin:$PATH
 RUN npm install --production
+npm i --save-dev @types/react-redux
 RUN npm run build
 RUN npx serve -s -p $PORT dist
