@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY ./ /app
 
-RUN npm install -g npm
+RUN npm install -g npm@7.7.5
 RUN npm install
 
 COPY ./build /app/build
