@@ -6,6 +6,6 @@ ARG JAR_FILE=target/*.jar
 
 COPY ${JAR_FILE} iconic-backend.jar
 
-EXPOSE 9080
+EXPOSE $PORT
 
 ENTRYPOINT ["java", "-jar","-Dfile.encoding=UTF-8", "iconic-backend.jar"]
