@@ -1,12 +1,12 @@
 FROM node:latest
 
+RUN npm install -g npm@7.7.5
 RUN npm run build
 
 WORKDIR /app
 
 COPY ./ /app
 
-RUN npm install -g npm@7.7.5
 RUN npm install
 
 COPY ./build /app/build
