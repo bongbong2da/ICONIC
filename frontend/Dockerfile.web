@@ -2,10 +2,10 @@ FROM node:latest
 
 RUN mkdir /app
 RUN npm install react-scripts@3.0.1 -g
+COPY ./package.json ./package-lock.json /app/
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-COPY ./package.json ./package-lock.json /app/
 RUN npm install --production
 RUN npm run build
-COPY . /app
+COPY . .
 RUN npx serve -s -p $PORT dist
