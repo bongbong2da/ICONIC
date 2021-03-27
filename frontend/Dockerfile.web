@@ -1,7 +1,6 @@
 FROM node:latest
 
 RUN mkdir /app
-RUN npm install webpack webpack-cli
 RUN npm install react-scripts@3.0.1 -g
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
