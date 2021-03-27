@@ -4,10 +4,9 @@ RUN mkdir /app
 RUN npm install react-scripts@3.0.1 -g
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-COPY ./package.json /app/package.json
-RUN npm install --force
+COPY ./package.json ./package-lock.json /app/
+RUN npm install
 EXPOSE 80
 COPY . /app
 
 RUN npx serve -s build
-
