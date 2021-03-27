@@ -9,4 +9,4 @@ RUN npm install
 EXPOSE 80
 COPY . /app
 
-RUN npx serve -s build
+RUN npx serve -s -p 80 build
