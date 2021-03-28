@@ -1,29 +1,12 @@
-#FROM node:latest
-#
-#WORKDIR /
-#
-#ENV PATH /app/node_modules/.bin:$PATH
-#
-#COPY package*.json ./
-#
-#RUN npm install
-#
-#COPY ./ ./
-#
-#EXPOSE 3000
-#
-#CMD ["npm", "start"]
-
 FROM node:latest
 
-WORKDIR /app
+WORKDIR ./app
 
-RUN mkdir ./build
-COPY ./build ./build
+RUN echo "start"
 
-EXPOSE 3000
+COPY . .
 
 RUN npm install
 RUN npm run build
 
-ENTRYPOINT ["npx", "serve", "-l", "3000", "-s", "build"]
+CMD ["npx","serve", "-s", "build"]

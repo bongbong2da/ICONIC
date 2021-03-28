@@ -31,7 +31,7 @@ const SignUp = () => {
             .then(res => {
                 console.log(res.data)
                 alert("회원가입이 완료되었습니다.");
-                window.location.href = "http://218.154.12.199:3000";
+                window.location.href = "http://localhost:8080";
             })
             .catch(e => {
                 console.log(e.data);
@@ -86,7 +86,7 @@ const SignUp = () => {
         return (
             <Grid textAlign={"center"} style={{height: "100vh"}}>
                 <Grid.Column style={{maxWidth: 450, marginTop: 150}}>
-                    <Header as={'a'} href={"http://218.154.12.199:3000"} color={"teal"}>
+                    <Header as={'a'} href={"http://localhost:8080"} color={"teal"}>
                         🏄🏻 ICONIC
                     </Header>
                     <Form
@@ -141,7 +141,7 @@ const SignUp = () => {
                         </Dimmer.Dimmable>
                     </Form>
                     <Message style={{width: "100%", textAlign: "right"}}>
-                        <Button as={'a'} color={"linkedin"} href={'http://218.154.12.199:3000'}>
+                        <Button as={'a'} color={"linkedin"} href={'http://localhost:8080'}>
                             Go Back
                         </Button>
                     </Message>

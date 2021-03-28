@@ -48,7 +48,7 @@ const SignIn = () => {
     }
 
     const handleSignUp = () => {
-        window.location.href = "http://218.154.12.199:3000/signup";
+        window.location.href = "http://localhost:8080/signup";
     }
 
     //Use Effect
