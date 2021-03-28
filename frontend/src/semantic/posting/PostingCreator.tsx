@@ -103,7 +103,7 @@ const PostingCreator = () => {
                         글쓰기
                     </Modal.Header>
             <Modal.Content image>
-                {profileImg !== 'default.png' ? <Image style={{display : "inline-block"}} src={`/upload/images/${profileImg}`} fluid/> : null}
+                {profileImg !== 'default.png' ? <Image style={{display : "inline-block"}} src={`http://localhost:8080/${profileImg}`} fluid/> : null}
             </Modal.Content>
             <Modal.Content>
                 <Modal.Description style={{textAlign : "center"}}>

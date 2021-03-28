@@ -78,8 +78,8 @@ const Posting = ({posting}: PostingProps) => {
                 <>
                     <Image
                         src={posting.postingAttach ?
-                            `/upload/images/${posting.postingAttach}`
-                            : `/upload/images/default.png`
+                            `http://localhost:8080/${posting.postingAttach}`
+                            : `http://localhost:8080/default.png`
                         }
                         wrapped
                         ui={false}
@@ -106,7 +106,7 @@ const Posting = ({posting}: PostingProps) => {
                 </Card.Header>
                     <Card.Meta>
                         <Label style={{width : "100%", marginBottom : "10px", marginTop : "10px"}} size={"large"} color={"black"} image>
-                            <Image src={writer.profileImg ? `/upload/images/${writer.profileImg}` : null}/>
+                            <Image src={writer.profileImg ? `http://localhost:8080/${writer.profileImg}` : null}/>
                             <span onClick={() => handleClickProfile(posting.postingWriter)}>{posting.postingWriter}</span>
                         </Label>
                         <br/>

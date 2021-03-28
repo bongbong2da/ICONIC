@@ -60,7 +60,7 @@ const Profile = () => {
         return (
             <Modal open={visible}>
                 <Modal.Content image>
-                    <Image wrapped src={user.profileImg ? `/upload/images/${user.profileImg}` : null}/>
+                    <Image wrapped src={user.profileImg ? `http://localhost:8080/${user.profileImg}` : null}/>
                     <Modal.Description>
                             <p>Username : {user.username}</p>
                             <p>Last Login : {new Date(user.logindate).toString()}</p>

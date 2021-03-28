@@ -55,7 +55,7 @@ public class UploadController {
 
 //        String rootPath = uploadDir + "/images/";
 
-        String rootPath = "d:/dev/iconic-upload/images/";
+        String rootPath = uploadDir;
 
         UUID uuid = UUID.randomUUID();
 
