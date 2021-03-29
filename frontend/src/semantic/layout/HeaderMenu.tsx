@@ -71,7 +71,7 @@ const HeaderMenu = () => {
                     채널 참가 👋🏻
                 </Menu.Item>
                 <Menu.Item as={"a"} onClick={handleProfile}>
-                    <Image src={userInfo.profileImg ? `http://localhost:8080/${userInfo.profileImg}` : null} avatar/>
+                    <Image src={userInfo.profileImg ? `http://localhost:8080/upload/${userInfo.profileImg}` : null} avatar/>
                     <span>{userInfo.username}</span>
                 </Menu.Item>
                 <Menu.Item as={"a"} onClick={logout}>

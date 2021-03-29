@@ -1,6 +1,9 @@
 package io.iconic.backend.controller;
 
+import io.iconic.backend.model.Image;
+import io.iconic.backend.repository.UploadRepository;
 import org.imgscalr.Scalr;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,9 @@ public class UploadController {
 
     @Value("${file.upload-dir}")
     String uploadDir;
+
+    @Autowired
+    private UploadRepository uploadRepository;
 
     @PostMapping("/preUpload")
     public ResponseEntity preUpload(@RequestPart MultipartFile multipartFile, HttpServletRequest request) throws IOException {
@@ -45,38 +51,66 @@ public class UploadController {
 
     @PostMapping("/uploadImage")
     public ResponseEntity uploadImage(@RequestParam("multipartFile") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
-        String originalName = multipartFile.getOriginalFilename();
-        String ext = originalName.substring(originalName.lastIndexOf(".") + 1, originalName.length());
-        System.out.println("Request file name : " + originalName);
 
-//        String rootPath = request.getSession().getServletContext().getRealPath("/resources/upload/");
-
-//        System.out.println(ServletUriComponentsBuilder.fromCurrentContextPath().toUriString());
-
-//        String rootPath = uploadDir + "/images/";
-
-        String rootPath = uploadDir;
+        byte[] originalImage = multipartFile.getBytes();
 
         UUID uuid = UUID.randomUUID();
 
-        String filePath = rootPath + uuid.toString() + multipartFile.getOriginalFilename();
+        Image willSavedImage = new Image();
 
-        System.out.println("Saving path : " + filePath);
+        willSavedImage.setImageUuid(uuid.toString());
+        willSavedImage.setImageBytes(originalImage);
 
-        File target = new File(filePath);
+        uploadRepository.save(willSavedImage);
 
-        multipartFile.transferTo(target);
+        return ResponseEntity.ok().body(uuid.toString());
 
-        if(ext.equals("gif")) return ResponseEntity.ok().body(filePath);
-
-        BufferedImage bufferedImage = ImageIO.read(target);
-
-        bufferedImage = Scalr.crop(bufferedImage, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
-
-        ImageIO.write(Scalr.resize(bufferedImage, 1500), ext, target);
-
-        System.out.println("Uploaded Successfully : " + filePath);
-
-        return ResponseEntity.ok().body(filePath);
     }
+
+    @GetMapping("{uuid}")
+    public byte[] getImage(@PathVariable("uuid") String uuid) {
+        System.out.println("REQ URI========" + uuid);
+
+        Image image = uploadRepository.getByImageUuid(uuid);
+
+        return image.getImageBytes();
+    }
+
+
+//    @PostMapping("/uploadImage")
+//    public ResponseEntity uploadImage(@RequestParam("multipartFile") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+//        String originalName = multipartFile.getOriginalFilename();
+//        String ext = originalName.substring(originalName.lastIndexOf(".") + 1, originalName.length());
+//        System.out.println("Request file name : " + originalName);
+//
+////        String rootPath = request.getSession().getServletContext().getRealPath("/resources/upload/");
+//
+////        System.out.println(ServletUriComponentsBuilder.fromCurrentContextPath().toUriString());
+//
+////        String rootPath = uploadDir + "/images/";
+//
+//        String rootPath = uploadDir;
+//
+//        UUID uuid = UUID.randomUUID();
+//
+//        String filePath = rootPath + uuid.toString() + multipartFile.getOriginalFilename();
+//
+//        System.out.println("Saving path : " + filePath);
+//
+//        File target = new File(filePath);
+//
+//        multipartFile.transferTo(target);
+//
+//        if(ext.equals("gif")) return ResponseEntity.ok().body(filePath);
+//
+//        BufferedImage bufferedImage = ImageIO.read(target);
+//
+//        bufferedImage = Scalr.crop(bufferedImage, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
+//
+//        ImageIO.write(Scalr.resize(bufferedImage, 1500), ext, target);
+//
+//        System.out.println("Uploaded Successfully : " + filePath);
+//
+//        return ResponseEntity.ok().body(filePath);
+//    }
 }

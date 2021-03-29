@@ -55,11 +55,11 @@ const PostingCreator = () => {
             })
                 .then(res => {
                     console.log(res.data);
-                    const checked = CheckMediaType(res.data);
-                    if(!checked) {
-                        const target = document.getElementById('fileInput') as HTMLInputElement;
-                        target.value = "default.png";
-                    }
+                    // const checked = CheckMediaType(res.data);
+                    // if(!checked) {
+                    //     const target = document.getElementById('fileInput') as HTMLInputElement;
+                    //     target.value = "default.png";
+                    // }
                     const imgName = res.data;
                     const fileName = imgName.substring(imgName.lastIndexOf("/") + 1, imgName.length);
                     setProfileImg(fileName);
@@ -103,7 +103,7 @@ const PostingCreator = () => {
                         글쓰기
                     </Modal.Header>
             <Modal.Content image>
-                {profileImg !== 'default.png' ? <Image style={{display : "inline-block"}} src={`http://localhost:8080/${profileImg}`} fluid/> : null}
+                {profileImg !== 'default.png' ? <Image style={{display : "inline-block"}} src={`http://localhost:8080/upload/${profileImg}`} fluid/> : null}
             </Modal.Content>
             <Modal.Content>
                 <Modal.Description style={{textAlign : "center"}}>

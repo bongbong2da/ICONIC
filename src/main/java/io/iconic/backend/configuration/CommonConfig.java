@@ -19,8 +19,8 @@ public class CommonConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/upload/**")
-                .addResourceLocations(uploadDir);
+//        registry.addResourceHandler("/upload/**")
+//                .addResourceLocations(uploadDir);
     }
 
 }
