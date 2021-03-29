@@ -14,7 +14,7 @@ const App = () => {
     const loadingRedirect = useSelector((state : RootState) => state.loading.redirect);
 
     //axios config
-    axios.defaults.baseURL = "http://localhost:8080";
+    axios.defaults.baseURL = "http://iconic-backend.herokuapp.com";
 
     AuthChecker();
 

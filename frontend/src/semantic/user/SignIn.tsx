@@ -48,7 +48,7 @@ const SignIn = () => {
     }
 
     const handleSignUp = () => {
-        window.location.href = "http://localhost:8080/signup";
+        window.location.href = "http://iconic-backend.herokuapp.com/signup";
     }
 
     //Use Effect

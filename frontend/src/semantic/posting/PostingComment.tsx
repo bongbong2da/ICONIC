@@ -58,7 +58,7 @@ const PostingComment = ({comment} : PostingCommentProps) => {
 
     return (
         <Comment>
-            <Comment.Avatar as={'a'} src={commentWriter.profileImg? `http://localhost:8080/upload/${commentWriter.profileImg}` : 'http://localhost:8080/upload/default.png'}/>
+            <Comment.Avatar as={'a'} src={commentWriter.profileImg? `http://iconic-backend.herokuapp.com/upload/${commentWriter.profileImg}` : 'http://iconic-backend.herokuapp.com/upload/default.png'}/>
             <Comment.Content>
                 <Comment.Author as={'a'} content={comment.commentWriter}/>
                 <Comment.Metadata content={new Date(comment.commentReg).toDateString()}/>

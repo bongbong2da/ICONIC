@@ -147,7 +147,7 @@ const PostingModal = () => {
         return (
             <Modal id={'posting-form'} as={Form} open={visible} style={{textAlign : "center"}} onSubmit={handleSubmit}>
                 <Modal.Content image>
-                    <Image wrapped src={`http://localhost:8080/upload/${profileImg}`} fluid/>
+                    <Image wrapped src={`http://iconic-backend.herokuapp.com/upload/${profileImg}`} fluid/>
                 </Modal.Content>
                 <Modal.Content>
                     <Modal.Description>
@@ -179,7 +179,7 @@ const PostingModal = () => {
         return (
             <Modal open={visible} style={{textAlign : "center"}}>
                 <Modal.Content image>
-                    {currentPosting.postingAttach !== 'default.png' ? <Image wrapped src={`http://localhost:8080/upload/${currentPosting.postingAttach}`}fluid/> : null}
+                    {currentPosting.postingAttach !== 'default.png' ? <Image wrapped src={`http://iconic-backend.herokuapp.com/upload/${currentPosting.postingAttach}`}fluid/> : null}
                 </Modal.Content>
                 <Modal.Content
                     style={{
@@ -194,7 +194,7 @@ const PostingModal = () => {
                     <span style={{fontSize : "12px"}}>{new Date(currentPosting.postingReg).toDateString()}</span>
                     <span style={{fontSize: "40px", display : "inline-block"}}>{currentPosting.postingEmoji}</span>
                     <Label style={{width : "100%"}} onClick={() => handleProfile(currentWriter.username)} as={'a'} size={"massive"}>
-                        <Image src={`http://localhost:8080/upload/${currentWriter.profileImg}`} avatar/>
+                        <Image src={`http://iconic-backend.herokuapp.com/upload/${currentWriter.profileImg}`} avatar/>
                         {currentPosting.postingWriter}
                     </Label>
                 </Modal.Header>
