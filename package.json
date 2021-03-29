@@ -6,8 +6,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "cd frontend && craco start",
-    "build": "cd frontend && craco build",
+    "start": "craco frontend/start",
+    "build": "craco frontend/build",
     "test": "craco test",
     "eject": "react-scripts eject"
   }
