@@ -39,9 +39,6 @@ public class JwtUtils {
 
     public boolean validateJwtToken(String token) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException {
 
-//        log.info("Validating Token : " + token);
-//        log.info("Validating With : " + jwtSecret);
-
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
