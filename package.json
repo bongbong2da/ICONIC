@@ -6,6 +6,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "cd frontend"
+    "start": "cd frontend && npm install && npm run build && npx serve -s build"
   }
 }
