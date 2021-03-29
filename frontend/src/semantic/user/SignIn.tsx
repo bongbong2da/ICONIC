@@ -8,6 +8,8 @@ import {setLoadingRedirect} from "../../redux/reducer/loadingReducer";
 
 const SignIn = () => {
 
+    axios.defaults.baseURL="http://iconic-backend.herokuapp.com"
+
     //States
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -48,7 +50,7 @@ const SignIn = () => {
     }
 
     const handleSignUp = () => {
-        window.location.href = "http://iconic-backend.herokuapp.com/signup";
+        window.location.href = "http://iconic-frontend.herokuapp.com/signup";
     }
 
     //Use Effect

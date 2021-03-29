@@ -14,7 +14,7 @@ const store = createStore(rootReducer , composeEnhancers());
 
 
 ReactDOM.render(
-    <BrowserRouter>
+    <BrowserRouter >
         <Provider store={store}>
             <Route exact path={"/"} component={App}/>
             <Route path={"/signup"} component={SignUp}/>

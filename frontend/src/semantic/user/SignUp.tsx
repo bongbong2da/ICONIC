@@ -8,6 +8,8 @@ import CheckMediaType from "../../util/CheckMediaType";
 
 const SignUp = () => {
 
+    axios.defaults.baseURL="http://iconic-backend.herokuapp.com"
+
     //States
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -31,7 +33,7 @@ const SignUp = () => {
             .then(res => {
                 console.log(res.data)
                 alert("회원가입이 완료되었습니다.");
-                window.location.href = "http://iconic-backend.herokuapp.com";
+                window.location.href = "http://iconic-frontend.herokuapp.com";
             })
             .catch(e => {
                 console.log(e.data);
