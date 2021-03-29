@@ -101,6 +101,17 @@ create table channels (
                           chan_code text
 );
 
+create table images (
+                        image_idx int primary key ,
+                        image_uuid text,
+                        image_bytes LONGBLOB
+);
+
+create sequence seq_images_idx
+    start with 0
+    increment by 1
+    minvalue 0;
+
 insert into roles values (1, 'ROLE_USER');
 insert into roles values (2, 'ROLE_MODERATOR');
 insert into roles values (3, 'ROLE_ADMIN');

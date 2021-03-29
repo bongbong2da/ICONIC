@@ -12,7 +12,6 @@ import {BrowserRouter, Route} from "react-router-dom";
 const composeEnhancers = composeWithDevTools({trace: true, traceLimit: 25 });
 const store = createStore(rootReducer , composeEnhancers());
 
-
 ReactDOM.render(
     <BrowserRouter >
         <Provider store={store}>

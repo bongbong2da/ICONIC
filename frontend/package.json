@@ -38,10 +38,8 @@
     "test": "craco test",
     "eject": "react-scripts eject"
   },
-  "proxy": [
+  "proxy":
     "http://localhost:8080",
-    "http://iconic-backend.herokuapp.com"
-  ],
   "eslintConfig": {
     "extends": [
       "react-app",
