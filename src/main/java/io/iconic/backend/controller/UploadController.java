@@ -54,7 +54,9 @@ public class UploadController {
     @PostMapping("/uploadImage")
     public ResponseEntity uploadImage(@RequestParam("multipartFile") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
 
-        byte[] originalImage = multipartFile.getBytes();
+        String originalName = multipartFile.getOriginalFilename();
+
+        String ext = originalName.substring(originalName.lastIndexOf(".") + 1, originalName.length());
 
         InputStream input = new ByteArrayInputStream(multipartFile.getBytes());
 
@@ -64,7 +66,7 @@ public class UploadController {
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-        ImageIO.write(Scalr.resize(bufferedImage, 1500), "temp", output);
+        ImageIO.write(Scalr.resize(bufferedImage, 1500), ext, output);
 
         UUID uuid = UUID.randomUUID();
 
