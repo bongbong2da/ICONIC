@@ -2,6 +2,7 @@ package io.iconic.backend.controller;
 
 import io.iconic.backend.model.Image;
 import io.iconic.backend.repository.UploadRepository;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
 
 @RestController
@@ -54,12 +56,22 @@ public class UploadController {
 
         byte[] originalImage = multipartFile.getBytes();
 
+        File file = new File("/temp");
+
+        multipartFile.transferTo(file);
+
+        BufferedImage bufferedImage = ImageIO.read(file);
+
+        bufferedImage = Scalr.crop(bufferedImage, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
+
+        ImageIO.write(Scalr.resize(bufferedImage, 1500), multipartFile.getOriginalFilename(), file);
+
         UUID uuid = UUID.randomUUID();
 
         Image willSavedImage = new Image();
 
         willSavedImage.setImageUuid(uuid.toString());
-        willSavedImage.setImageBytes(originalImage);
+        willSavedImage.setImageBytes(Files.readAllBytes(file.toPath()));
 
         uploadRepository.save(willSavedImage);
 
