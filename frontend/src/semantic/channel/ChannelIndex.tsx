@@ -5,6 +5,7 @@ import {Container, Header, Segment} from "semantic-ui-react";
 import ChannelPostings from "./ChannelPostings";
 import ChannelHeader from "./ChannelHeader";
 
+
 const ChannelIndex = () => {
 
     //Redux
