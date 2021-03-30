@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.UUID;
 
@@ -56,22 +56,24 @@ public class UploadController {
 
         byte[] originalImage = multipartFile.getBytes();
 
-        File file = new File("/temp");
+        InputStream input = new ByteArrayInputStream(multipartFile.getBytes());
 
-        multipartFile.transferTo(file);
-
-        BufferedImage bufferedImage = ImageIO.read(file);
+        BufferedImage bufferedImage = ImageIO.read(input);
 
         bufferedImage = Scalr.crop(bufferedImage, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
 
-        ImageIO.write(Scalr.resize(bufferedImage, 1500), multipartFile.getOriginalFilename(), file);
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        ImageIO.write(Scalr.resize(bufferedImage, 1500), "temp", (ImageOutputStream) output);
 
         UUID uuid = UUID.randomUUID();
 
         Image willSavedImage = new Image();
 
+        byte[] convertedImage = output.toByteArray();
+
         willSavedImage.setImageUuid(uuid.toString());
-        willSavedImage.setImageBytes(Files.readAllBytes(file.toPath()));
+        willSavedImage.setImageBytes(convertedImage);
 
         uploadRepository.save(willSavedImage);
 
