@@ -64,7 +64,7 @@ public class UploadController {
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-        ImageIO.write(Scalr.resize(bufferedImage, 1500), "temp", (ImageOutputStream) output);
+        ImageIO.write(Scalr.resize(bufferedImage, 1500), "temp", output);
 
         UUID uuid = UUID.randomUUID();
 
