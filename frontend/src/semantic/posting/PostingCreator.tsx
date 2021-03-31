@@ -110,7 +110,7 @@ const PostingCreator = () => {
             </Modal.Content>
             <Modal.Content>
                 <Modal.Description style={{textAlign : "center"}}>
-                    <Input id={"fileInput"} name={"upload"} type={"file"} onChange={onUpload} accept={"image/*|video/*"} fluid/>
+                    <Input id={"fileInput"} name={"upload"} type={"file"} onChange={onUpload} accept={"image/*"} fluid/>
                     <Input name={"posting_chan_idx"} type={"hidden"} value={currentChanIdx}/>
                     <Input name={"posting_attach"} type={"hidden"} id={"posting-attach"} value={profileImg}/>
                     <Input name={"posting_isAttached"} type={"hidden"} id={"posting-isAttached"} value={'y'}/>

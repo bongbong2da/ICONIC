@@ -26,6 +26,14 @@ const SignUp = () => {
 
     //Method
     const signUp = (e: FormEvent<HTMLFormElement>, values: FormProps) => {
+        const inputUsername = (document.getElementById("username") as HTMLInputElement);
+        const cheackId = regExpId.test(inputUsername.value);
+        if(!cheackId) {
+            alert("아이디는 영소문자와 숫자만 가능합니다.");
+            inputUsername.value = "";
+            inputUsername.focus();
+            return;
+        }
         const passwordCheck = validatingPassword();
         if(!passwordCheck) return;
         setLoading(true);
@@ -82,6 +90,9 @@ const SignUp = () => {
         return true;
     }
 
+    //ID EXP
+    var regExpId = /^[0-9a-z]+$/;
+
     //Use Effect
     useEffect(() => {
     }, [isLogin, profileImg]);
@@ -100,6 +111,7 @@ const SignUp = () => {
                     >
                         <Dimmer.Dimmable as={Segment} dimmed={loading} stacked>
                             <Form.Input fluid
+                                        id={"username"}
                                         icon={'user'}
                                         iconPosition={"left"}
                                         label={"Username"}
