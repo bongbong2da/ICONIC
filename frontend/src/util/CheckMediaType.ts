@@ -4,6 +4,8 @@ const CheckMediaType = (fileName : string) => {
     if(!['jpg', 'gif', 'png'].includes(ext)) {
         alert("사진 파일 외엔 선택할 수 없습니다.");
         return false;
+    } else {
+        console.log("IMAGE_FILE_OK");
     }
     return true;
 }

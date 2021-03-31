@@ -46,6 +46,9 @@ const PostingCreator = () => {
     const onUpload = async (e: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
         let formData = new FormData();
         if (e.target.files) {
+            const input = e.target.files[0];
+            const confirm = CheckMediaType(input.name);
+            if(!confirm) return;
             console.log(e.target.files[0]);
             formData.append("multipartFile", e.target.files[0]);
             await axios.post("/upload/uploadImage", formData, {
@@ -107,7 +110,7 @@ const PostingCreator = () => {
             </Modal.Content>
             <Modal.Content>
                 <Modal.Description style={{textAlign : "center"}}>
-                    <Input id={"fileInput"} name={"upload"} type={"file"} onChange={onUpload} fluid/>
+                    <Input id={"fileInput"} name={"upload"} type={"file"} onChange={onUpload} accept={"image/*|video/*"} fluid/>
                     <Input name={"posting_chan_idx"} type={"hidden"} value={currentChanIdx}/>
                     <Input name={"posting_attach"} type={"hidden"} id={"posting-attach"} value={profileImg}/>
                     <Input name={"posting_isAttached"} type={"hidden"} id={"posting-isAttached"} value={'y'}/>

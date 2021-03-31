@@ -45,6 +45,15 @@ const SignUp = () => {
     const handleUpload = (e : ChangeEvent<HTMLInputElement>, values : any) => {
         let formData = new FormData();
         if(e.target.files) {
+            const input  = e.target.files[0];
+            console.log(`input name : ${input.name}`);
+            const checked = CheckMediaType(input.name);
+            if(!checked) {
+                const target = document.getElementById("uploadInput") as HTMLInputElement;
+                target.value = "";
+                setProfileImg("default.png");
+            }
+            console.log(input);
             formData.append("multipartFile", e.target.files[0]);
             axios.post("/upload/uploadImage", formData, {
                 headers : {
@@ -53,12 +62,6 @@ const SignUp = () => {
             })
                 .then(res=>{
                     const imgName = res.data;
-                    const checked = CheckMediaType(res.data);
-                    if(!checked) {
-                        const target = document.getElementById("uploadInput") as HTMLInputElement;
-                        target.value = "";
-                        setProfileImg("default.png");
-                    }
                     setProfileImg(imgName.substring(imgName.lastIndexOf("/") + 1, imgName.length));
                     loginStatus(res.data);
                 });
@@ -134,6 +137,7 @@ const SignUp = () => {
                                         name="password"
                                         onChange={handleUpload}
                                         id={"uploadInput"}
+                                        accept={"image/*"}
                             >
 
                             </Form.Input>
